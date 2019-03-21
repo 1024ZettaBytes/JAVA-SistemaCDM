@@ -1,4 +1,4 @@
-package persistencia;
+package negocio;
 
 /**
  *
@@ -6,18 +6,18 @@ package persistencia;
 public class Platillo {
     private int idPlatillo;
     private String nombre;
-    private String categoria;
+    
     private float precio;
     public Platillo(){
          this.idPlatillo = -1;
         this.nombre = null;
-        this.categoria = null;
+        
         this.precio = -1;
     }
-    public Platillo(int id, String nombre, String categoria, float precio){
+    public Platillo(int id, String nombre, float precio){
         this.idPlatillo = id;
         this.nombre = nombre;
-        this.categoria = categoria;
+        
         this.precio = precio;
     }
     public int getIdPlatillo() {
@@ -36,13 +36,9 @@ public class Platillo {
         this.nombre = nombre;
     }
 
-    public String getCategoria() {
-        return categoria;
-    }
+    
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
+   
 
     public float getPrecio() {
         return precio;
@@ -80,7 +76,7 @@ public class Platillo {
 
     @Override
     public String toString() {
-        return "Platillo{" + "idPlatillo=" + idPlatillo + ", nombre=" + nombre + ", categoria=" + categoria + ", precio=" + precio + '}';
+        return "Platillo{" + "idPlatillo=" + idPlatillo + ", nombre=" + nombre + ", precio=" + precio + '}';
     }
     
     

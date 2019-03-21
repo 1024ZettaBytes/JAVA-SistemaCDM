@@ -1,4 +1,4 @@
-package persistencia;
+package negocio;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,14 +7,7 @@ import java.util.List;
  *
  */
  public class Persistencia {
-    private ArrayList<PlatilloMenu> listaPlatillosMenu;
-    private ArrayList<ReservaPlatillo> listaReservasPlatillo;
-    private ArrayList<Cliente> listaClientes;
-   private  ArrayList<Platillo> listaPlatillos;
-    private ArrayList<VentaCredito> listaVentasCredito;
-    private ArrayList<VentaPlatillos> listaVentasPlatillos;
-    private ArrayList<Usuario> listaUsuarios;
-    private ArrayList<Producto> listaProductos;
+    
     private static Persistencia instancia;
    private Persistencia(){
        this.listaPlatillosMenu = new ArrayList<>();
@@ -160,26 +153,7 @@ import java.util.List;
         return this.listaVentasPlatillos;
     }
     
-    public boolean agregarUsuario(Usuario usuario) {
-        return !this.listaUsuarios.contains(usuario) && this.listaUsuarios.add(usuario);
-    }
-    
-    public boolean actualizarUsuario(Usuario usuario) {
-        int index = this.listaUsuarios.indexOf(usuario);
-        if (index>=0){
-        this.listaUsuarios.set(index, usuario);
-        return true;
-                }
-        return false;
-    }
-    
-    public boolean eliminarUsuario(Usuario usuario) {
-         return this.listaUsuarios.remove(usuario);
-    }
-    
-    public ArrayList<Usuario> consultaUsuarios() {
-        return this.listaUsuarios;
-    }
+   
     
 
     public boolean agregarProducto(Producto producto) {

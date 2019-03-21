@@ -1,4 +1,4 @@
-package persistencia;
+package negocio;
 
 import java.sql.Timestamp;
 import java.util.List;

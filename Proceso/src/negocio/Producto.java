@@ -1,4 +1,4 @@
-package persistencia;
+package negocio;
 
 /**
  *
@@ -6,13 +6,13 @@ package persistencia;
 public class Producto {
     private int idProducto;
     private String nombre;
-    private int stock;
+    private float stock;
 public Producto(){
     this.idProducto=-1;
     this.nombre=null;
     this.stock = -1;
 }
-public Producto(int id, String nombre, int stock){
+public Producto(int id, String nombre, float stock){
     this.idProducto=id;
     this.nombre=nombre;
     this.stock = stock;
@@ -33,11 +33,11 @@ public Producto(int id, String nombre, int stock){
         this.nombre = nombre;
     }
 
-    public int getStock() {
+    public float getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(float stock) {
         this.stock = stock;
     }
     

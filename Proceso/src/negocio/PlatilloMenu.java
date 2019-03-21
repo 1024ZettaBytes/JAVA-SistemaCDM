@@ -1,4 +1,4 @@
-package persistencia;
+package negocio;
 
 import java.util.Objects;
 
@@ -6,20 +6,32 @@ import java.util.Objects;
  *
  */
 public class PlatilloMenu {
+    private int idPlatilloMenu;
     private Platillo platillo;
     private int diaSemana;
     private int cantidad;
+    private String categoria;
 
     public PlatilloMenu() {
         this.platillo = null;
         this.diaSemana = -1;
         this.cantidad = -1;
+        this.categoria = null;
     }
 
-    public PlatilloMenu(Platillo platillo, int diaSemana, int cantidad) {
+    public PlatilloMenu(Platillo platillo, int diaSemana, int cantidad, String categoria) {
         this.platillo = platillo;
         this.diaSemana = diaSemana;
         this.cantidad = cantidad;
+        this.categoria = categoria;
+    }
+
+    public int getIdPlatilloMenu() {
+        return idPlatilloMenu;
+    }
+
+    public void setIdPlatilloMenu(int idPlatilloMenu) {
+        this.idPlatilloMenu = idPlatilloMenu;
     }
 
     public Platillo getPlatillo() {
@@ -46,11 +58,19 @@ public class PlatilloMenu {
         this.cantidad = cantidad;
     }
 
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 89 * hash + Objects.hashCode(this.platillo);
-        hash = 89 * hash + this.diaSemana;
+        hash = 53 * hash + this.idPlatilloMenu;
         return hash;
     }
 
@@ -66,10 +86,7 @@ public class PlatilloMenu {
             return false;
         }
         final PlatilloMenu other = (PlatilloMenu) obj;
-        if (this.diaSemana != other.diaSemana) {
-            return false;
-        }
-        if (!Objects.equals(this.platillo, other.platillo)) {
+        if (this.idPlatilloMenu != other.idPlatilloMenu) {
             return false;
         }
         return true;
