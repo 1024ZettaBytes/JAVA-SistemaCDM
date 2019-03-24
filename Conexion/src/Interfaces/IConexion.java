@@ -22,8 +22,8 @@ public interface IConexion {
     public boolean eliminarUsuario(int id);
     public ArrayList<Object> consultarUsuarios();
     
-    public boolean insertarPlatillo(String nombre, float precio);
-    public boolean actualizarPlatillo(int id, String nombre, float precio);
+    public boolean insertarPlatillo(String nombre);
+    public boolean actualizarPlatillo(int id, String nombre);
     public boolean eliminarPlatillo(int id);
     public ArrayList<Object> consultarPlatillos();
     
@@ -42,9 +42,14 @@ public interface IConexion {
     public boolean eliminarReservaPlatillo(int idReserva);
     public ArrayList<Object> consultarReservasPlatillos();
     
-    public boolean insertarVentaPlatillo(int folioVenta, Timestamp fechaHora, float monto, int idUsuario, String nombreCliente, int idPlatillo);
-    public boolean actualizarVentaPlatillo(int folioVenta, Timestamp fechaHora, float monto, int idUsuario, String nombreCliente, int idPlatillo);
-    public boolean eliminarEliminarPlatilla(int folioVenta);
+    public boolean insertarVenta(Timestamp fechaHora, int idUsuario);
+    public boolean actualizarVenta(int folioVenta, Timestamp fechaHora, int idUsuario);
+    public boolean eliminarVenta(int folioVenta);
+    public ArrayList<Object> consultarVentas();
+    
+    public boolean insertarVentaPlatillo(int folioVentaGeneral, String nombreCliente, int idPlatillo, float costo);
+    public boolean actualizarVentaPlatillo(int folioVentaGeneral, String nombreCliente, int idPlatillo, float costo);
+    public boolean eliminarVentaPlatillo(int folioVenta, int idPlatillo, float costo);
     public ArrayList<Object> consultarVentasPlatillos();
     
     public boolean insertarVentaCredito(Timestamp fechaHora, float monto, int idUsuario,int idCliente, int cantidadDesayunos, int cantidadComidas, int cantidadCenas);

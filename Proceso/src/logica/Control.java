@@ -16,7 +16,7 @@ import negocio.Producto;
 import negocio.ReservaPlatillo;
 import negocio.Usuario;
 import negocio.VentaCredito;
-import negocio.VentaPlatillos;
+import negocio.VentaPlatillo;
 
 /**
  *
@@ -29,7 +29,7 @@ public class Control implements IControl {
     private static ArrayList<Cliente> listaClientes;
    private  static ArrayList<Platillo> listaPlatillos;
     private static ArrayList<VentaCredito> listaVentasCredito;
-    private static ArrayList<VentaPlatillos> listaVentasPlatillos;
+    private static ArrayList<VentaPlatillo> listaVentasPlatillos;
     protected static ArrayList<Usuario> listaUsuarios;
     private static ArrayList<Producto> listaProductos;
     protected boolean extraerDatosBD(){

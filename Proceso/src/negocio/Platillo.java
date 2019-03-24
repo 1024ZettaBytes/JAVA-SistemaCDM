@@ -4,21 +4,19 @@ package negocio;
  *
  */
 public class Platillo {
+    
     private int idPlatillo;
     private String nombre;
     
-    private float precio;
+    
     public Platillo(){
          this.idPlatillo = -1;
         this.nombre = null;
         
-        this.precio = -1;
     }
-    public Platillo(int id, String nombre, float precio){
+    public Platillo(int id, String nombre){
         this.idPlatillo = id;
         this.nombre = nombre;
-        
-        this.precio = precio;
     }
     public int getIdPlatillo() {
         return idPlatillo;
@@ -35,19 +33,6 @@ public class Platillo {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-    
-
-   
-
-    public float getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(float precio) {
-        this.precio = precio;
-    }
-    
 
     @Override
     public int hashCode() {
@@ -76,7 +61,7 @@ public class Platillo {
 
     @Override
     public String toString() {
-        return "Platillo{" + "idPlatillo=" + idPlatillo + ", nombre=" + nombre + ", precio=" + precio + '}';
+        return "Platillo{" + "idPlatillo=" + idPlatillo + ", nombre=" + nombre +'}';
     }
     
     

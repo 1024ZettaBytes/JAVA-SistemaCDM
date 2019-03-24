@@ -23,6 +23,7 @@ public class ControlUsuarios extends Control {
     public boolean agregarUsuario(String nombre, String pass, boolean tipoAdmin) {
         Usuario u = new Usuario(usuarioSiguiente, nombre, pass, tipoAdmin);
         if (conexion.insertarUsuario(nombre, pass, tipoAdmin)) {
+            usuarioSiguiente++;
             return !listaUsuarios.contains(u) && listaUsuarios.add(u);
         } else {
             return false;

@@ -5,41 +5,52 @@ import java.sql.Timestamp;
 /**
  *
  */
-public class VentaCredito extends Venta {
-
-    private int idCliente;
+public class VentaCredito{
+    private int idVentaCredito;
+    private Venta ventaGeneral;
+    private Cliente cliente;
     private int cantidadDesayunos;
     private int cantidadComidas;
     private int cantidadCenas;
-
-    public VentaCredito() {
-        this.folioVenta = -1;
-        this.idCliente = -1;
-        this.fechaHora = null;
-        this.idUsuario = -1;
+ public VentaCredito() {
+        this.idVentaCredito = -1;
+        this.ventaGeneral = null;
+        this.cliente = null;
         this.cantidadDesayunos = -1;
         this.cantidadComidas = -1;
         this.cantidadCenas = -1;
-        this.monto = -1;
     }
-
-    public VentaCredito(int folio, int idCliente, Timestamp fechaHora, int idUsuario, int cantidadDesayunos, int cantidadComidas, int cantidadCenas, float monto) {
-        this.folioVenta = folio;
-        this.idCliente = idCliente;
-        this.fechaHora = fechaHora;
-        this.idUsuario = idUsuario;
+    public VentaCredito(int idVentaCredito, Venta ventaGeneral, Cliente cliente, int cantidadDesayunos, int cantidadComidas, int cantidadCenas) {
+        this.idVentaCredito = idVentaCredito;
+        this.ventaGeneral = ventaGeneral;
+        this.cliente = cliente;
         this.cantidadDesayunos = cantidadDesayunos;
         this.cantidadComidas = cantidadComidas;
         this.cantidadCenas = cantidadCenas;
-        this.monto = monto;
     }
 
-    public int getIdCliente() {
-        return idCliente;
+    public int getIdVentaCredito() {
+        return idVentaCredito;
     }
 
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
+    public void setIdVentaCredito(int idVentaCredito) {
+        this.idVentaCredito = idVentaCredito;
+    }
+
+    public Venta getVentaGeneral() {
+        return ventaGeneral;
+    }
+
+    public void setVentaGeneral(Venta ventaGeneral) {
+        this.ventaGeneral = ventaGeneral;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public int getCantidadDesayunos() {
@@ -67,8 +78,34 @@ public class VentaCredito extends Venta {
     }
 
     @Override
-    public String toString() {
-        return super.toString()+"VentaCredito{" + "idCliente=" + idCliente + ", cantidadDesayunos=" + cantidadDesayunos + ", cantidadComidas=" + cantidadComidas + ", cantidadCenas=" + cantidadCenas + '}';
+    public int hashCode() {
+        int hash = 5;
+        hash = 67 * hash + this.idVentaCredito;
+        return hash;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final VentaCredito other = (VentaCredito) obj;
+        if (this.idVentaCredito != other.idVentaCredito) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "VentaCredito{" + "idVentaCredito=" + idVentaCredito + ", ventaGeneral=" + ventaGeneral + ", cliente=" + cliente + ", cantidadDesayunos=" + cantidadDesayunos + ", cantidadComidas=" + cantidadComidas + ", cantidadCenas=" + cantidadCenas + '}';
+    }
+    
 
 }

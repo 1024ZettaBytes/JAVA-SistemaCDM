@@ -163,8 +163,8 @@ public class ConexionBD implements IConexion {
     }
 
     @Override
-    public boolean insertarPlatillo(String nombre, float precio) {
-        String sSQL = "INSERT INTO platillos (nombre, precio) VALUES ('" + nombre + "', " + precio + ")";
+    public boolean insertarPlatillo(String nombre) {
+        String sSQL = "INSERT INTO platillos (nombre) VALUES ('" + nombre + "')";
         try {
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
@@ -177,8 +177,8 @@ public class ConexionBD implements IConexion {
     }
 
     @Override
-    public boolean actualizarPlatillo(int id, String nombre, float precio) {
-        String sSQL = "UPDATE platillos SET nombre = '" + nombre + "', precio = " + precio + " WHERE idPlatillo = " + id;
+    public boolean actualizarPlatillo(int id, String nombre) {
+        String sSQL = "UPDATE platillos SET nombre = '" + nombre + "' WHERE idPlatillo = " + id;
         try {
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
@@ -208,12 +208,12 @@ public class ConexionBD implements IConexion {
     public ArrayList<Object> consultarPlatillos() {
         String sSQL = "SELECT * FROM platillos";
         try {
-            ArrayList platillos = new ArrayList<Object>();
+            ArrayList platillos = new ArrayList<Object[]>();
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
             ResultSet rs = pstm.executeQuery(sSQL);
             while (rs.next()) {
-                Object[] platillo = {rs.getInt("idPlatillo"), rs.getString("nombre"), rs.getFloat("precio")};
+                Object[] platillo = {rs.getInt("idPlatillo"), rs.getString("nombre")};
                 platillos.add(platillo);
             }
             pstm.close();
@@ -412,12 +412,21 @@ public class ConexionBD implements IConexion {
     }
 
     @Override
-    public boolean insertarVentaPlatillo(int folioVenta, Timestamp fechaHora, float monto, int idUsuario, String nombreCliente, int idPlatillo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean insertarVentaPlatillo(int folioVentaGeneral, String nombreCliente, int idPlatillo, float costo) {
+       
+        String sSQL = "INSERT INTO platillos (Platillos_idPlatillo, cantidad, fechaReserva, TipoReserva_idTipoReserva) VALUES (" + idCliente + ", " + idPlatillo + ", " + cantidad + ", '"+timestamp+"', "+tipo+")";
+        try {
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            pstm.execute();
+            pstm.close();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
     }
 
     @Override
-    public boolean actualizarVentaPlatillo(int folioVenta, Timestamp fechaHora, float monto, int idUsuario, String nombreCliente, int idPlatillo) {
+    public boolean actualizarVentaPlatillo(int folioVentaGeneral, String nombreCliente, int idPlatillo, float costo) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

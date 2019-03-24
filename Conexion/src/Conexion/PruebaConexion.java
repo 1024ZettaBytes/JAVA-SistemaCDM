@@ -6,7 +6,9 @@
 package Conexion;
 
 import Interfaces.IConexion;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  *
@@ -17,7 +19,7 @@ public class PruebaConexion {
     public static void main(String[] args) {
         IConexion co = new ConexionBD();
         System.out.println(co.conectar());
-        System.out.println(co.insertarReservaPlatillo(2, 2, 1, new Date(), 2));
+        
         
          co.consultarReservasPlatillos();
         System.out.println(co.desconectar());

@@ -8,8 +8,17 @@ import java.sql.Timestamp;
 public class Venta {
     protected int folioVenta;
     protected Timestamp fechaHora;
-    protected int idUsuario;
-    protected float monto;
+    protected Usuario usuario;
+ public Venta() {
+        this.folioVenta = -1;
+        this.fechaHora = null;
+        this.usuario = null;
+    }
+    public Venta(int folioVenta, Timestamp fechaHora, Usuario usuario) {
+        this.folioVenta = folioVenta;
+        this.fechaHora = fechaHora;
+        this.usuario = usuario;
+    }
     
     public int getFolioVenta() {
         return folioVenta;
@@ -27,20 +36,13 @@ public class Venta {
         this.fechaHora = fechaHora;
     }
 
-    public float getMonto() {
-        return monto;
+
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setMonto(float monto) {
-        this.monto = monto;
-    }
-
-    public int getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setIdUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override
@@ -70,8 +72,10 @@ public class Venta {
 
     @Override
     public String toString() {
-        return "Venta{" + "folioVenta=" + folioVenta + ", fechaHora=" + fechaHora + ", idUsuario=" + idUsuario + ", monto=" + monto + '}';
+        return "Venta{" + "folioVenta=" + folioVenta + ", fechaHora=" + fechaHora + ", usuario=" + usuario + '}';
     }
+
+    
     
     }
     
