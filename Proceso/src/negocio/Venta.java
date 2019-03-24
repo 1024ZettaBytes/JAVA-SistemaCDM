@@ -5,10 +5,10 @@ import java.sql.Timestamp;
 /**
  *
  */
-public class Venta {
-    protected int folioVenta;
-    protected Timestamp fechaHora;
-    protected Usuario usuario;
+public class Venta {    
+    private int folioVenta;
+    private Timestamp fechaHora;
+    private Usuario usuario;
  public Venta() {
         this.folioVenta = -1;
         this.fechaHora = null;

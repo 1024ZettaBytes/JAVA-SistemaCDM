@@ -11,19 +11,18 @@ package negocio;
  */
 public class EntradaProducto {
     private int idEntrada;
-    private int idProducto;
+    private Producto producto;
     private float unidades;
     private float gasto;
     public EntradaProducto(){
-        this.idEntrada = -1;
-        this.idProducto = -1;
+        this.producto = null;
         this.unidades = -1;
         this.gasto=-1;
     }
 
-    public EntradaProducto(int idEntrada, int idProducto, float unidades, float gasto) {
+    public EntradaProducto(int idEntrada, Producto producto, float unidades, float gasto) {
         this.idEntrada = idEntrada;
-        this.idProducto = idProducto;
+        this.producto = producto;
         this.unidades = unidades;
         this.gasto = gasto;
     }
@@ -36,13 +35,15 @@ public class EntradaProducto {
         this.idEntrada = idEntrada;
     }
 
-    public int getIdProducto() {
-        return idProducto;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
+
+    
 
     public float getUnidades() {
         return unidades;
