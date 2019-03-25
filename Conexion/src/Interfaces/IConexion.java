@@ -48,18 +48,18 @@ public interface IConexion {
     public ArrayList<Object> consultarVentas();
     
     public boolean insertarVentaPlatillo(int folioVentaGeneral, String nombreCliente, int idPlatillo, float costo);
-    public boolean actualizarVentaPlatillo(int folioVentaGeneral, String nombreCliente, int idPlatillo, float costo);
-    public boolean eliminarVentaPlatillo(int folioVenta, int idPlatillo, float costo);
+    public boolean actualizarVentaPlatillo(int idVentaPlatillo, int folioVentaGeneral, String nombreCliente, int idPlatillo, float costo);
+    public boolean eliminarVentaPlatillo(int idVentaPlatillo);
     public ArrayList<Object> consultarVentasPlatillos();
     
-    public boolean insertarVentaCredito(Timestamp fechaHora, float monto, int idUsuario,int idCliente, int cantidadDesayunos, int cantidadComidas, int cantidadCenas);
-    public boolean actualizarVentaCredito(int folioVenta, Timestamp fechaHora, float monto, int idUsuario, String nombreCliente, int idPlatillo);
-    public boolean eliminarEliminarCredito(int folioVenta);
+    public boolean insertarVentaCredito(int folioVentaGeneral, int idCliente, int cantidadDesayunos, int cantidadComidas, int cantidadCenas, float monto);
+    public boolean actualizarVentaCredito(int idVentaCredito, int folioVentaGeneral, int idCliente, int cantidadDesayunos, int cantidadComidas, int cantidadCenas, float monto);
+    public boolean eliminarEliminarCredito(int idVentaCredito);
     public ArrayList<Object> consultarVentasCredito();
     
-    public boolean insertarEntradaProducto(int idProducto, float unidades, float gasto);
-    public boolean actualizarEntradaProducto(int idEntrada, int idProducto, float unidades, float gasto);
-    public boolean eliminarEntradaProducto(int idEntrada);
+    public boolean insertarEntradaProducto(int idProducto, float cantidad, float gasto);
+    public boolean actualizarEntradaProducto(int idEntradaProducto, int idProducto, float unidades, float gasto);
+    public boolean eliminarEntradaProducto(int idEntradaProducto);
     public ArrayList<Object> consultarEntradasProducto();
     
     public boolean insertarProducto(String nombre, float stock);
@@ -67,9 +67,9 @@ public interface IConexion {
     public boolean eliminarProducto(int idProducto);
     public ArrayList<Object> consultarProductos();
     
-    public boolean insertarSalidaProducto(int idProducto, float unidades);
-    public boolean actualizarSalidaProducto(int idSalida, int idProducto, float unidades);
-    public boolean eliminarSalidaProducto(int idSalida);
+    public boolean insertarSalidaProducto(int idProducto, float cantidad);
+    public boolean actualizarSalidaProducto(int idSalidaProducto, int idProducto, float cantidad);
+    public boolean eliminarSalidaProducto(int idSalidaProducto);
     public ArrayList<Object> consultarSalidasProducto();
 }
 

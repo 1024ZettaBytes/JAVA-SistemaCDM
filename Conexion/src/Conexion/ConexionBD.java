@@ -35,46 +35,57 @@ public class ConexionBD implements IConexion {
     private final String nombreBD = "cdm";
     private final String puertoBD = "3306";
     private Connection conn = null;
+
     @Override
-    public int consultarSiguiente(String tabla){
-    String nomTabla = "";
-    switch(tabla){
-        case "u" : nomTabla = "usuarios";
-        break;
-        case "v" : nomTabla = "ventas";
-        break;
-        case "pt" : nomTabla = "platillos";
-        break;
-        case "rp" : nomTabla = "reservasplatillo";
-        break;
-        case "c" : nomTabla = "clientes";
-        break;
-        case "ptm" : nomTabla = "platillosmenu";
-        break;
-        case "p" : nomTabla = "productos";
-        break;
-        case "ep" : nomTabla = "entradasproductos";
-        break;
-        case "sp" : nomTabla = "salidasproductos";
-        break;
-    }
-    String sSQL = "SELECT AUTO_INCREMENT\n" +
-"FROM information_schema.TABLES\n" +
-"WHERE TABLE_SCHEMA = \"cdm\"\n" +
-"AND TABLE_NAME = "+nomTabla;
-    int n=1;
+    public int consultarSiguiente(String tabla) {
+        String nomTabla = "";
+        switch (tabla) {
+            case "u":
+                nomTabla = "usuarios";
+                break;
+            case "v":
+                nomTabla = "ventas";
+                break;
+            case "pt":
+                nomTabla = "platillos";
+                break;
+            case "rp":
+                nomTabla = "reservasplatillo";
+                break;
+            case "c":
+                nomTabla = "clientes";
+                break;
+            case "ptm":
+                nomTabla = "platillosmenu";
+                break;
+            case "p":
+                nomTabla = "productos";
+                break;
+            case "ep":
+                nomTabla = "entradasproductos";
+                break;
+            case "sp":
+                nomTabla = "salidasproductos";
+                break;
+        }
+        String sSQL = "SELECT AUTO_INCREMENT\n"
+                + "FROM information_schema.TABLES\n"
+                + "WHERE TABLE_SCHEMA = \"cdm\"\n"
+                + "AND TABLE_NAME = " + nomTabla;
+        int n = 1;
         try {
             PreparedStatement pstm = conn.prepareStatement(sSQL);
             ResultSet rs = pstm.executeQuery(sSQL);
             while (rs.next()) {
-              n = rs.getInt(0);
+                n = rs.getInt(0);
             }
             pstm.close();
             return n;
         } catch (SQLException ex) {
             return -1;
         }
-}
+    }
+
     @Override
     public boolean conectar() {
         boolean correcto = false;
@@ -225,7 +236,7 @@ public class ConexionBD implements IConexion {
 
     @Override
     public boolean insertarPlatilloMenu(int idPlatillo, int diaSemana, int cantidad, String categoria) {
-         String sSQL = "INSERT INTO platillosmenu (Platillos_idPlatillo, diaSemana, cantidad, categoria) VALUES (" + idPlatillo + ", " + diaSemana + ", " + cantidad + ", '"+categoria+"')";
+        String sSQL = "INSERT INTO platillosmenu (Platillos_idPlatillo, diaSemana, cantidad, categoria) VALUES (" + idPlatillo + ", " + diaSemana + ", " + cantidad + ", '" + categoria + "')";
         try {
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
@@ -239,7 +250,7 @@ public class ConexionBD implements IConexion {
 
     @Override
     public boolean actualizarPlatilloMenu(int idPlatilloMenu, int idPlatillo, int diaSemana, int cantidad, String categoria) {
-         String sSQL = "UPDATE platillosmenu SET Platillos_idPlatillo = " + idPlatillo + ", diaSemana = " + diaSemana + ", cantidad = " + cantidad+  ", categoria = '" + categoria + "' WHERE idPlatilloMenu = " + idPlatilloMenu;
+        String sSQL = "UPDATE platillosmenu SET Platillos_idPlatillo = " + idPlatillo + ", diaSemana = " + diaSemana + ", cantidad = " + cantidad + ", categoria = '" + categoria + "' WHERE idPlatilloMenu = " + idPlatilloMenu;
         try {
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
@@ -250,11 +261,10 @@ public class ConexionBD implements IConexion {
             return false;
         }
     }
-    
 
     @Override
     public boolean eliminarPlatilloMenu(int idPlatilloMenu) {
-         String sSQL = "DELETE FROM platillosmenu WHERE idPlatilloMenu = " + idPlatilloMenu;
+        String sSQL = "DELETE FROM platillosmenu WHERE idPlatilloMenu = " + idPlatilloMenu;
         try {
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
@@ -268,14 +278,14 @@ public class ConexionBD implements IConexion {
 
     @Override
     public ArrayList<Object> consultarPlatillosMenu() {
-         String sSQL = "SELECT * FROM platillosmenu";
+        String sSQL = "SELECT * FROM platillosmenu";
         try {
             ArrayList platillosMenu = new ArrayList<Object>();
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
             ResultSet rs = pstm.executeQuery(sSQL);
             while (rs.next()) {
-                Object[] platilloMenu = {rs.getInt("idPlatilloMenu"),rs.getInt("Platillos_idPlatillo"), rs.getInt("diaSemana"), rs.getInt("cantidad"), rs.getString("categoria")};
+                Object[] platilloMenu = {rs.getInt("idPlatilloMenu"), rs.getInt("Platillos_idPlatillo"), rs.getInt("diaSemana"), rs.getInt("cantidad"), rs.getString("categoria")};
                 platillosMenu.add(platilloMenu);
             }
             pstm.close();
@@ -287,7 +297,7 @@ public class ConexionBD implements IConexion {
 
     @Override
     public boolean insertarCliente(String nombre, int creditoDesayuno, int creditoComida, int creditoCena) {
-    String sSQL = "INSERT INTO clientes (nombre, creditoDesayuno, creditoComida, creditoCena) VALUES ('" + nombre + "', " + creditoDesayuno + ", " + creditoComida + ", "+creditoCena+")";
+        String sSQL = "INSERT INTO clientes (nombre, creditoDesayuno, creditoComida, creditoCena) VALUES ('" + nombre + "', " + creditoDesayuno + ", " + creditoComida + ", " + creditoCena + ")";
         try {
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
@@ -301,7 +311,7 @@ public class ConexionBD implements IConexion {
 
     @Override
     public boolean actualizarCliente(int idCliente, String nombre, int creditoDesayuno, int creditoComida, int creditoCena) {
-        String sSQL = "UPDATE clientes SET nombre = '" + nombre + "',creditoDesayuno = " + creditoDesayuno + ", creditoComida = " + creditoComida+  ", creditoCena = " + creditoCena + " WHERE idCliente = " + idCliente;
+        String sSQL = "UPDATE clientes SET nombre = '" + nombre + "',creditoDesayuno = " + creditoDesayuno + ", creditoComida = " + creditoComida + ", creditoCena = " + creditoCena + " WHERE idCliente = " + idCliente;
         try {
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
@@ -329,14 +339,14 @@ public class ConexionBD implements IConexion {
 
     @Override
     public ArrayList<Object> consultarClientes() {
-         String sSQL = "SELECT * FROM clientes";
+        String sSQL = "SELECT * FROM clientes";
         try {
             ArrayList clientes = new ArrayList<Object>();
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
             ResultSet rs = pstm.executeQuery(sSQL);
             while (rs.next()) {
-                Object[] cliente = {rs.getInt("idCliente"),rs.getString("nombre"), rs.getInt("creditoDesayuno"), rs.getInt("creditoComida"), rs.getInt("creditoCena")};
+                Object[] cliente = {rs.getInt("idCliente"), rs.getString("nombre"), rs.getInt("creditoDesayuno"), rs.getInt("creditoComida"), rs.getInt("creditoCena")};
                 clientes.add(cliente);
                 System.out.println(Arrays.asList(cliente).toString());
             }
@@ -350,7 +360,7 @@ public class ConexionBD implements IConexion {
     @Override
     public boolean insertarReservaPlatillo(int idCliente, int idPlatillo, int cantidad, Date fecha, int tipo) {
         java.sql.Date timestamp = new java.sql.Date(fecha.getTime());
-        String sSQL = "INSERT INTO reservasPlatillo (Clientes_idCliente, Platillos_idPlatillo, cantidad, fechaReserva, TipoReserva_idTipoReserva) VALUES (" + idCliente + ", " + idPlatillo + ", " + cantidad + ", '"+timestamp+"', "+tipo+")";
+        String sSQL = "INSERT INTO reservasPlatillo (Clientes_idCliente, Platillos_idPlatillo, cantidad, fechaReserva, TipoReserva_idTipoReserva) VALUES (" + idCliente + ", " + idPlatillo + ", " + cantidad + ", '" + timestamp + "', " + tipo + ")";
         try {
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
@@ -364,8 +374,8 @@ public class ConexionBD implements IConexion {
 
     @Override
     public boolean actualizarReservaPlatillo(int idReserva, int idCliente, int idPlatillo, int cantidad, Date fecha, int tipo) {
-    java.sql.Date timestamp = new java.sql.Date(fecha.getTime());
-        String sSQL = "UPDATE reservasPlatillo SET Clientes_idCliente = " + idCliente + ", Platillos_idPlatillo = " + idPlatillo + ", cantidad = " + cantidad+  ", fechaReserva = " + timestamp +", TipoReserva_idTipoReserva = "+ tipo+" WHERE idReserva = " + idReserva;
+        java.sql.Date timestamp = new java.sql.Date(fecha.getTime());
+        String sSQL = "UPDATE reservasPlatillo SET Clientes_idCliente = " + idCliente + ", Platillos_idPlatillo = " + idPlatillo + ", cantidad = " + cantidad + ", fechaReserva = " + timestamp + ", TipoReserva_idTipoReserva = " + tipo + " WHERE idReserva = " + idReserva;
         try {
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
@@ -400,9 +410,9 @@ public class ConexionBD implements IConexion {
             PreparedStatement pstm = conn.prepareStatement(sSQL);
             ResultSet rs = pstm.executeQuery(sSQL);
             while (rs.next()) {
-                Object[] reserva = {rs.getInt("idReserva"),rs.getInt("Clientes_idCliente"), rs.getInt("Platillos_idPlatillo"), rs.getInt("cantidad"), rs.getString("fechaReserva"), rs.getInt("TipoReserva_idTipoReserva")};
+                Object[] reserva = {rs.getInt("idReserva"), rs.getInt("Clientes_idCliente"), rs.getInt("Platillos_idPlatillo"), rs.getInt("cantidad"), rs.getString("fechaReserva"), rs.getInt("TipoReserva_idTipoReserva")};
                 reservas.add(reserva);
-                System.out.println(Arrays.asList(reserva).toString());
+
             }
             pstm.close();
             return reservas;
@@ -410,10 +420,11 @@ public class ConexionBD implements IConexion {
             return null;
         }
     }
- @Override
+
+    @Override
     public boolean insertarVenta(Timestamp fechaHora, int idUsuario) {
-        
-        String sSQL = "INSERT INTO ventas (fechaHora, Usuarios_idUsuario) VALUES (" + fechaHora + ", " + idUsuario+")";
+
+        String sSQL = "INSERT INTO ventas (fechaHora, Usuarios_idUsuario) VALUES (" + fechaHora + ", " + idUsuario + ")";
         try {
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
@@ -427,8 +438,8 @@ public class ConexionBD implements IConexion {
 
     @Override
     public boolean actualizarVenta(int folioVenta, Timestamp fechaHora, int idUsuario) {
-        
-        String sSQL = "UPDATE ventas SET fechaHora = " + fechaHora + ", Usuarios_idUsuario = " + idUsuario +" WHERE folio = " + folioVenta;
+
+        String sSQL = "UPDATE ventas SET fechaHora = " + fechaHora + ", Usuarios_idUsuario = " + idUsuario + " WHERE folio = " + folioVenta;
         try {
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
@@ -442,7 +453,7 @@ public class ConexionBD implements IConexion {
 
     @Override
     public boolean eliminarVenta(int folioVenta) {
-         String sSQL = "DELETE FROM ventas WHERE idVenta = " + folioVenta;
+        String sSQL = "DELETE FROM ventas WHERE idVenta = " + folioVenta;
         try {
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
@@ -453,13 +464,342 @@ public class ConexionBD implements IConexion {
             return false;
         }
     }
+
+    @Override
+    public ArrayList<Object> consultarVentas() {
+        String sSQL = "SELECT * FROM ventas";
+        try {
+            ArrayList ventas = new ArrayList<Object>();
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            ResultSet rs = pstm.executeQuery(sSQL);
+            while (rs.next()) {
+                Object[] venta = {rs.getInt("folio"), rs.getString("fechaHora"), rs.getInt("Usuarios_idUsuario")};
+                ventas.add(venta);
+                System.out.println(Arrays.asList(ventas).toString());
+            }
+            pstm.close();
+            return ventas;
+        } catch (SQLException ex) {
+            return null;
+        }
     }
 
-    
+    @Override
+    public boolean insertarVentaPlatillo(int folioVentaGeneral, String nombreCliente, int idPlatillo, float costo) {
+        String sSQL = "INSERT INTO ventasPlatillos (Ventas_Folio, nombreCliente, Platillos_idPlatillo, costo) VALUES (" + folioVentaGeneral + ",'" + nombreCliente + "', " + idPlatillo + ", " + costo + ")";
+        try {
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            pstm.execute();
+            pstm.close();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean actualizarVentaPlatillo(int idVentaPLatillo, int folioVentaGeneral, String nombreCliente, int idPlatillo, float costo) {
+        String sSQL = "UPDATE ventas SET Ventas_folio = " + folioVentaGeneral + ", nombreCliente = '" + nombreCliente + "', Platillos_idPlatillos = " + idPlatillo + ", costo = " + costo
+                + " WHERE idVentaPlatillo = " + idVentaPLatillo;
+        try {
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            pstm.execute();
+            pstm.close();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean eliminarVentaPlatillo(int idVentaPlatillo) {
+        String sSQL = "DELETE FROM ventasPlatillos WHERE idVentaPlatillo = " + idVentaPlatillo;
+        try {
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            pstm.execute();
+            pstm.close();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public ArrayList<Object> consultarVentasPlatillos() {
+        String sSQL = "SELECT * FROM ventasPlatillos";
+        try {
+            ArrayList ventasPlatillos = new ArrayList<Object>();
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            ResultSet rs = pstm.executeQuery(sSQL);
+            while (rs.next()) {
+                Object[] ventaPlatillo = {rs.getInt("idVentaPLatillo"), rs.getInt("Ventas_folio"), rs.getString("nombreCliente"), rs.getInt("Platillos_idPlatillo"), rs.getFloat("costo")};
+                ventasPlatillos.add(ventaPlatillo);
+
+            }
+            pstm.close();
+            return ventasPlatillos;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean insertarVentaCredito(int folioVentaGeneral, int idCliente, int cantidadDesayunos, int cantidadComidas, int cantidadCenas, float monto) {
+        String sSQL = "INSERT INTO ventasCredito (Ventas_Folio, Clientes_idCliente, cantidadDesayunos, cantidadComidas, cantidadCenas, monto) VALUES (" + folioVentaGeneral + "," + idCliente + ", " + cantidadDesayunos + ", " + cantidadComidas + ", " + cantidadCenas + ")";
+        try {
+            // PreparedStatementa
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            pstm.execute();
+            pstm.close();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean actualizarVentaCredito(int idVentaCredito, int folioVentaGeneral, int idCliente, int cantidadDesayunos, int cantidadComidas, int cantidadCenas, float monto) {
+        String sSQL = "UPDATE ventasCreditos SET Ventas_folio = " + folioVentaGeneral + ", Clientes_idCliente= " + idCliente + ", cantidadDesayunos = " + cantidadDesayunos + ", cantidadComidas = " + cantidadComidas + ", cantidadCenas = " + cantidadCenas + ", monto = " + monto
+                + " WHERE idVentaCredito = " + idVentaCredito;
+        try {
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            pstm.execute();
+            pstm.close();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+
+    }
+
+    @Override
+    public boolean eliminarEliminarCredito(int idVentaCredito) {
+        String sSQL = "DELETE FROM ventasCredito WHERE idVenta = " + idVentaCredito;
+        try {
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            pstm.execute();
+            pstm.close();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public ArrayList<Object> consultarVentasCredito() {
+        String sSQL = "SELECT * FROM ventasCredito";
+        try {
+            ArrayList ventasCredito = new ArrayList<Object>();
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            ResultSet rs = pstm.executeQuery(sSQL);
+            while (rs.next()) {
+                Object[] ventaCredito = {rs.getInt("idVentaCredito"), rs.getInt("Ventas_folio"), rs.getInt("idCliente"), rs.getInt("Platillos_idPlatillo"), rs.getInt("cantidadDesayunos"), rs.getInt("cantidadComidas"), rs.getInt("cantidadCenas"), rs.getFloat("monto")};
+                ventasCredito.add(ventaCredito);
+                System.out.println(Arrays.asList(ventasCredito).toString());
+            }
+            pstm.close();
+            return ventasCredito;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean insertarEntradaProducto(int idProducto, float cantidad, float gasto) {
+        String sSQL = "INSERT INTO entradasProductos (Productos_idProductos, cantidad, gasto) VALUES (" + idProducto + "," + cantidad + ", " + gasto + ")";
+        try {
+            // PreparedStatementa
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            pstm.execute();
+            pstm.close();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean actualizarEntradaProducto(int idEntradaProducto, int idProducto, float cantidad, float gasto) {
+        String sSQL = "UPDATE entradasProductos SET  Productos_idProductos= " + idProducto + ", cantidad = " + cantidad + ", gasto = " + gasto
+                + " WHERE idEntradasProductos = " + idEntradaProducto;
+        try {
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            pstm.execute();
+            pstm.close();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+
+    }
+
+    @Override
+    public boolean eliminarEntradaProducto(int idEntradaProducto) {
+        String sSQL = "DELETE FROM entradasproductos WHERE idEntradasProductos = " + idEntradaProducto;
+        try {
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            pstm.execute();
+            pstm.close();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public ArrayList<Object> consultarEntradasProducto() {
+        String sSQL = "SELECT * FROM entradasProductos";
+        try {
+            ArrayList entradasProducto = new ArrayList<Object>();
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            ResultSet rs = pstm.executeQuery(sSQL);
+            while (rs.next()) {
+                Object[] entradaProducto = {rs.getInt("idEntradasProductos"), rs.getInt("Productos_idProductos"), rs.getFloat("cantidad"), rs.getInt("Platillos_idPlatillo"), rs.getFloat("costo")};
+                entradasProducto.add(entradaProducto);
+                System.out.println(Arrays.asList(entradasProducto).toString());
+            }
+            pstm.close();
+            return entradasProducto;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean insertarProducto(String nombre, float stock) {
+        String sSQL = "INSERT INTO productos (nombre, stock) VALUES ('" + nombre + "'," + stock + ")";
+        try {
+            // PreparedStatementa
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            pstm.execute();
+            pstm.close();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean actualizarProducto(int idProducto, String nombre, float stock) {
+        String sSQL = "UPDATE productos SET nombre = '" + nombre + "', stock = " + stock
+                + " WHERE idProducto= " + idProducto;
+        try {
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            pstm.execute();
+            pstm.close();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+
+    }
+
+    @Override
+    public boolean eliminarProducto(int idProducto) {
+        String sSQL = "DELETE FROM productos WHERE idProducto = " + idProducto;
+        try {
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            pstm.execute();
+            pstm.close();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public ArrayList<Object> consultarProductos() {
+        String sSQL = "SELECT * FROM productos";
+        try {
+            ArrayList productos = new ArrayList<Object>();
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            ResultSet rs = pstm.executeQuery(sSQL);
+            while (rs.next()) {
+                Object[] producto = {rs.getInt("idProducto"), rs.getString("nombre"), rs.getFloat("stock")};
+                productos.add(producto);
+                System.out.println(Arrays.asList(productos).toString());
+            }
+            pstm.close();
+            return productos;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean insertarSalidaProducto(int idProducto, float cantidad) {
+        String sSQL = "INSERT INTO salidasProductos (Productos_idProductos, cantidad) VALUES (" + idProducto + "," + cantidad + ")";
+        try {
+            // PreparedStatementa
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            pstm.execute();
+            pstm.close();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean actualizarSalidaProducto(int idSalidaProducto, int idProducto, float cantidad) {
+        String sSQL = "UPDATE salidasProductos SET  Productos_idProductos= " + idProducto + ", cantidad = " + cantidad
+                + " WHERE idSalidasProductos = " + idSalidaProducto;
+        try {
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            pstm.execute();
+            pstm.close();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean eliminarSalidaProducto(int idSalidaProducto) {
+        String sSQL = "DELETE FROM salidasproductos WHERE idSalidasProductos= " + idSalidaProducto;
+        try {
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            pstm.execute();
+            pstm.close();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public ArrayList<Object> consultarSalidasProducto() {
+        String sSQL = "SELECT * FROM salidasProductos";
+        try {
+            ArrayList salidasProductos = new ArrayList<Object>();
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            ResultSet rs = pstm.executeQuery(sSQL);
+            while (rs.next()) {
+                Object[] salidaProducto = {rs.getInt("idSalidasProductos"), rs.getInt("Productos_idProductos"), rs.getFloat("cantidad")};
+                salidasProductos.add(salidaProducto);
+                System.out.println(Arrays.asList(salidasProductos).toString());
+            }
+            pstm.close();
+            return salidasProductos;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
 }
-
-   
-
-   
-
-
