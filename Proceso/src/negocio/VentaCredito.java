@@ -12,6 +12,7 @@ public class VentaCredito{
     private int cantidadDesayunos;
     private int cantidadComidas;
     private int cantidadCenas;
+    private float monto;
  public VentaCredito() {
         this.idVentaCredito = -1;
         this.ventaGeneral = null;
@@ -19,14 +20,16 @@ public class VentaCredito{
         this.cantidadDesayunos = -1;
         this.cantidadComidas = -1;
         this.cantidadCenas = -1;
+        this.monto = -1;
     }
-    public VentaCredito(int idVentaCredito, Venta ventaGeneral, Cliente cliente, int cantidadDesayunos, int cantidadComidas, int cantidadCenas) {
+    public VentaCredito(int idVentaCredito, Venta ventaGeneral, Cliente cliente, int cantidadDesayunos, int cantidadComidas, int cantidadCenas, float monto) {
         this.idVentaCredito = idVentaCredito;
         this.ventaGeneral = ventaGeneral;
         this.cliente = cliente;
         this.cantidadDesayunos = cantidadDesayunos;
         this.cantidadComidas = cantidadComidas;
         this.cantidadCenas = cantidadCenas;
+        this.monto = monto;
     }
 
     public int getIdVentaCredito() {
@@ -75,6 +78,14 @@ public class VentaCredito{
 
     public void setCantidadCenas(int cantidadCenas) {
         this.cantidadCenas = cantidadCenas;
+    }
+
+    public float getMonto() {
+        return monto;
+    }
+
+    public void setMonto(float monto) {
+        this.monto = monto;
     }
 
     @Override

@@ -410,12 +410,12 @@ public class ConexionBD implements IConexion {
             return null;
         }
     }
-
-    @Override
-    public boolean insertarVentaPlatillo(int folioVentaGeneral, String nombreCliente, int idPlatillo, float costo) {
-       
-        String sSQL = "INSERT INTO platillos (Platillos_idPlatillo, cantidad, fechaReserva, TipoReserva_idTipoReserva) VALUES (" + idCliente + ", " + idPlatillo + ", " + cantidad + ", '"+timestamp+"', "+tipo+")";
+ @Override
+    public boolean insertarVenta(Timestamp fechaHora, int idUsuario) {
+        
+        String sSQL = "INSERT INTO ventas (fechaHora, Usuarios_idUsuario) VALUES (" + fechaHora + ", " + idUsuario+")";
         try {
+            // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
             pstm.execute();
             pstm.close();
@@ -426,98 +426,40 @@ public class ConexionBD implements IConexion {
     }
 
     @Override
-    public boolean actualizarVentaPlatillo(int folioVentaGeneral, String nombreCliente, int idPlatillo, float costo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean actualizarVenta(int folioVenta, Timestamp fechaHora, int idUsuario) {
+        
+        String sSQL = "UPDATE ventas SET fechaHora = " + fechaHora + ", Usuarios_idUsuario = " + idUsuario +" WHERE folio = " + folioVenta;
+        try {
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            pstm.execute();
+            pstm.close();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
     }
 
     @Override
-    public boolean eliminarEliminarPlatilla(int folioVenta) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean eliminarVenta(int folioVenta) {
+         String sSQL = "DELETE FROM ventas WHERE idVenta = " + folioVenta;
+        try {
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            pstm.execute();
+            pstm.close();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
     }
 
-    @Override
-    public ArrayList<Object> consultarVentasPlatillos() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean insertarVentaCredito(Timestamp fechaHora, float monto, int idUsuario, int idCliente, int cantidadDesayunos, int cantidadComidas, int cantidadCenas) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean actualizarVentaCredito(int folioVenta, Timestamp fechaHora, float monto, int idUsuario, String nombreCliente, int idPlatillo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean eliminarEliminarCredito(int folioVenta) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Object> consultarVentasCredito() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean insertarEntradaProducto(int idProducto, float unidades, float gasto) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean actualizarEntradaProducto(int idEntrada, int idProducto, float unidades, float gasto) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean eliminarEntradaProducto(int idEntrada) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Object> consultarEntradasProducto() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean insertarProducto(String nombre, float stock) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean actualizarProducto(int idProducto, String nombre, float stock) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean eliminarProducto(int idProducto) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Object> consultarProductos() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean insertarSalidaProducto(int idProducto, float unidades) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean actualizarSalidaProducto(int idSalida, int idProducto, float unidades) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean eliminarSalidaProducto(int idSalida) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Object> consultarSalidasProducto() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
 }
+
+   
+
+   
+
+
