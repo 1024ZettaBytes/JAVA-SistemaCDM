@@ -10,5 +10,5 @@ package Interfaces;
  * @author Eduardo Ramírez
  */
 public interface IControl {
-    
+    public boolean extraerDatosBD();
 }

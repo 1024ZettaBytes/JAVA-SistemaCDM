@@ -9,30 +9,54 @@ import Conexion.ConexionBD;
 import Interfaces.IConexion;
 import Interfaces.IControl;
 import java.util.ArrayList;
-import negocio.Cliente;
-import negocio.Platillo;
-import negocio.PlatilloMenu;
-import negocio.Producto;
-import negocio.ReservaPlatillo;
-import negocio.Usuario;
-import negocio.VentaCredito;
-import negocio.VentaPlatillo;
+import java.util.Arrays;
+import negocio.*;
 
 /**
  *
  * @author Eduardo Ramírez
  */
 public class Control implements IControl {
-    protected static IConexion conexion = new ConexionBD();
-    private static ArrayList<PlatilloMenu> listaPlatillosMenu;
-    private static ArrayList<ReservaPlatillo> listaReservasPlatillo;
-    private static ArrayList<Cliente> listaClientes;
-   private  static ArrayList<Platillo> listaPlatillos;
-    private static ArrayList<VentaCredito> listaVentasCredito;
-    private static ArrayList<VentaPlatillo> listaVentasPlatillos;
-    protected static ArrayList<Usuario> listaUsuarios;
-    private static ArrayList<Producto> listaProductos;
-    protected boolean extraerDatosBD(){
-        return true;
+
+    public static ControlUsuarios usuarios;
+    public static ControlClientes clientes;
+    public static ControlPlatillos platillos;
+    public static ControlVentas ventas;
+    protected static IConexion conexion;
+    
+    
+    
+    protected ArrayList<Producto> listaProductos;
+
+    protected ArrayList<PlatilloMenu> listaPlatillosMenu;
+    protected ArrayList<ReservaPlatillo> listaReservasPlatillo;
+    protected ArrayList<VentaCredito> listaVentasCredito;
+    protected ArrayList<VentaPlatillo> listaVentasPlatillos;
+
+    public Control() {
+        conexion = new ConexionBD();
+        usuarios = new ControlUsuarios(conexion);
+        clientes = new ControlClientes(conexion);
+        platillos = new ControlPlatillos(conexion);
+        ventas = new ControlVentas(conexion);
+        
     }
+
+    @Override
+    public boolean extraerDatosBD() {
+//        if(conexion.conectar()){
+//            
+//            
+//             ArrayList<Object[]> arreglosUsuarios = conexion.consultarUsuarios();
+//            for (Object[] arregloUsuario : arreglosUsuarios) {
+//                Usuario u = new Usuario((Integer)arregloUsuario[0], (String)arregloUsuario[1], (String)arregloUsuario[2], (Boolean)arregloUsuario[3]);
+//                listaUsuarios.add(u);
+//                
+//            }
+//            return true;
+//        }
+//        return false;
+        return false;
+    }
+
 }

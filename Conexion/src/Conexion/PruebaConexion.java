@@ -18,11 +18,11 @@ import java.util.GregorianCalendar;
 public class PruebaConexion {
 
     public static void main(String[] args) {
-        Timestamp t = new Timestamp(new Date().getTime());
-        System.out.println(t);
-//        IConexion co = new ConexionBD();
-//        System.out.println(co.conectar());
-//        
+        
+       IConexion co = new ConexionBD();
+     System.out.println(co.conectar());
+     co.insertarPlatillo("Torta Ahogada");
+    
 //        
 //         co.consultarReservasPlatillos();
 //        System.out.println(co.desconectar());

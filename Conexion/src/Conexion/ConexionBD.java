@@ -35,56 +35,11 @@ public class ConexionBD implements IConexion {
     private final String nombreBD = "cdm";
     private final String puertoBD = "3306";
     private Connection conn = null;
-
-    @Override
-    public int consultarSiguiente(String tabla) {
-        String nomTabla = "";
-        switch (tabla) {
-            case "u":
-                nomTabla = "usuarios";
-                break;
-            case "v":
-                nomTabla = "ventas";
-                break;
-            case "pt":
-                nomTabla = "platillos";
-                break;
-            case "rp":
-                nomTabla = "reservasplatillo";
-                break;
-            case "c":
-                nomTabla = "clientes";
-                break;
-            case "ptm":
-                nomTabla = "platillosmenu";
-                break;
-            case "p":
-                nomTabla = "productos";
-                break;
-            case "ep":
-                nomTabla = "entradasproductos";
-                break;
-            case "sp":
-                nomTabla = "salidasproductos";
-                break;
-        }
-        String sSQL = "SELECT AUTO_INCREMENT\n"
-                + "FROM information_schema.TABLES\n"
-                + "WHERE TABLE_SCHEMA = \"cdm\"\n"
-                + "AND TABLE_NAME = " + nomTabla;
-        int n = 1;
-        try {
-            PreparedStatement pstm = conn.prepareStatement(sSQL);
-            ResultSet rs = pstm.executeQuery(sSQL);
-            while (rs.next()) {
-                n = rs.getInt(0);
-            }
-            pstm.close();
-            return n;
-        } catch (SQLException ex) {
-            return -1;
-        }
+    public ConexionBD(){
     }
+    
+        
+    
 
     @Override
     public boolean conectar() {
@@ -155,7 +110,7 @@ public class ConexionBD implements IConexion {
     }
 
     @Override
-    public ArrayList<Object> consultarUsuarios() {
+    public ArrayList<Object[]> consultarUsuarios() {
         String sSQL = "SELECT * FROM usuarios";
         try {
             ArrayList usuarios = new ArrayList<Object>();
@@ -176,6 +131,7 @@ public class ConexionBD implements IConexion {
     @Override
     public boolean insertarPlatillo(String nombre) {
         String sSQL = "INSERT INTO platillos (nombre) VALUES ('" + nombre + "')";
+        
         try {
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
@@ -216,7 +172,7 @@ public class ConexionBD implements IConexion {
     }
 
     @Override
-    public ArrayList<Object> consultarPlatillos() {
+    public ArrayList<Object[]> consultarPlatillos() {
         String sSQL = "SELECT * FROM platillos";
         try {
             ArrayList platillos = new ArrayList<Object[]>();
@@ -277,7 +233,7 @@ public class ConexionBD implements IConexion {
     }
 
     @Override
-    public ArrayList<Object> consultarPlatillosMenu() {
+    public ArrayList<Object[]> consultarPlatillosMenu() {
         String sSQL = "SELECT * FROM platillosmenu";
         try {
             ArrayList platillosMenu = new ArrayList<Object>();
@@ -338,7 +294,7 @@ public class ConexionBD implements IConexion {
     }
 
     @Override
-    public ArrayList<Object> consultarClientes() {
+    public ArrayList<Object[]> consultarClientes() {
         String sSQL = "SELECT * FROM clientes";
         try {
             ArrayList clientes = new ArrayList<Object>();
@@ -348,7 +304,7 @@ public class ConexionBD implements IConexion {
             while (rs.next()) {
                 Object[] cliente = {rs.getInt("idCliente"), rs.getString("nombre"), rs.getInt("creditoDesayuno"), rs.getInt("creditoComida"), rs.getInt("creditoCena")};
                 clientes.add(cliente);
-                System.out.println(Arrays.asList(cliente).toString());
+                
             }
             pstm.close();
             return clientes;
@@ -402,7 +358,7 @@ public class ConexionBD implements IConexion {
     }
 
     @Override
-    public ArrayList<Object> consultarReservasPlatillos() {
+    public ArrayList<Object[]> consultarReservasPlatillos() {
         String sSQL = "SELECT * FROM reservasPlatillo";
         try {
             ArrayList reservas = new ArrayList<Object>();
@@ -466,7 +422,7 @@ public class ConexionBD implements IConexion {
     }
 
     @Override
-    public ArrayList<Object> consultarVentas() {
+    public ArrayList<Object[]> consultarVentas() {
         String sSQL = "SELECT * FROM ventas";
         try {
             ArrayList ventas = new ArrayList<Object>();
@@ -476,7 +432,7 @@ public class ConexionBD implements IConexion {
             while (rs.next()) {
                 Object[] venta = {rs.getInt("folio"), rs.getString("fechaHora"), rs.getInt("Usuarios_idUsuario")};
                 ventas.add(venta);
-                System.out.println(Arrays.asList(ventas).toString());
+              
             }
             pstm.close();
             return ventas;
@@ -529,7 +485,7 @@ public class ConexionBD implements IConexion {
     }
 
     @Override
-    public ArrayList<Object> consultarVentasPlatillos() {
+    public ArrayList<Object[]> consultarVentasPlatillos() {
         String sSQL = "SELECT * FROM ventasPlatillos";
         try {
             ArrayList ventasPlatillos = new ArrayList<Object>();
@@ -593,7 +549,7 @@ public class ConexionBD implements IConexion {
     }
 
     @Override
-    public ArrayList<Object> consultarVentasCredito() {
+    public ArrayList<Object[]> consultarVentasCredito() {
         String sSQL = "SELECT * FROM ventasCredito";
         try {
             ArrayList ventasCredito = new ArrayList<Object>();
@@ -603,7 +559,7 @@ public class ConexionBD implements IConexion {
             while (rs.next()) {
                 Object[] ventaCredito = {rs.getInt("idVentaCredito"), rs.getInt("Ventas_folio"), rs.getInt("idCliente"), rs.getInt("Platillos_idPlatillo"), rs.getInt("cantidadDesayunos"), rs.getInt("cantidadComidas"), rs.getInt("cantidadCenas"), rs.getFloat("monto")};
                 ventasCredito.add(ventaCredito);
-                System.out.println(Arrays.asList(ventasCredito).toString());
+                
             }
             pstm.close();
             return ventasCredito;
@@ -657,7 +613,7 @@ public class ConexionBD implements IConexion {
     }
 
     @Override
-    public ArrayList<Object> consultarEntradasProducto() {
+    public ArrayList<Object[]> consultarEntradasProducto() {
         String sSQL = "SELECT * FROM entradasProductos";
         try {
             ArrayList entradasProducto = new ArrayList<Object>();
@@ -667,7 +623,6 @@ public class ConexionBD implements IConexion {
             while (rs.next()) {
                 Object[] entradaProducto = {rs.getInt("idEntradasProductos"), rs.getInt("Productos_idProductos"), rs.getFloat("cantidad"), rs.getInt("Platillos_idPlatillo"), rs.getFloat("costo")};
                 entradasProducto.add(entradaProducto);
-                System.out.println(Arrays.asList(entradasProducto).toString());
             }
             pstm.close();
             return entradasProducto;
@@ -721,7 +676,7 @@ public class ConexionBD implements IConexion {
     }
 
     @Override
-    public ArrayList<Object> consultarProductos() {
+    public ArrayList<Object[]> consultarProductos() {
         String sSQL = "SELECT * FROM productos";
         try {
             ArrayList productos = new ArrayList<Object>();
@@ -731,7 +686,7 @@ public class ConexionBD implements IConexion {
             while (rs.next()) {
                 Object[] producto = {rs.getInt("idProducto"), rs.getString("nombre"), rs.getFloat("stock")};
                 productos.add(producto);
-                System.out.println(Arrays.asList(productos).toString());
+                
             }
             pstm.close();
             return productos;
@@ -784,7 +739,7 @@ public class ConexionBD implements IConexion {
     }
 
     @Override
-    public ArrayList<Object> consultarSalidasProducto() {
+    public ArrayList<Object[]> consultarSalidasProducto() {
         String sSQL = "SELECT * FROM salidasProductos";
         try {
             ArrayList salidasProductos = new ArrayList<Object>();
@@ -794,12 +749,29 @@ public class ConexionBD implements IConexion {
             while (rs.next()) {
                 Object[] salidaProducto = {rs.getInt("idSalidasProductos"), rs.getInt("Productos_idProductos"), rs.getFloat("cantidad")};
                 salidasProductos.add(salidaProducto);
-                System.out.println(Arrays.asList(salidasProductos).toString());
+                
             }
             pstm.close();
             return salidasProductos;
         } catch (SQLException ex) {
             return null;
+        }
+    }
+
+    @Override
+    public int obtenUltimoID() {
+        String sSQL = "SELECT LAST_INSERT_ID();";
+        int n = -1;
+        try {
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            ResultSet rs = pstm.executeQuery(sSQL);
+            while (rs.next()) {
+                n = rs.getInt(1);
+            }
+            pstm.close();
+            return n;
+        } catch (SQLException ex) {
+            return -1;
         }
     }
 }

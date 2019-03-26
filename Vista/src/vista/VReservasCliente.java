@@ -5,6 +5,15 @@
  */
 package vista;
 
+import java.util.ArrayList;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import logica.Control;
+import logica.ControlClientes;
+import logica.ControlUsuarios;
+import negocio.Cliente;
+
 /**
  *
  * @author JAB
@@ -16,6 +25,13 @@ public class VReservasCliente extends javax.swing.JFrame {
      */
     public VReservasCliente() {
         initComponents();
+        ArrayList<Cliente> clientes = new ArrayList(Control.clientes.consultaClientes());
+        if(clientes.size()<=0){
+            JOptionPane.showMessageDialog(this, "Error no existe ningún cliente registrado.");
+            
+            
+        }
+        
     }
 
     /**
@@ -85,6 +101,11 @@ public class VReservasCliente extends javax.swing.JFrame {
         jLabel4.setText("Nombre del cliente:");
 
         comboClientes.setEditable(true);
+        comboClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboClientesActionPerformed(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("1. Seleccione el día:");
@@ -137,6 +158,11 @@ public class VReservasCliente extends javax.swing.JFrame {
         labelNombreEmpleado.setText("<Nombre del empleado>");
 
         btnVolver.setText("Volver");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
 
         labelCreditoDesayunos.setText("<Credito disponible>");
 
@@ -327,6 +353,16 @@ public class VReservasCliente extends javax.swing.JFrame {
     private void comboDesayunosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboDesayunosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboDesayunosActionPerformed
+
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        
+        JOptionPane.showMessageDialog(this, Control.clientes.consultaClientes());
+        
+    }//GEN-LAST:event_btnVolverActionPerformed
+
+    private void comboClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboClientesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboClientesActionPerformed
 
     /**
      * @param args the command line arguments
