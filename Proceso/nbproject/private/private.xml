@@ -3,16 +3,28 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/itson/Documents/JAVA-SistemaCDM/Proceso/src/logica/Control.java</file>
-            <file>file:/C:/Users/itson/Documents/JAVA-SistemaCDM/Proceso/src/logica/ControlVentas.java</file>
-            <file>file:/C:/Users/itson/Documents/JAVA-SistemaCDM/Proceso/src/logica/ControlClientes.java</file>
-            <file>file:/C:/Users/itson/Documents/JAVA-SistemaCDM/Proceso/src/negocio/PlatilloMenu.java</file>
-            <file>file:/C:/Users/itson/Documents/JAVA-SistemaCDM/Proceso/src/logica/ControlProductos.java</file>
-            <file>file:/C:/Users/itson/Documents/JAVA-SistemaCDM/Proceso/src/logica/ControlMenu.java</file>
-            <file>file:/C:/Users/itson/Documents/JAVA-SistemaCDM/Proceso/src/logica/ControlPlatillos.java</file>
-            <file>file:/C:/Users/itson/Documents/JAVA-SistemaCDM/Proceso/src/logica/ControlUsuarios.java</file>
-            <file>file:/C:/Users/itson/Documents/JAVA-SistemaCDM/Proceso/src/NewMain.java</file>
-            <file>file:/C:/Users/itson/Documents/JAVA-SistemaCDM/Proceso/src/pruebas/Pruebas.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/negocio/PlatilloMenu.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/NewMain.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/negocio/VentaCredito.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/negocio/EntradaProducto.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/negocio/Platillo.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/negocio/VentaPlatillo.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/logica/ControlMenu.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/Interfaces/IControl.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/negocio/Venta.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/negocio/ReservaPlatillo.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/logica/ControlProductos.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/negocio/Usuario.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/logica/ControlClientes.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/negocio/Producto.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/negocio/Cliente.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/logica/ControlPlatillos.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/negocio/Persistencia.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/logica/Control.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/pruebas/Pruebas.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/logica/ControlVentas.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/negocio/SalidaProducto.java</file>
+            <file>file:/C:/Users/Eduardo%20Ramírez/source/repos/2.%20Java/JAVA-SistemaCDM/Proceso/src/logica/ControlUsuarios.java</file>
         </group>
     </open-files>
 </project-private>

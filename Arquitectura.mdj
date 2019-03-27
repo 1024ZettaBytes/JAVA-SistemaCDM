@@ -9412,7 +9412,7 @@
 							"left": 872,
 							"top": 408,
 							"width": 1041,
-							"height": 1089,
+							"height": 1121,
 							"nameCompartment": {
 								"$ref": "AAAAAAFpWfRQIL5vXCU="
 							}
@@ -15257,7 +15257,7 @@
 											"font": "Arial;13;1",
 											"left": 893,
 											"top": 1367,
-											"width": 393.44677734375,
+											"width": 454.86669921875,
 											"height": 13,
 											"text": "ControlMenu"
 										},
@@ -15292,7 +15292,7 @@
 									"font": "Arial;13;0",
 									"left": 888,
 									"top": 1360,
-									"width": 403.44677734375,
+									"width": 464.86669921875,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAFpbElAL+Achik="
@@ -15329,7 +15329,7 @@
 											"font": "Arial;13;0",
 											"left": 893,
 											"top": 1390,
-											"width": 393.44677734375,
+											"width": 454.86669921875,
 											"height": 13,
 											"text": "+listaPlatillosMenu: ArrayList<PlatilloMenu>",
 											"horizontalAlignment": 0
@@ -15338,7 +15338,7 @@
 									"font": "Arial;13;0",
 									"left": 888,
 									"top": 1385,
-									"width": 403.44677734375,
+									"width": 464.86669921875,
 									"height": 23
 								},
 								{
@@ -15363,7 +15363,7 @@
 											"font": "Arial;13;0",
 											"left": 893,
 											"top": 1413,
-											"width": 393.44677734375,
+											"width": 454.86669921875,
 											"height": 13,
 											"text": "+agregar(): boolean",
 											"horizontalAlignment": 0
@@ -15380,7 +15380,7 @@
 											"font": "Arial;13;0",
 											"left": 893,
 											"top": 1428,
-											"width": 393.44677734375,
+											"width": 454.86669921875,
 											"height": 13,
 											"text": "+actualizar(): boolean",
 											"horizontalAlignment": 0
@@ -15397,7 +15397,7 @@
 											"font": "Arial;13;0",
 											"left": 893,
 											"top": 1443,
-											"width": 393.44677734375,
+											"width": 454.86669921875,
 											"height": 13,
 											"text": "+eliminar(): boolean",
 											"horizontalAlignment": 0
@@ -15414,7 +15414,7 @@
 											"font": "Arial;13;0",
 											"left": 893,
 											"top": 1458,
-											"width": 393.44677734375,
+											"width": 454.86669921875,
 											"height": 13,
 											"text": "+consultarMenuDia(int dia): ArrayList<PlatilloMenu>",
 											"horizontalAlignment": 0
@@ -15431,9 +15431,26 @@
 											"font": "Arial;13;0",
 											"left": 893,
 											"top": 1473,
-											"width": 393.44677734375,
+											"width": 454.86669921875,
 											"height": 13,
 											"text": "+consultarMenuCategoria(String categoria): ArrayList<PlatilloMenu>",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAFpvh5Bjp08oNY=",
+											"_parent": {
+												"$ref": "AAAAAAFpbElAL+Ah8b0="
+											},
+											"model": {
+												"$ref": "AAAAAAFpvh5BF50wpcc="
+											},
+											"font": "Arial;13;0",
+											"left": 893,
+											"top": 1488,
+											"width": 454.86669921875,
+											"height": 13,
+											"text": "+consultarMenuDiaCategoria(int dia, String categoria): ArrayList<PlatilloMenu>",
 											"horizontalAlignment": 0
 										},
 										{
@@ -15447,8 +15464,8 @@
 											},
 											"font": "Arial;13;0",
 											"left": 893,
-											"top": 1488,
-											"width": 393.44677734375,
+											"top": 1503,
+											"width": 454.86669921875,
 											"height": 13,
 											"text": "+consultarMenu(): ArrayList<PlatilloMenu>",
 											"horizontalAlignment": 0
@@ -15457,8 +15474,8 @@
 									"font": "Arial;13;0",
 									"left": 888,
 									"top": 1408,
-									"width": 403.44677734375,
-									"height": 98
+									"width": 464.86669921875,
+									"height": 113
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -15500,8 +15517,8 @@
 							"containerChangeable": true,
 							"left": 888,
 							"top": 1360,
-							"width": 403.44677734375,
-							"height": 146,
+							"width": 464.86669921875,
+							"height": 161,
 							"nameCompartment": {
 								"$ref": "AAAAAAFpbElAL+Ab81k="
 							},
@@ -25341,8 +25358,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1106,
-									"top": 1323,
+									"left": 1123,
+									"top": 1324,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -25362,8 +25379,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1094,
-									"top": 1317,
+									"left": 1111,
+									"top": 1320,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -25383,8 +25400,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1131,
-									"top": 1336,
+									"left": 1150,
+									"top": 1333,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -25490,7 +25507,7 @@
 								"$ref": "AAAAAAFpbElAL+AaE10="
 							},
 							"lineStyle": 1,
-							"points": "1113:1359;1160:1216;1432:855",
+							"points": "1134:1359;1160:1216;1432:855",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAFpvTrgeuhsr7U="
@@ -26643,6 +26660,43 @@
 													},
 													"name": "String categoria",
 													"type": ""
+												}
+											]
+										},
+										{
+											"_type": "UMLOperation",
+											"_id": "AAAAAAFpvh5BF50wpcc=",
+											"_parent": {
+												"$ref": "AAAAAAFpbElALeAYcLs="
+											},
+											"name": "consultarMenuDiaCategoria",
+											"parameters": [
+												{
+													"_type": "UMLParameter",
+													"_id": "AAAAAAFpvh6hFZ57gSw=",
+													"_parent": {
+														"$ref": "AAAAAAFpvh5BF50wpcc="
+													},
+													"name": "int dia",
+													"type": ""
+												},
+												{
+													"_type": "UMLParameter",
+													"_id": "AAAAAAFpvh6hFp58dFo=",
+													"_parent": {
+														"$ref": "AAAAAAFpvh5BF50wpcc="
+													},
+													"name": "String categoria",
+													"type": ""
+												},
+												{
+													"_type": "UMLParameter",
+													"_id": "AAAAAAFpvh6hFp59zuE=",
+													"_parent": {
+														"$ref": "AAAAAAFpvh5BF50wpcc="
+													},
+													"type": "ArrayList<PlatilloMenu>",
+													"direction": "return"
 												}
 											]
 										},

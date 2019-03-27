@@ -7,6 +7,9 @@ package Conexion;
 
 import Interfaces.IConexion;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -17,14 +20,13 @@ import java.util.GregorianCalendar;
  */
 public class PruebaConexion {
 
-    public static void main(String[] args) {
-        
-       IConexion co = new ConexionBD();
-     System.out.println(co.conectar());
-     co.insertarPlatillo("Torta Ahogada");
-    
-//        
-//         co.consultarReservasPlatillos();
-//        System.out.println(co.desconectar());
+    public static void main(String[] args) throws ParseException {
+        String pattern = "yyyy-MM-dd";
+SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+Date date = simpleDateFormat.parse("2019-03-27");
+        System.out.println(date);
+        GregorianCalendar g= new GregorianCalendar();
+        System.out.println(g.get(0));
     }
 }

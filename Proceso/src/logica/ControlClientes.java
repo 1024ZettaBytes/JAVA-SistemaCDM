@@ -60,7 +60,13 @@ public class ControlClientes {
         Cliente c = new Cliente(idCliente, "", 0, 0, 0);
         return conexion.eliminarCliente(idCliente) && listaClientes.remove(c);
     }
-
+public Cliente consultarPorId(int id){
+    Cliente c = new Cliente(id, null, 0, 0, 0);
+    if(listaClientes.contains(c)){
+        return listaClientes.get(listaClientes.indexOf(c));
+    }
+    return null;
+}
     public ArrayList<Cliente> consultarLista() {
 
         return listaClientes;
