@@ -35,7 +35,7 @@ public class ControlPlatillos {
 
     public boolean agregarPlatillo(Platillo nuevoPlatillo) {
         
-        if (this.conexion.conectar() && conexion.insertarPlatillo(nuevoPlatillo.getNombre())) {
+        if (conexion.insertarPlatillo(nuevoPlatillo.getNombre())) {
             platilloSiguiente= conexion.obtenUltimoID()+1;
             nuevoPlatillo.setIdPlatillo(platilloSiguiente-1);
             return !listaPlatillos.contains(nuevoPlatillo) && listaPlatillos.add(nuevoPlatillo);
@@ -59,7 +59,7 @@ public class ControlPlatillos {
         return conexion.eliminarPlatillo(idPlatillo) && listaPlatillos.remove(p);
     }
 
-    public ArrayList<Platillo> consultaPlatillos() {
+    public ArrayList<Platillo> consultarLista() {
 
         return listaPlatillos;
     }

@@ -61,7 +61,7 @@ public class ControlClientes {
         return conexion.eliminarCliente(idCliente) && listaClientes.remove(c);
     }
 
-    public ArrayList<Cliente> consultaClientes() {
+    public ArrayList<Cliente> consultarLista() {
 
         return listaClientes;
     }

@@ -46,11 +46,11 @@ public class ControlUsuarios {
         }
     }
 
-    public boolean actualizarUsuario(int id, String nombre, String pass, boolean tipoAdmin) {
-        Usuario u = new Usuario(id, nombre, pass, tipoAdmin);
-        int index = listaUsuarios.indexOf(u);
-        if (index >= 0 && conexion.actualizarUsuario(id, nombre, pass, tipoAdmin)) {
-            listaUsuarios.set(index, u);
+    public boolean actualizarUsuario(Usuario usuario) {
+        
+        int index = listaUsuarios.indexOf(usuario);
+        if (index >= 0 && conexion.actualizarUsuario(usuario.getIdUsuario(), usuario.getNombre(), usuario.getPass(), usuario.isTipoAdmin())) {
+            listaUsuarios.set(index, usuario);
             return true;
         }
         return false;
@@ -61,7 +61,7 @@ public class ControlUsuarios {
         return conexion.eliminarUsuario(id) && listaUsuarios.remove(u);
     }
 
-    public ArrayList<Usuario> consultaUsuarios() {
+    public ArrayList<Usuario> consultarLista() {
         return listaUsuarios;
     }
     public Usuario usuarioPorId(int idUsuario){

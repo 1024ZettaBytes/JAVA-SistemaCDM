@@ -22,6 +22,7 @@ public class Control implements IControl {
     public static ControlClientes clientes;
     public static ControlPlatillos platillos;
     public static ControlVentas ventas;
+    public static ControlProductos productos;
     protected static IConexion conexion;
     
     
@@ -39,6 +40,7 @@ public class Control implements IControl {
         clientes = new ControlClientes(conexion);
         platillos = new ControlPlatillos(conexion);
         ventas = new ControlVentas(conexion);
+        productos = new ControlProductos(conexion);
         
     }
 

@@ -61,7 +61,7 @@ public class ControlVentas {
         return conexion.eliminarVenta(folioVenta) && listaVentas.remove(v);
     }
 
-    public ArrayList<Venta> consultaVentas() {
+    public ArrayList<Venta> consultarLista() {
 
         return listaVentas;
     }
