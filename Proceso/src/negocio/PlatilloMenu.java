@@ -13,13 +13,15 @@ public class PlatilloMenu {
     private String categoria;
 
     public PlatilloMenu() {
+        this.idPlatilloMenu = 0;
         this.platillo = null;
         this.diaSemana = -1;
         this.cantidad = -1;
         this.categoria = null;
     }
 
-    public PlatilloMenu(Platillo platillo, int diaSemana, int cantidad, String categoria) {
+    public PlatilloMenu(int idPlatilloMenu, Platillo platillo, int diaSemana, int cantidad, String categoria) {
+        this.idPlatilloMenu = idPlatilloMenu;
         this.platillo = platillo;
         this.diaSemana = diaSemana;
         this.cantidad = cantidad;

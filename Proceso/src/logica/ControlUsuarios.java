@@ -35,7 +35,7 @@ public class ControlUsuarios {
         }
     }
 
-    public boolean agregarUsuario(Usuario nuevoUsuario) {
+    public boolean agregar(Usuario nuevoUsuario) {
         
         if (conexion.insertarUsuario(nuevoUsuario.getNombre(), nuevoUsuario.getPass(), nuevoUsuario.isTipoAdmin())) {
             usuarioSiguiente = conexion.obtenUltimoID()+1;
@@ -46,7 +46,7 @@ public class ControlUsuarios {
         }
     }
 
-    public boolean actualizarUsuario(Usuario usuario) {
+    public boolean actualizar(Usuario usuario) {
         
         int index = listaUsuarios.indexOf(usuario);
         if (index >= 0 && conexion.actualizarUsuario(usuario.getIdUsuario(), usuario.getNombre(), usuario.getPass(), usuario.isTipoAdmin())) {
@@ -56,7 +56,7 @@ public class ControlUsuarios {
         return false;
     }
 
-    public boolean eliminarUsuario(int id) {
+    public boolean eliminar(int id) {
         Usuario u = new Usuario(id, "", "", false);
         return conexion.eliminarUsuario(id) && listaUsuarios.remove(u);
     }
@@ -64,7 +64,7 @@ public class ControlUsuarios {
     public ArrayList<Usuario> consultarLista() {
         return listaUsuarios;
     }
-    public Usuario usuarioPorId(int idUsuario){
+    public Usuario consultarPorId(int idUsuario){
         Usuario u = new Usuario(idUsuario, "", "", false);
         u = listaUsuarios.get(listaUsuarios.indexOf(u));
         return u;

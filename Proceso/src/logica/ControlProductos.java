@@ -32,7 +32,7 @@ public class ControlProductos {
         }
     }
 
-    public boolean agregarProducto(Producto nuevoProducto) {
+    public boolean agregar(Producto nuevoProducto) {
         
         if (conexion.insertarProducto(nuevoProducto.getNombre(), nuevoProducto.getStock())) {
             productoSiguiente = conexion.obtenUltimoID()+1;
@@ -43,7 +43,7 @@ public class ControlProductos {
         }
     }
 
-    public boolean actualizarProducto(Producto producto) {
+    public boolean actualizar(Producto producto) {
         
         int index = listaProductos.indexOf(producto);
         if (index >= 0 && conexion.actualizarProducto(producto.getIdProducto(), producto.getNombre(), producto.getStock())) {
@@ -53,7 +53,7 @@ public class ControlProductos {
         return false;
     }
 
-    public boolean eliminarProducto(int idProducto) {
+    public boolean eliminar(int idProducto) {
         Producto p = new Producto(idProducto,"", 0);
         return conexion.eliminarProducto(idProducto) && listaProductos.remove(p);
     }

@@ -23,6 +23,7 @@ public class Control implements IControl {
     public static ControlPlatillos platillos;
     public static ControlVentas ventas;
     public static ControlProductos productos;
+    public static ControlMenu menu;
     protected static IConexion conexion;
     
     

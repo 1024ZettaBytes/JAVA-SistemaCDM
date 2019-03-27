@@ -21,7 +21,7 @@ public class NewMain {
      */
     public static void main(String[] args) {
       Control c = new Control();
-        System.out.println(Control.clientes.consultaClientes());
+        System.out.println(Control.clientes.consultarLista());
      
       
         

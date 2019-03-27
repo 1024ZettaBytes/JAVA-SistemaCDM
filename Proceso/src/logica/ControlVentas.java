@@ -26,7 +26,7 @@ public class ControlVentas {
         if (this.conexion.conectar()) {
             ArrayList<Object[]> arreglosVentas = conexion.consultarVentas();
             for (Object[] arregloVenta : arreglosVentas) {
-                Venta v = new Venta((Integer) arregloVenta[0], (Timestamp)arregloVenta[1], Control.usuarios.usuarioPorId((Integer)arregloVenta[1]));
+                Venta v = new Venta((Integer) arregloVenta[0], (Timestamp)arregloVenta[1], Control.usuarios.consultarPorId((Integer)arregloVenta[1]));
                 listaVentas.add(v);
             }
             
@@ -34,7 +34,7 @@ public class ControlVentas {
         }
     }
 
-    public boolean agregarVenta(Venta nuevaVenta) {
+    public boolean agregar(Venta nuevaVenta) {
         
         if (conexion.insertarVenta(nuevaVenta.getFechaHora(), nuevaVenta.getUsuario().getIdUsuario())) {
            
@@ -46,7 +46,7 @@ public class ControlVentas {
         }
     }
 
-    public boolean actualizarVenta(Venta venta) {
+    public boolean actualizar(Venta venta) {
 
         int index = listaVentas.indexOf(venta);
         if (index >= 0 && conexion.actualizarVenta(venta.getFolioVenta(), venta.getFechaHora(), venta.getUsuario().getIdUsuario())) {
@@ -56,8 +56,8 @@ public class ControlVentas {
         return false;
     }
 
-    public boolean eliminarVenta(int folioVenta) {
-        Venta v = new Venta(folioVenta, null, new Usuario());
+    public boolean eliminar(int folioVenta) {
+        Venta v = new Venta(folioVenta, null, null);
         return conexion.eliminarVenta(folioVenta) && listaVentas.remove(v);
     }
 

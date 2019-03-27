@@ -17,7 +17,7 @@ import negocio.Platillo;
 public class Pruebas {
     public static void main(String args[]){
         IControl c = new Control();
-        System.out.println(Control.platillos.consultaPlatillos());
+        System.out.println(Control.platillos.consultarLista());
         System.out.println(Control.platillos.agregarPlatillo(new Platillo(2, "Papas con carne molida y frijoles")));
         
     }

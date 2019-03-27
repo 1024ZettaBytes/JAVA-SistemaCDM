@@ -33,7 +33,7 @@ public class ControlPlatillos {
         }
     }
 
-    public boolean agregarPlatillo(Platillo nuevoPlatillo) {
+    public boolean agregar(Platillo nuevoPlatillo) {
         
         if (conexion.insertarPlatillo(nuevoPlatillo.getNombre())) {
             platilloSiguiente= conexion.obtenUltimoID()+1;
@@ -44,7 +44,7 @@ public class ControlPlatillos {
         }
     }
 
-    public boolean actualizarPlatillo(Platillo platillo) {
+    public boolean actualizar(Platillo platillo) {
 
         int index = listaPlatillos.indexOf(platillo);
         if (index >= 0 && conexion.actualizarPlatillo(platillo.getIdPlatillo(), platillo.getNombre())) {
@@ -54,11 +54,17 @@ public class ControlPlatillos {
         return false;
     }
 
-    public boolean eliminarPlatillo(int idPlatillo) {
+    public boolean eliminar(int idPlatillo) {
         Platillo p = new Platillo(idPlatillo, "");
         return conexion.eliminarPlatillo(idPlatillo) && listaPlatillos.remove(p);
     }
-
+public Platillo consultarPorId(int idPlatillo){
+    Platillo platillo =new Platillo(idPlatillo,  null);
+   if(listaPlatillos.contains(platillo)){
+       return listaPlatillos.get(listaPlatillos.indexOf(platillo));
+   }
+   return null;
+}
     public ArrayList<Platillo> consultarLista() {
 
         return listaPlatillos;

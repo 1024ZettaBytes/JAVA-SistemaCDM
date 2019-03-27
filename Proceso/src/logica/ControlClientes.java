@@ -34,7 +34,7 @@ public class ControlClientes {
         }
     }
 
-    public boolean agregarCliente(Cliente nuevoCliente) {
+    public boolean agregar(Cliente nuevoCliente) {
         
         if (conexion.insertarCliente(nuevoCliente.getNombre(), nuevoCliente.getCreditoDesayuno(), nuevoCliente.getCreditoComida(), nuevoCliente.getCreditoCena())) {
            
@@ -46,7 +46,7 @@ public class ControlClientes {
         }
     }
 
-    public boolean actualizarCliente(Cliente cliente) {
+    public boolean actualizar(Cliente cliente) {
 
         int index = listaClientes.indexOf(cliente);
         if (index >= 0 && conexion.actualizarCliente(cliente.getIdCliente(), cliente.getNombre(), cliente.getCreditoDesayuno(), cliente.getCreditoComida(), cliente.getCreditoCena())) {
@@ -56,7 +56,7 @@ public class ControlClientes {
         return false;
     }
 
-    public boolean eliminarCliente(int idCliente) {
+    public boolean eliminar(int idCliente) {
         Cliente c = new Cliente(idCliente, "", 0, 0, 0);
         return conexion.eliminarCliente(idCliente) && listaClientes.remove(c);
     }
