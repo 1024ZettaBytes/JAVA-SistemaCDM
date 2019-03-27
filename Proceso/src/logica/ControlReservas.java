@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import negocio.Cliente;
 import negocio.ReservaPlatillo;
 
 /**
@@ -32,16 +33,16 @@ public class ControlReservas {
             for (Object[] arregloReserva : arreglosReservas) {
                 String pattern = "yyyy-MM-dd";
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-Date fecha = null;
+                Date fecha = null;
                 try {
-                    fecha = simpleDateFormat.parse((String)arregloReserva[4]);
+                    fecha = simpleDateFormat.parse((String) arregloReserva[4]);
                 } catch (ParseException ex) {
                     Logger.getLogger(ControlReservas.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 ReservaPlatillo reserva = new ReservaPlatillo((Integer) arregloReserva[0],
                         Control.clientes.consultarPorId((Integer) arregloReserva[1]),
                         Control.platillos.consultarPorId((Integer) arregloReserva[2]),
-                        (Integer) arregloReserva[3],fecha, (Integer)arregloReserva[5]);
+                        (Integer) arregloReserva[3], fecha, (Integer) arregloReserva[5]);
                 listaReservasPlatillos.add(reserva);
             }
 
@@ -70,17 +71,28 @@ Date fecha = null;
     }
 
     public boolean eliminar(int id) {
-        ReservaPlatillo r = new ReservaPlatillo(id,null, null,0,null,0);
+        ReservaPlatillo r = new ReservaPlatillo(id, null, null, 0, null, 0);
         return conexion.eliminarReservaPlatillo(id) && listaReservasPlatillos.remove(r);
+    }
+
+    public ReservaPlatillo consultarPorId(int idReserva) {
+        ReservaPlatillo reserva = new ReservaPlatillo(idReserva, null, null, 0, null, 0);
+        if (listaReservasPlatillos.contains(reserva)) {
+            return listaReservasPlatillos.get(listaReservasPlatillos.indexOf(reserva));
+        }
+        return null;
+    }
+
+    public ArrayList<ReservaPlatillo> consultarPorCliente(Cliente cliente) {
+        ArrayList<ReservaPlatillo> lista = new ArrayList();
+        listaReservasPlatillos.stream().filter((reservaPlatillo) -> (reservaPlatillo.getCliente().equals(cliente))).forEachOrdered((reservaPlatillo) -> {
+            lista.add(reservaPlatillo);
+        });
+        return lista;
     }
 
     public ArrayList<ReservaPlatillo> consultarLista() {
         return listaReservasPlatillos;
     }
 
-    public Usuario consultarPorId(int idUsuario) {
-        Usuario u = new Usuario(idUsuario, "", "", false);
-        u = listaUsuarios.get(listaUsuarios.indexOf(u));
-        return u;
-    }
 }
