@@ -5,6 +5,8 @@
  */
 package vista;
 
+import logica.Control;
+
 /**
  *
  * @author JAB
@@ -16,6 +18,7 @@ public class VReservasCliente extends javax.swing.JFrame {
      */
     public VReservasCliente() {
         initComponents();
+        this.labelNombreEmpleado.setText(Control.usuarioActivo.getNombre());
     }
 
     /**

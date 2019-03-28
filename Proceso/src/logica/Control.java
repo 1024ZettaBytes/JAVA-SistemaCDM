@@ -11,46 +11,63 @@ import Interfaces.IControl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import negocio.*;
+import Interfaces.IImpresion;
+import ModuloImpresion.Impresion;
 
 /**
  *
  * @author Eduardo Ramírez
  */
 public class Control implements IControl {
-    private static Usuario usuarioActivo;
+    public static Usuario usuarioActivo;
+    protected static IConexion conexion;
+    public static IImpresion impresion;
     public static ControlUsuarios usuarios;
     public static ControlClientes clientes;
     public static ControlPlatillos platillos;
     public static ControlVentas ventas;
     public static ControlProductos productos;
     public static ControlMenu menu;
-    protected static IConexion conexion;
+    public static ControlReservas reservas;
     
-    
-    
-    protected ArrayList<Producto> listaProductos;
+ 
 
-    protected ArrayList<PlatilloMenu> listaPlatillosMenu;
-    protected ArrayList<ReservaPlatillo> listaReservasPlatillo;
+  
     protected ArrayList<VentaCredito> listaVentasCredito;
     protected ArrayList<VentaPlatillo> listaVentasPlatillos;
 
     public Control() throws ExceptionInInitializerError{
+        usuarioActivo = null;
         conexion = new ConexionBD();
         if(conexion.conectar()){
+        impresion = new Impresion();
         usuarios = new ControlUsuarios(conexion);
         clientes = new ControlClientes(conexion);
         platillos = new ControlPlatillos(conexion);
         ventas = new ControlVentas(conexion);
         productos = new ControlProductos(conexion);
+        menu = new ControlMenu(conexion);
+        reservas = new ControlReservas(conexion);
         // Se agregan los restantes
         }
         else throw new ExceptionInInitializerError();
     }
 
-    @Override
-    public boolean login(String usuario, String pass) {
-         
+    
+    public static boolean login(String nombre, String pass) {
+         for (Usuario usuarioN : usuarios.consultarLista()) {
+            if(usuarioN.getNombre().equals(nombre) && usuarioN.getPass().equals(pass)){
+                usuarioActivo = usuarioN;
+                return true;
+            }
+        }
+         return false;
+    }
+    
+
+    
+    public static void logout() {
+        usuarioActivo = null;
     }
    
 

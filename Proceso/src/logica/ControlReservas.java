@@ -103,7 +103,13 @@ if (!conexion.hayConexion()) {
         });
         return lista;
     }
-
+public ArrayList<ReservaPlatillo> consultarPorFecha(Date fecha) {
+    ArrayList<ReservaPlatillo> lista = new ArrayList();
+        listaReservasPlatillos.stream().filter((reservaPlatillo) -> (reservaPlatillo.getFecha().equals(fecha))).forEachOrdered((reservaPlatillo) -> {
+            lista.add(reservaPlatillo);
+        });
+        return lista;
+}
     public ArrayList<ReservaPlatillo> consultarLista() {
         return listaReservasPlatillos;
     }

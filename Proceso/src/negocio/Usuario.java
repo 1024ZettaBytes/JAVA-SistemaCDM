@@ -1,5 +1,7 @@
 package negocio;
 
+import java.util.Objects;
+
 /**
  *
  */
@@ -54,8 +56,8 @@ public class Usuario {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 79 * hash + this.idUsuario;
+        int hash = 3;
+        hash = 89 * hash + Objects.hashCode(this.nombre);
         return hash;
     }
 
@@ -71,11 +73,15 @@ public class Usuario {
             return false;
         }
         final Usuario other = (Usuario) obj;
-        if (this.idUsuario != other.idUsuario) {
+        if (!Objects.equals(this.nombre, other.nombre)) {
             return false;
         }
         return true;
     }
+
+    
+
+    
 
     @Override
     public String toString() {

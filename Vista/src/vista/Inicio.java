@@ -5,6 +5,8 @@
  */
 package vista;
 
+import Interfaces.IControl;
+import javax.swing.JOptionPane;
 import logica.Control;
 import logica.ControlClientes;
 import logica.ControlUsuarios;
@@ -63,14 +65,23 @@ public class Inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       Control c = new Control();
-       
-          
-VReservasCliente v= new VReservasCliente();
-v.setVisible(true);
-dispose();
-      
-      
+        try {
+            IControl c = new Control();
+            System.out.println(Control.usuarios.consultarLista());
+            if (Control.login("Magui", "cocinamagui")) {
+                VReservasCliente vReservas = new VReservasCliente();
+                vReservas.setAlwaysOnTop(true);
+                vReservas.setVisible(true);
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Error: Usuario y/o contraseña incorrectos.");
+            }
+
+        } catch (ExceptionInInitializerError e) {
+            JOptionPane.showMessageDialog(this, "Error: NO se pudo establecer una conexión con la base de datos. Intente de nuevo");
+        }
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
