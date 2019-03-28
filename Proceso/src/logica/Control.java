@@ -17,7 +17,7 @@ import negocio.*;
  * @author Eduardo Ramírez
  */
 public class Control implements IControl {
-
+    private static Usuario usuarioActivo;
     public static ControlUsuarios usuarios;
     public static ControlClientes clientes;
     public static ControlPlatillos platillos;
@@ -35,31 +35,25 @@ public class Control implements IControl {
     protected ArrayList<VentaCredito> listaVentasCredito;
     protected ArrayList<VentaPlatillo> listaVentasPlatillos;
 
-    public Control() {
+    public Control() throws ExceptionInInitializerError{
         conexion = new ConexionBD();
+        if(conexion.conectar()){
         usuarios = new ControlUsuarios(conexion);
         clientes = new ControlClientes(conexion);
         platillos = new ControlPlatillos(conexion);
         ventas = new ControlVentas(conexion);
         productos = new ControlProductos(conexion);
-        
+        // Se agregan los restantes
+        }
+        else throw new ExceptionInInitializerError();
     }
 
     @Override
-    public boolean extraerDatosBD() {
-//        if(conexion.conectar()){
-//            
-//            
-//             ArrayList<Object[]> arreglosUsuarios = conexion.consultarUsuarios();
-//            for (Object[] arregloUsuario : arreglosUsuarios) {
-//                Usuario u = new Usuario((Integer)arregloUsuario[0], (String)arregloUsuario[1], (String)arregloUsuario[2], (Boolean)arregloUsuario[3]);
-//                listaUsuarios.add(u);
-//                
-//            }
-//            return true;
-//        }
-//        return false;
-        return false;
+    public boolean login(String usuario, String pass) {
+         
     }
+   
+
+   
 
 }

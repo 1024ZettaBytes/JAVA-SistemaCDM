@@ -50,7 +50,7 @@ public class ConexionBD implements IConexion {
             conn = DriverManager.getConnection(url, usuarioBD, passBD);
             correcto = true;
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            
             correcto = false;
         }
         return correcto;
@@ -66,7 +66,15 @@ public class ConexionBD implements IConexion {
             return false;
         }
     }
-
+    @Override
+    public boolean hayConexion(){
+        
+        try {
+            return conn.isValid(1);
+        } catch (SQLException ex) {
+            return false;
+        }
+}
     @Override
     public boolean insertarUsuario(String nombre, String pass, boolean tipoAdmin) {
         String sSQL = "INSERT INTO usuarios (nombre, contra, tipoAdmin) VALUES ('" + nombre + "', '" + pass + "', " + tipoAdmin + ")";

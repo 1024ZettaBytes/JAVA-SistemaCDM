@@ -36,7 +36,11 @@ public class ControlUsuarios {
     }
 
     public boolean agregar(Usuario nuevoUsuario) {
-        
+        if (!conexion.hayConexion()) {
+            if (conexion.conectar() == false) {
+                return false;
+            }
+        }
         if (conexion.insertarUsuario(nuevoUsuario.getNombre(), nuevoUsuario.getPass(), nuevoUsuario.isTipoAdmin())) {
             usuarioSiguiente = conexion.obtenUltimoID()+1;
             nuevoUsuario.setIdUsuario(usuarioSiguiente-1);
@@ -47,7 +51,11 @@ public class ControlUsuarios {
     }
 
     public boolean actualizar(Usuario usuario) {
-        
+        if (!conexion.hayConexion()) {
+            if (conexion.conectar() == false) {
+                return false;
+            }
+        }
         int index = listaUsuarios.indexOf(usuario);
         if (index >= 0 && conexion.actualizarUsuario(usuario.getIdUsuario(), usuario.getNombre(), usuario.getPass(), usuario.isTipoAdmin())) {
             listaUsuarios.set(index, usuario);
@@ -57,6 +65,11 @@ public class ControlUsuarios {
     }
 
     public boolean eliminar(int id) {
+        if (!conexion.hayConexion()) {
+            if (conexion.conectar() == false) {
+                return false;
+            }
+        }
         Usuario u = new Usuario(id, "", "", false);
         return conexion.eliminarUsuario(id) && listaUsuarios.remove(u);
     }

@@ -35,7 +35,11 @@ public class ControlClientes {
     }
 
     public boolean agregar(Cliente nuevoCliente) {
-        
+        if (!conexion.hayConexion()) {
+            if (conexion.conectar() == false) {
+                return false;
+            }
+        }
         if (conexion.insertarCliente(nuevoCliente.getNombre(), nuevoCliente.getCreditoDesayuno(), nuevoCliente.getCreditoComida(), nuevoCliente.getCreditoCena())) {
            
             clienteSiguiente = conexion.obtenUltimoID()+1;
@@ -47,7 +51,11 @@ public class ControlClientes {
     }
 
     public boolean actualizar(Cliente cliente) {
-
+if (!conexion.hayConexion()) {
+            if (conexion.conectar() == false) {
+                return false;
+            }
+        }
         int index = listaClientes.indexOf(cliente);
         if (index >= 0 && conexion.actualizarCliente(cliente.getIdCliente(), cliente.getNombre(), cliente.getCreditoDesayuno(), cliente.getCreditoComida(), cliente.getCreditoCena())) {
             listaClientes.set(index, cliente);
@@ -57,6 +65,11 @@ public class ControlClientes {
     }
 
     public boolean eliminar(int idCliente) {
+        if (!conexion.hayConexion()) {
+            if (conexion.conectar() == false) {
+                return false;
+            }
+        }
         Cliente c = new Cliente(idCliente, "", 0, 0, 0);
         return conexion.eliminarCliente(idCliente) && listaClientes.remove(c);
     }

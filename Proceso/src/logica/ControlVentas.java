@@ -35,7 +35,11 @@ public class ControlVentas {
     }
 
     public boolean agregar(Venta nuevaVenta) {
-        
+        if (!conexion.hayConexion()) {
+            if (conexion.conectar() == false) {
+                return false;
+            }
+        }
         if (conexion.insertarVenta(nuevaVenta.getFechaHora(), nuevaVenta.getUsuario().getIdUsuario())) {
            
             ventaSiguiente = conexion.obtenUltimoID()+1;
@@ -47,7 +51,11 @@ public class ControlVentas {
     }
 
     public boolean actualizar(Venta venta) {
-
+if (!conexion.hayConexion()) {
+            if (conexion.conectar() == false) {
+                return false;
+            }
+        }
         int index = listaVentas.indexOf(venta);
         if (index >= 0 && conexion.actualizarVenta(venta.getFolioVenta(), venta.getFechaHora(), venta.getUsuario().getIdUsuario())) {
             listaVentas.set(index, venta);
@@ -57,6 +65,11 @@ public class ControlVentas {
     }
 
     public boolean eliminar(int folioVenta) {
+        if (!conexion.hayConexion()) {
+            if (conexion.conectar() == false) {
+                return false;
+            }
+        }
         Venta v = new Venta(folioVenta, null, null);
         return conexion.eliminarVenta(folioVenta) && listaVentas.remove(v);
     }

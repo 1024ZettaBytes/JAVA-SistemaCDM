@@ -16,6 +16,7 @@ import java.util.Date;
 public interface IConexion {
     public boolean conectar();
     public boolean desconectar();
+    public boolean hayConexion();
     public boolean insertarUsuario(String nombre, String pass, boolean tipoAdmin);
     public boolean actualizarUsuario(int id, String nombre, String pass, boolean tipoAdmin);
     public boolean eliminarUsuario(int id);

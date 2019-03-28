@@ -15,10 +15,28 @@ import negocio.Platillo;
  * @author Eduardo Ramírez
  */
 public class Pruebas {
-    public static void main(String args[]){
-        IControl c = new Control();
+    public static void main(String args[]) throws InterruptedException{
+        try {
+            IControl c = new Control();
+        
         System.out.println(Control.platillos.consultarLista());
-        System.out.println(Control.platillos.agregarPlatillo(new Platillo(2, "Papas con carne molida y frijoles")));
+            for (int i = 1; i <= 20; i++) {
+                Thread.sleep(1000);
+                System.out.println("Segundos transcurridos: "+i);
+            }
+            System.out.println("Tratando de insertar platillo nuevo: ");
+            System.out.println(Control.platillos.agregar(new Platillo(0, "Gallina pinta")));
+            for (int i = 1; i <= 20; i++) {
+                Thread.sleep(1000);
+                System.out.println("Segundos transcurridos: "+i);
+            }
+             System.out.println("Tratando de insertar platillo nuevo: ");
+            System.out.println(Control.platillos.agregar(new Platillo(0, "Gallina pinta")));
+        } catch (ExceptionInInitializerError e) {
+            System.out.println("ERROR: NO se pudo conectar a la base de datos.");
+        }
+        
+        
         
     }
 }

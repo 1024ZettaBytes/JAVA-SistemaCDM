@@ -33,7 +33,11 @@ public class ControlMenu {
     }
 
     public boolean agregar(PlatilloMenu nuevoPlatilloMenu) {
-
+if (!conexion.hayConexion()) {
+            if (conexion.conectar() == false) {
+                return false;
+            }
+        }
         if (conexion.insertarPlatilloMenu(nuevoPlatilloMenu.getPlatillo().getIdPlatillo(), nuevoPlatilloMenu.getDiaSemana(), nuevoPlatilloMenu.getCantidad(), nuevoPlatilloMenu.getCategoria())) {
 
             platilloMenuSiguiente = conexion.obtenUltimoID() + 1;
@@ -45,7 +49,11 @@ public class ControlMenu {
     }
 
     public boolean actualizar(PlatilloMenu platilloMenu) {
-
+if (!conexion.hayConexion()) {
+            if (conexion.conectar() == false) {
+                return false;
+            }
+        }
         int index = listaPlatillosMenu.indexOf(platilloMenu);
         if (index >= 0 && conexion.actualizarPlatilloMenu(platilloMenu.getIdPlatilloMenu(), platilloMenu.getPlatillo().getIdPlatillo(), platilloMenu.getDiaSemana(), platilloMenu.getCantidad(), platilloMenu.getCategoria())) {
             listaPlatillosMenu.set(index, platilloMenu);
@@ -55,6 +63,11 @@ public class ControlMenu {
     }
 
     public boolean eliminar(int idPlatilloMenu) {
+        if (!conexion.hayConexion()) {
+            if (conexion.conectar() == false) {
+                return false;
+            }
+        }
         PlatilloMenu pm = new PlatilloMenu(idPlatilloMenu, null, 0, 0, null);
         return conexion.eliminarPlatilloMenu(idPlatilloMenu) && listaPlatillosMenu.remove(pm);
     }

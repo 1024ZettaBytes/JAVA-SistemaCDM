@@ -50,7 +50,11 @@ public class ControlReservas {
     }
 
     public boolean agregar(ReservaPlatillo nuevaReserva) {
-
+if (!conexion.hayConexion()) {
+            if (conexion.conectar() == false) {
+                return false;
+            }
+        }
         if (conexion.insertarReservaPlatillo(nuevaReserva.getCliente().getIdCliente(), nuevaReserva.getPlatillo().getIdPlatillo(), nuevaReserva.getCantidad(), nuevaReserva.getFecha(), nuevaReserva.getTipo())) {
             reservaSiguiente = conexion.obtenUltimoID() + 1;
             nuevaReserva.setIdReserva(reservaSiguiente - 1);
@@ -61,7 +65,11 @@ public class ControlReservas {
     }
 
     public boolean actualizar(ReservaPlatillo reserva) {
-
+if (!conexion.hayConexion()) {
+            if (conexion.conectar() == false) {
+                return false;
+            }
+        }
         int index = listaReservasPlatillos.indexOf(reserva);
         if (index >= 0 && conexion.actualizarReservaPlatillo(reserva.getIdReserva(), reserva.getCliente().getIdCliente(), reserva.getPlatillo().getIdPlatillo(), reserva.getCantidad(), reserva.getFecha(), reserva.getTipo())) {
             listaReservasPlatillos.set(index, reserva);
@@ -71,6 +79,11 @@ public class ControlReservas {
     }
 
     public boolean eliminar(int id) {
+        if (!conexion.hayConexion()) {
+            if (conexion.conectar() == false) {
+                return false;
+            }
+        }
         ReservaPlatillo r = new ReservaPlatillo(id, null, null, 0, null, 0);
         return conexion.eliminarReservaPlatillo(id) && listaReservasPlatillos.remove(r);
     }
