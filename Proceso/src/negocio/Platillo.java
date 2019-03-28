@@ -61,7 +61,7 @@ public class Platillo {
 
     @Override
     public String toString() {
-        return "Platillo{" + "idPlatillo=" + idPlatillo + ", nombre=" + nombre +'}';
+        return nombre;
     }
     
     

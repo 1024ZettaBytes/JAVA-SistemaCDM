@@ -5,7 +5,23 @@
  */
 package vista;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.SpinnerNumberModel;
 import logica.Control;
+import negocio.Cliente;
+import negocio.Platillo;
+import negocio.PlatilloMenu;
 
 /**
  *
@@ -16,9 +32,41 @@ public class VReservasCliente extends javax.swing.JFrame {
     /**
      * Creates new form ProtoInterfazMagui
      */
+    private Cliente clienteSeleccionado;
+
     public VReservasCliente() {
+
         initComponents();
+        // Se calculan las fechas de lunes y domingo para establecerlas en el label de la semana
+        Calendar fechaLunes = Calendar.getInstance();
+        Calendar fechaDomingo = Calendar.getInstance();
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MMMMM/yyyy", new Locale("es", "MX"));
+        GregorianCalendar hoy = new GregorianCalendar(TimeZone.getTimeZone("GMT-7"),
+                Locale.FRENCH);
+        int diaSemanaActual = hoy.get(Calendar.DAY_OF_WEEK);
+        int agregado = 0;
+        if (diaSemanaActual >= 2) {
+            fechaLunes.add(Calendar.DAY_OF_YEAR, -(diaSemanaActual - 2));
+            fechaDomingo.add(Calendar.DAY_OF_YEAR, 8 - diaSemanaActual);
+        } else {
+            fechaLunes.add(Calendar.DAY_OF_YEAR, -7);
+        }
+        labelFechasSemana.setText(formatoFecha.format(fechaLunes.getTime()) + " - " + formatoFecha.format(fechaDomingo.getTime()));
+        //////////////        
+        // Establece el nombre del usuario
         this.labelNombreEmpleado.setText(Control.usuarioActivo.getNombre());
+        // Obtiene los clientes que tienen credito y los establece en el combo
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel(Control.clientes.clientesConCredito().toArray());
+        comboClientes.setModel(modelo);
+        // Si hay por lo menos un cliente con crédito
+        if (modelo.getSize() > 0) {
+            // Establece los datos del primero en la lista
+            estableceDatosCliente();
+            // Establece los datos del menú
+            estableceMenu();
+
+        }
+
     }
 
     /**
@@ -64,13 +112,19 @@ public class VReservasCliente extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         labelCreditoComidas = new javax.swing.JLabel();
         labelCreditoCenas = new javax.swing.JLabel();
-        calendario = new rojeru_san.componentes.RSCalendar();
         jSeparator4 = new javax.swing.JSeparator();
+        jPanel1 = new javax.swing.JPanel();
+        comboSemana = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        labelFechasSemana = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Reservar platillo");
         setResizable(false);
 
+        comboCenas.setEnabled(false);
+
+        comboDesayunos.setEnabled(false);
         comboDesayunos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboDesayunosActionPerformed(evt);
@@ -81,12 +135,27 @@ public class VReservasCliente extends javax.swing.JFrame {
 
         jLabel2.setText("Cenas:");
 
+        spinnerDesayunos.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        spinnerDesayunos.setEnabled(false);
+        spinnerDesayunos.setValue(1);
+
+        spinnerComidas.setEnabled(false);
+
         jLabel3.setText("Cantidad:");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("Nombre del cliente:");
 
-        comboClientes.setEditable(true);
+        comboClientes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboClientesItemStateChanged(evt);
+            }
+        });
+        comboClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboClientesActionPerformed(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("1. Seleccione el día:");
@@ -98,6 +167,7 @@ public class VReservasCliente extends javax.swing.JFrame {
         jLabel8.setText("3. Reserva:");
 
         btnReservar.setText("Reservar");
+        btnReservar.setEnabled(false);
         btnReservar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnReservarActionPerformed(evt);
@@ -117,6 +187,7 @@ public class VReservasCliente extends javax.swing.JFrame {
                 "Fecha", "Platillo", "Tipo", "Cantidad", "Eliminar"
             }
         ));
+        tableReservas.setEnabled(false);
         tableReservas.setFocusable(false);
         tableReservas.setRowSelectionAllowed(false);
         tableReservas.getTableHeader().setReorderingAllowed(false);
@@ -125,13 +196,23 @@ public class VReservasCliente extends javax.swing.JFrame {
         jLabel9.setText("Empleado: ");
 
         btnEliminarTodos.setText("Eliminar todos");
+        btnEliminarTodos.setEnabled(false);
 
-        btnCancelar.setText("Cancelar");
+        btnCancelar.setText("Aceptar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         jLabel10.setText("Platillos reservados:");
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel11.setText("Cantidad de platillos que el cliente puede reservar ");
+
+        spinnerCenas.setEnabled(false);
+
+        comboComidas.setEnabled(false);
 
         jLabel12.setText("Comidas:");
 
@@ -151,8 +232,51 @@ public class VReservasCliente extends javax.swing.JFrame {
 
         labelCreditoCenas.setText("<Credito disponible>");
 
-        calendario.setColorBackground(new java.awt.Color(153, 153, 153));
-        calendario.setFuenteHead(new java.awt.Font("Arial", 1, 15)); // NOI18N
+        comboSemana.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LUNES", "MARTES", "MIÉRCOLES", "JUEVES", "VIERNES", "SÁBADO", "DOMINGO" }));
+        comboSemana.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboSemanaItemStateChanged(evt);
+            }
+        });
+        comboSemana.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboSemanaActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel5.setText("Semana");
+
+        labelFechasSemana.setText("<fecha lunes - fecha domingo>");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(113, 113, 113)
+                        .addComponent(jLabel5))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(comboSemana, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addComponent(labelFechasSemana)))
+                .addContainerGap(57, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelFechasSemana)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(comboSemana, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -173,45 +297,65 @@ public class VReservasCliente extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(17, 17, 17)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(calendario, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel6)))
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel9)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(labelNombreEmpleado)))
-                        .addGap(35, 35, 35)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(btnEliminarTodos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labelNombreEmpleado))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnReservar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jSeparator4)
-                            .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel3))
-                            .addGroup(layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel10)
-                                    .addComponent(jLabel12))
-                                .addGap(0, 115, Short.MAX_VALUE))
+                                    .addComponent(jLabel6)
+                                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(comboCenas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(comboComidas, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(comboDesayunos, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(spinnerDesayunos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(spinnerComidas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(spinnerCenas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel10))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(btnEliminarTodos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel3))
+                                    .addComponent(jSeparator4, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(comboDesayunos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(spinnerDesayunos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addGap(4, 4, 4)
+                                                        .addComponent(jLabel2)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 218, Short.MAX_VALUE))
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                            .addComponent(comboCenas, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                            .addComponent(comboComidas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                        .addGap(18, 18, 18)))
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(spinnerCenas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(spinnerComidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addGap(4, 4, 4))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel12)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel8)
+                                        .addGap(8, 8, 8)
+                                        .addComponent(btnReservar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -237,7 +381,7 @@ public class VReservasCliente extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -274,40 +418,42 @@ public class VReservasCliente extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(comboDesayunos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(spinnerDesayunos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel12)
-                        .addGap(9, 9, 9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(spinnerComidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(comboComidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(comboComidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(spinnerComidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(spinnerCenas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(comboCenas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(comboCenas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(spinnerCenas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnReservar)
-                            .addComponent(jLabel8))
+                            .addComponent(jLabel8)
+                            .addComponent(btnReservar))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(100, 100, 100)
+                                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 7, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 7, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(1, 1, 1)
-                        .addComponent(jLabel10)
+                        .addComponent(btnEliminarTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEliminarTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(calendario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnCancelar))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnCancelar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(labelNombreEmpleado))
-                .addGap(5, 5, 5))
+                    .addComponent(labelNombreEmpleado)))
         );
 
         pack();
@@ -321,6 +467,37 @@ public class VReservasCliente extends javax.swing.JFrame {
     private void comboDesayunosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboDesayunosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboDesayunosActionPerformed
+
+    private void comboClientesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboClientesItemStateChanged
+        // Si el evento fue de selección
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            // Establece los datos del cliente seleccionado
+            estableceDatosCliente();
+            // Establece los datos del menu de acuerdo a los creditos del cliente
+            estableceMenu();
+
+        }
+
+
+    }//GEN-LAST:event_comboClientesItemStateChanged
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void comboClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboClientesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboClientesActionPerformed
+
+    private void comboSemanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSemanaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboSemanaActionPerformed
+
+    private void comboSemanaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboSemanaItemStateChanged
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            estableceMenu();
+        }
+    }//GEN-LAST:event_comboSemanaItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -358,16 +535,128 @@ public class VReservasCliente extends javax.swing.JFrame {
         });
     }
 
+    private void estableceDatosCliente() {
+        // Obtiene el cliente selecionado
+        clienteSeleccionado = (Cliente) comboClientes.getSelectedItem();
+        // Obtiene y muestra los créditos
+        int creditoDesayuno = clienteSeleccionado.getCreditoDesayuno();
+        int creditoComida = clienteSeleccionado.getCreditoComida();
+        int creditoCena = clienteSeleccionado.getCreditoCena();
+        labelCreditoDesayunos.setText(creditoDesayuno + "");
+        labelCreditoComidas.setText(creditoComida + "");
+        labelCreditoCenas.setText(creditoCena + "");
+        // Si existen creditos de desayuno
+        if (creditoDesayuno > 0) {
+            // Habilita el combo de desayunos y el spinner
+            comboDesayunos.setEnabled(true);
+            spinnerDesayunos.setEnabled(true);
+            spinnerDesayunos.setModel(new SpinnerNumberModel(0, 0, creditoDesayuno, 1));
+        } else {
+            // Deshabilita el combo de desayunos y el spinner
+            comboDesayunos.setEnabled(false);
+            spinnerDesayunos.setEnabled(false);
+            spinnerDesayunos.setModel(new SpinnerNumberModel(0, 0, creditoDesayuno, 1));
+        }
+        // Si existen creditos de comida
+        if (creditoComida > 0) {
+            // Habilita el combo de comidas y el spinner
+            comboComidas.setEnabled(true);
+            spinnerComidas.setEnabled(true);
+            spinnerComidas.setModel(new SpinnerNumberModel(0, 0, creditoComida, 1));
+        } else {
+            // Deshabilita el combo de comidas y el spinner
+            comboComidas.setEnabled(false);
+            spinnerComidas.setEnabled(false);
+            spinnerComidas.setModel(new SpinnerNumberModel(0, 0, creditoComida, 1));
+        }
+
+        // Si existen creditos de cena
+        if (creditoCena > 0) {
+            // Habilita el combo de comidas y el spinner
+            comboCenas.setEnabled(true);
+            spinnerCenas.setEnabled(true);
+            spinnerCenas.setModel(new SpinnerNumberModel(0, 0, creditoCena, 1));
+        } else {
+            // Deshabilita el combo de cenas y el spinner
+            comboCenas.setEnabled(false);
+            spinnerCenas.setEnabled(false);
+            spinnerCenas.setModel(new SpinnerNumberModel(0, 0, creditoCena, 1));
+        }
+    }
+
+    private void estableceMenu() {
+        int dia = comboSemana.getSelectedIndex() + 1;
+        ArrayList<Platillo> platillosDesayunos = new ArrayList<>();
+        ArrayList<Platillo> platillosComidas = new ArrayList<>();
+        ArrayList<Platillo> platillosCenas = new ArrayList<>();
+        for (PlatilloMenu platilloMenu : Control.menu.consultarMenuDia(dia)) {
+            switch (platilloMenu.getCategoria()) {
+                case "DESAYUNO":
+                    platillosDesayunos.add(platilloMenu.getPlatillo());
+                    break;
+                case "COMIDA":
+                    platillosComidas.add(platilloMenu.getPlatillo());
+                    break;
+                case "CENA":
+                    platillosCenas.add(platilloMenu.getPlatillo());
+                    break;
+            }
+        }
+        if (platillosDesayunos.size() > 0) {
+            comboDesayunos.setModel(new DefaultComboBoxModel(platillosDesayunos.toArray()));
+            if (clienteSeleccionado.getCreditoDesayuno() > 0) {
+
+                comboDesayunos.setEnabled(true);
+                spinnerDesayunos.setEnabled(true);
+            }
+        } else {
+
+            comboDesayunos.setModel(new DefaultComboBoxModel<>());
+            comboDesayunos.addItem("---NO HAY MENÚ---");
+            comboDesayunos.setEnabled(false);
+            spinnerDesayunos.setEnabled(false);
+        }
+
+        if (platillosComidas.size() > 0) {
+            comboComidas.setModel(new DefaultComboBoxModel(platillosComidas.toArray()));
+            if (clienteSeleccionado.getCreditoComida() > 0) {
+
+                comboComidas.setEnabled(true);
+                spinnerComidas.setEnabled(true);
+            }
+        } else {
+
+            comboComidas.setModel(new DefaultComboBoxModel<>());
+            comboComidas.addItem("---NO HAY MENÚ---");
+            comboComidas.setEnabled(false);
+            spinnerComidas.setEnabled(false);
+        }
+
+        if (platillosCenas.size() > 0) {
+            comboCenas.setModel(new DefaultComboBoxModel(platillosCenas.toArray()));
+            if (clienteSeleccionado.getCreditoCena() > 0) {
+
+                comboCenas.setEnabled(true);
+                spinnerCenas.setEnabled(true);
+            }
+        } else {
+
+            comboCenas.setModel(new DefaultComboBoxModel<>());
+            comboCenas.addItem("---NO HAY MENÚ---");
+            comboCenas.setEnabled(false);
+            spinnerCenas.setEnabled(false);
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminarTodos;
     private javax.swing.JButton btnReservar;
     private javax.swing.JButton btnVolver;
-    private rojeru_san.componentes.RSCalendar calendario;
     private javax.swing.JComboBox<String> comboCenas;
     private javax.swing.JComboBox<String> comboClientes;
     private javax.swing.JComboBox<String> comboComidas;
     private javax.swing.JComboBox<String> comboDesayunos;
+    private javax.swing.JComboBox<String> comboSemana;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -378,10 +667,12 @@ public class VReservasCliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
@@ -390,10 +681,12 @@ public class VReservasCliente extends javax.swing.JFrame {
     private javax.swing.JLabel labelCreditoCenas;
     private javax.swing.JLabel labelCreditoComidas;
     private javax.swing.JLabel labelCreditoDesayunos;
+    private javax.swing.JLabel labelFechasSemana;
     private javax.swing.JLabel labelNombreEmpleado;
     private javax.swing.JSpinner spinnerCenas;
     private javax.swing.JSpinner spinnerComidas;
     private javax.swing.JSpinner spinnerDesayunos;
     private javax.swing.JTable tableReservas;
     // End of variables declaration//GEN-END:variables
+
 }

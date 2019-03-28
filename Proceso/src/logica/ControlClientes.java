@@ -80,6 +80,14 @@ public Cliente consultarPorId(int id){
     }
     return null;
 }
+public ArrayList<Cliente> clientesConCredito() {
+ArrayList<Cliente> lista = new ArrayList<>();
+    for (Cliente cliente : listaClientes) {
+        if(cliente.getCreditoDesayuno()+cliente.getCreditoComida()+cliente.getCreditoCena() >0)
+            lista.add(cliente);
+    }
+        return lista;
+    }
     public ArrayList<Cliente> consultarLista() {
 
         return listaClientes;
