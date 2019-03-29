@@ -7,6 +7,8 @@ package pruebas;
 
 import Interfaces.IControl;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import logica.Control;
@@ -25,9 +27,8 @@ public class Pruebas {
         try {
             
             IControl c = new Control();
-           Control.menu.agregar(new PlatilloMenu(0, Control.platillos.consultarPorId(38), 3, 20, "CENA"));
-            Control.menu.agregar(new PlatilloMenu(0, Control.platillos.consultarPorId(39), 3, 20, "CENA"));
-            Control.menu.agregar(new PlatilloMenu(0, Control.platillos.consultarPorId(40), 3, 20, "CENA"));
+           Calendar ca = Calendar.getInstance();
+           
         
         } catch (ExceptionInInitializerError e) {
             System.out.println("ERROR: NO se pudo conectar a la base de datos.");

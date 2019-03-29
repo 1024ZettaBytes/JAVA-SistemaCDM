@@ -7,6 +7,7 @@ package vista;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,6 +23,7 @@ import logica.Control;
 import negocio.Cliente;
 import negocio.Platillo;
 import negocio.PlatilloMenu;
+import negocio.ReservaPlatillo;
 
 /**
  *
@@ -33,13 +35,16 @@ public class VReservasCliente extends javax.swing.JFrame {
      * Creates new form ProtoInterfazMagui
      */
     private Cliente clienteSeleccionado;
+    private int diaSeleccionado;
+    private Calendar fechaLunes;
+    private Calendar fechaDomingo;
 
     public VReservasCliente() {
 
         initComponents();
         // Se calculan las fechas de lunes y domingo para establecerlas en el label de la semana
-        Calendar fechaLunes = Calendar.getInstance();
-        Calendar fechaDomingo = Calendar.getInstance();
+        fechaLunes = Calendar.getInstance();
+        fechaDomingo = Calendar.getInstance();
         SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MMMMM/yyyy", new Locale("es", "MX"));
         GregorianCalendar hoy = new GregorianCalendar(TimeZone.getTimeZone("GMT-7"),
                 Locale.FRENCH);
@@ -63,7 +68,15 @@ public class VReservasCliente extends javax.swing.JFrame {
             // Establece los datos del primero en la lista
             estableceDatosCliente();
             // Establece los datos del menú
+            Calendar cale = Calendar.getInstance();
+            int diaSemanaHoy = cale.get(Calendar.DAY_OF_WEEK);
+            if(diaSemanaHoy==Calendar.SUNDAY){
+                comboSemana.setSelectedIndex(6);
+            }
+            else
+                comboSemana.setSelectedIndex(diaSemanaHoy-1);
             estableceMenu();
+            
 
         }
 
@@ -138,8 +151,18 @@ public class VReservasCliente extends javax.swing.JFrame {
         spinnerDesayunos.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         spinnerDesayunos.setEnabled(false);
         spinnerDesayunos.setValue(1);
+        spinnerDesayunos.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spinnerDesayunosStateChanged(evt);
+            }
+        });
 
         spinnerComidas.setEnabled(false);
+        spinnerComidas.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spinnerComidasStateChanged(evt);
+            }
+        });
 
         jLabel3.setText("Cantidad:");
 
@@ -211,6 +234,11 @@ public class VReservasCliente extends javax.swing.JFrame {
         jLabel11.setText("Cantidad de platillos que el cliente puede reservar ");
 
         spinnerCenas.setEnabled(false);
+        spinnerCenas.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spinnerCenasStateChanged(evt);
+            }
+        });
 
         comboComidas.setEnabled(false);
 
@@ -259,11 +287,11 @@ public class VReservasCliente extends javax.swing.JFrame {
                         .addGap(113, 113, 113)
                         .addComponent(jLabel5))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(comboSemana, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(51, 51, 51)
-                        .addComponent(labelFechasSemana)))
+                        .addComponent(labelFechasSemana))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(comboSemana, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(57, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -461,7 +489,13 @@ public class VReservasCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
-        // TODO add your handling code here:
+        if (reservar()) {
+            estableceDatosCliente();
+            estableceMenu();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: no se pudieron generar las reservas.");
+        }
+
     }//GEN-LAST:event_btnReservarActionPerformed
 
     private void comboDesayunosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboDesayunosActionPerformed
@@ -496,8 +530,21 @@ public class VReservasCliente extends javax.swing.JFrame {
     private void comboSemanaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboSemanaItemStateChanged
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             estableceMenu();
+            
         }
     }//GEN-LAST:event_comboSemanaItemStateChanged
+
+    private void spinnerDesayunosStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spinnerDesayunosStateChanged
+        comprobarCantidades();
+    }//GEN-LAST:event_spinnerDesayunosStateChanged
+
+    private void spinnerComidasStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spinnerComidasStateChanged
+        comprobarCantidades();
+    }//GEN-LAST:event_spinnerComidasStateChanged
+
+    private void spinnerCenasStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spinnerCenasStateChanged
+        comprobarCantidades();
+    }//GEN-LAST:event_spinnerCenasStateChanged
 
     /**
      * @param args the command line arguments
@@ -545,6 +592,7 @@ public class VReservasCliente extends javax.swing.JFrame {
         labelCreditoDesayunos.setText(creditoDesayuno + "");
         labelCreditoComidas.setText(creditoComida + "");
         labelCreditoCenas.setText(creditoCena + "");
+        btnReservar.setEnabled(false);
         // Si existen creditos de desayuno
         if (creditoDesayuno > 0) {
             // Habilita el combo de desayunos y el spinner
@@ -585,7 +633,23 @@ public class VReservasCliente extends javax.swing.JFrame {
     }
 
     private void estableceMenu() {
+
         int dia = comboSemana.getSelectedIndex() + 1;
+        diaSeleccionado = dia;
+        Calendar fechaseleccion = Calendar.getInstance();
+        fechaseleccion.setTime(fechaLunes.getTime());
+        fechaseleccion.add(Calendar.DAY_OF_YEAR, diaSeleccionado - 1);
+        System.out.println("Fecha hoy: "+fechaseleccion.getTime());
+        if(fechaseleccion.getTime().compareTo(Calendar.getInstance().getTime())==-1){
+            JOptionPane.showMessageDialog(this, "No se pueden realizar reservas en un día que ya pasó.", "AVISO", JOptionPane.ERROR_MESSAGE);
+            comboDesayunos.setEnabled(false);
+            comboComidas.setEnabled(false);
+            comboCenas.setEnabled(false);
+            spinnerDesayunos.setEnabled(false);
+            spinnerComidas.setEnabled(false);
+            spinnerCenas.setEnabled(false);
+            return;
+        }
         ArrayList<Platillo> platillosDesayunos = new ArrayList<>();
         ArrayList<Platillo> platillosComidas = new ArrayList<>();
         ArrayList<Platillo> platillosCenas = new ArrayList<>();
@@ -646,6 +710,57 @@ public class VReservasCliente extends javax.swing.JFrame {
             comboCenas.setEnabled(false);
             spinnerCenas.setEnabled(false);
         }
+        spinnerDesayunos.setValue(0);
+        spinnerComidas.setValue(0);
+        spinnerCenas.setValue(0);
+    }
+
+    public void comprobarCantidades() {
+        int seleccionDesayunos = (Integer) spinnerDesayunos.getValue();
+        int seleccionComidas = (Integer) spinnerComidas.getValue();
+        int seleccionCenas = (Integer) spinnerCenas.getValue();
+        boolean condicion = seleccionDesayunos + seleccionComidas + seleccionCenas > 0;
+        btnReservar.setEnabled(condicion);
+    }
+
+    public boolean reservar() {
+        Cliente copia = clienteSeleccionado;
+        Platillo platillo;
+        int desayunosCantidad = (Integer) spinnerDesayunos.getValue(),
+                comidasCantidad = (Integer) spinnerComidas.getValue(),
+                cenasCantidad = (Integer) spinnerCenas.getValue();
+        Calendar fechaReserva = Calendar.getInstance();
+        fechaReserva.setTime(fechaLunes.getTime());
+        fechaReserva.add(Calendar.DAY_OF_YEAR, diaSeleccionado - 1);
+        System.out.println(fechaReserva.getTime());
+// Aquí se abrirá el cuadro de confirmación.
+
+        if (desayunosCantidad > 0) {
+            platillo = (Platillo) comboDesayunos.getSelectedItem();
+            if (!Control.reservas.agregar(new ReservaPlatillo(0, clienteSeleccionado, platillo, desayunosCantidad, fechaReserva.getTime(), 1))) {
+                return false;
+            }
+            copia.setCreditoDesayuno(copia.getCreditoDesayuno() - desayunosCantidad);
+        }
+        if (comidasCantidad > 0) {
+            platillo = (Platillo) comboComidas.getSelectedItem();
+            if (!Control.reservas.agregar(new ReservaPlatillo(0, clienteSeleccionado, platillo, comidasCantidad, fechaReserva.getTime(), 2))) {
+                return false;
+            }
+            copia.setCreditoComida(copia.getCreditoComida() - comidasCantidad);
+        }
+        if (cenasCantidad > 0) {
+            platillo = (Platillo) comboCenas.getSelectedItem();
+            if (!Control.reservas.agregar(new ReservaPlatillo(0, clienteSeleccionado, platillo, cenasCantidad, fechaReserva.getTime(), 3))) {
+                return false;
+            }
+            copia.setCreditoCena(copia.getCreditoCena() - cenasCantidad);
+        }
+        if (!Control.clientes.actualizar(clienteSeleccionado)) {
+            return false;
+        }
+        clienteSeleccionado = copia;
+        return true;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;

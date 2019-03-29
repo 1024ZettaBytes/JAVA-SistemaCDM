@@ -9,12 +9,12 @@ package vista;
  *
  * @author JAB
  */
-public class DlgConfirmarReserva extends javax.swing.JFrame {
+public class DlgConfirmarReserva extends javax.swing.JFrame{
 
     /**
      * Creates new form DialogoConfirmar
      */
-    public DlgConfirmarReserva() {
+    public DlgConfirmarReserva(String nombreCliente) {
         initComponents();
     }
 
@@ -186,7 +186,7 @@ public class DlgConfirmarReserva extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
