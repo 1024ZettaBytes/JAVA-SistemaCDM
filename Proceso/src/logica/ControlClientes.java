@@ -7,8 +7,11 @@ package logica;
 
 import Interfaces.IConexion;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 
 import negocio.Cliente;
+import negocio.ReservaPlatillo;
 
 /**
  *
@@ -88,6 +91,34 @@ ArrayList<Cliente> lista = new ArrayList<>();
     }
         return lista;
     }
+public ArrayList<Cliente> clientesParaModificar() {
+    int indexMayor = 0;
+    boolean agregarEntre=true;
+ArrayList<Cliente> clientesModificables = new ArrayList<>();
+    for (Cliente cliente : listaClientes) {
+        
+        if(cliente.getCreditoDesayuno()+cliente.getCreditoComida()+cliente.getCreditoCena() >0 || Control.reservas.consultarReservasClienteVigente(cliente, Calendar.getInstance().getTime()).size()>0){
+            
+            agregarEntre = clientesModificables.size()>0;
+            if(agregarEntre)
+            for (Cliente clienteModificable : clientesModificables) {
+                if(cliente.getNombre().compareTo(clienteModificable.getNombre())<=0){
+                    indexMayor = clientesModificables.indexOf(clienteModificable);
+                    break;
+                }
+                else{
+                    if(clientesModificables.indexOf(clienteModificable)==clientesModificables.size()-1)
+                        agregarEntre = false;
+                }
+            }
+            if(agregarEntre)
+                clientesModificables.add(indexMayor, cliente);
+            else
+                clientesModificables.add(cliente);
+        }
+    }
+    return clientesModificables;
+}
     public ArrayList<Cliente> consultarLista() {
 
         return listaClientes;

@@ -6,10 +6,21 @@
 package vista;
 
 import Interfaces.IControl;
+import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import logica.Control;
 import logica.ControlClientes;
 import logica.ControlUsuarios;
+import mdlaf.MaterialLookAndFeel;
+import org.pushingpixels.substance.api.skin.SubstanceAutumnLookAndFeel;
+import org.pushingpixels.substance.api.skin.SubstanceBusinessBlackSteelLookAndFeel;
+import org.pushingpixels.substance.api.skin.SubstanceBusinessBlueSteelLookAndFeel;
+import org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel;
+import org.pushingpixels.substance.api.skin.SubstanceCremeCoffeeLookAndFeel;
+import org.pushingpixels.substance.api.skin.SubstanceNebulaBrickWallLookAndFeel;
+import org.pushingpixels.substance.api.skin.SubstanceRavenLookAndFeel;
 
 /**
  *
@@ -21,6 +32,15 @@ public class Inicio extends javax.swing.JFrame {
      * Creates new form Inicio
      */
     public Inicio() {
+         try {
+             
+            
+			UIManager.setLookAndFeel(new WindowsLookAndFeel());
+		}
+		catch (UnsupportedLookAndFeelException e) {
+			e.printStackTrace ();
+		}
+         
         initComponents();
     }
 
@@ -65,13 +85,14 @@ public class Inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       
         try {
             IControl c = new Control();
             System.out.println(Control.usuarios.consultarLista());
             if (Control.login("Magui", "cocinamagui")) {
                 VReservasCliente vReservas = new VReservasCliente();
-                vReservas.setAlwaysOnTop(true);
-                vReservas.setVisible(true);
+               
+                
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Error: Usuario y/o contraseña incorrectos.");
