@@ -26,6 +26,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import logica.Control;
 import negocio.Cliente;
@@ -50,7 +52,7 @@ public class VReservasCliente extends javax.swing.JFrame {
     public VReservasCliente() {
 
         initComponents();
-
+setLocationRelativeTo(null);
         // Establece el nombre del usuario
         this.labelNombreEmpleado.setText(Control.usuarioActivo.getNombre());
         // Obtiene los clientes que tienen credito
@@ -108,11 +110,27 @@ public class VReservasCliente extends javax.swing.JFrame {
                 arregloBotones[i].setEnabled(false);
             }
             estableceMenu(diaSemanaActual);
+            // Se agrega el evento a la tabla al seleccionar una reserva
+            tableReservas.addMouseListener(new java.awt.event.MouseAdapter() {
+
+                @Override
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    int row = tableReservas.rowAtPoint(evt.getPoint());
+                    int col = tableReservas.columnAtPoint(evt.getPoint());
+                    if (row >= 0 && col >= 0) {
+
+                        // Se habilita el botón de elimincaicón individual
+                        btnEliminarReserva.setEnabled(true);
+                    } else {
+                        btnEliminarReserva.setEnabled(false);
+                    }
+
+                }
+            });
             setVisible(true);
-        }
-        else{
-            JOptionPane.showMessageDialog(this, "No se encontraron clientes con crédito o reservas vigentes.", "Información",JOptionPane.INFORMATION_MESSAGE  );
-            
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontraron clientes con crédito o reservas vigentes.", "Información", JOptionPane.INFORMATION_MESSAGE);
+
             this.dispose();
         }
 
@@ -153,7 +171,8 @@ public class VReservasCliente extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableReservas = new javax.swing.JTable();
-        btnEliminarTodos = new javax.swing.JButton();
+        btnEliminarTodas = new javax.swing.JButton();
+        btnEliminarReserva = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -177,9 +196,9 @@ public class VReservasCliente extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Reservar platillo");
-        setUndecorated(true);
         setResizable(false);
 
+        jLabel9.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel9.setText("Usuario: ");
 
         btnCancelar.setText("Aceptar");
@@ -191,7 +210,12 @@ public class VReservasCliente extends javax.swing.JFrame {
 
         labelNombreEmpleado.setText("<Nombre del empleado>");
 
-        btnVolver.setText("Volver");
+        btnVolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/768px-Back_Arrow.svg.png"))); // NOI18N
+        btnVolver.setBorder(null);
+        btnVolver.setBorderPainted(false);
+        btnVolver.setContentAreaFilled(false);
+        btnVolver.setFocusable(false);
+        btnVolver.setOpaque(false);
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVolverActionPerformed(evt);
@@ -363,11 +387,19 @@ public class VReservasCliente extends javax.swing.JFrame {
             tableReservas.getColumnModel().getColumn(4).setPreferredWidth(10);
         }
 
-        btnEliminarTodos.setText("Eliminar todas");
-        btnEliminarTodos.setEnabled(false);
-        btnEliminarTodos.addActionListener(new java.awt.event.ActionListener() {
+        btnEliminarTodas.setText("Eliminar todas");
+        btnEliminarTodas.setEnabled(false);
+        btnEliminarTodas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarTodosActionPerformed(evt);
+                btnEliminarTodasActionPerformed(evt);
+            }
+        });
+
+        btnEliminarReserva.setText("Eliminar Seleccionada");
+        btnEliminarReserva.setEnabled(false);
+        btnEliminarReserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarReservaActionPerformed(evt);
             }
         });
 
@@ -383,8 +415,10 @@ public class VReservasCliente extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnEliminarTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap()
+                        .addComponent(btnEliminarReserva)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEliminarTodas, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -395,7 +429,9 @@ public class VReservasCliente extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnEliminarTodos)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEliminarTodas)
+                    .addComponent(btnEliminarReserva))
                 .addGap(35, 35, 35))
         );
 
@@ -598,8 +634,8 @@ public class VReservasCliente extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(84, 84, 84)
+                                .addComponent(btnVolver)
+                                .addGap(134, 134, 134)
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
                                 .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -630,12 +666,16 @@ public class VReservasCliente extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnVolver)
-                    .addComponent(jLabel4)
-                    .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(39, 39, 39))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnVolver)
+                        .addGap(18, 18, 18)))
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -665,13 +705,51 @@ public class VReservasCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
+SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MMMMM/yyyy", new Locale("es", "MX"));
+        
+        Platillo platillo;
+        int desayunosCantidad = (Integer) spinnerDesayunos.getValue(),
+                comidasCantidad = (Integer) spinnerComidas.getValue(),
+                cenasCantidad = (Integer) spinnerCenas.getValue();
+        Calendar fechaReserva = Calendar.getInstance();
+        fechaReserva.setTime(fechaLunes.getTime());
+
+        fechaReserva.add(Calendar.DAY_OF_YEAR, diaSeleccinado - 1);
+Object[] desayuno = null;
+Object[] comida = null;
+Object[] cena = null;
+// Aquí se abrirá el cuadro de confirmación.
+      
+        if (desayunosCantidad > 0) {
+            platillo = (Platillo) comboDesayunos.getSelectedItem();
+            desayuno = new Object[2];
+            desayuno[0] = platillo.getNombre();
+            desayuno[1] = desayunosCantidad;
+            
+        }
+        if (comidasCantidad > 0) {
+            platillo = (Platillo) comboComidas.getSelectedItem();
+            comida = new Object[2];
+            comida[0] = platillo.getNombre();
+            comida[1] = comidasCantidad;
+        }
+        if (cenasCantidad > 0) {
+            platillo = (Platillo) comboCenas.getSelectedItem();
+            cena = new Object[2];
+            cena[0] = platillo.getNombre();
+            cena[1] = cenasCantidad;
+                   }
+      
+        ConfirmarReserva dialog = new ConfirmarReserva(this, true, clienteSeleccionado.getNombre(), formatoFecha.format(fechaReserva.getTime()), desayuno, comida, cena);
+        dialog.setVisible(true);
+        if(dialog.getReturn()==1){
         if (reservar()) {
             estableceDatosCliente();
             estableceMenu(diaSemanaActual);
         } else {
             JOptionPane.showMessageDialog(this, "Error: no se pudieron generar las reservas.");
         }
-
+        }
     }//GEN-LAST:event_btnReservarActionPerformed
 
     private void comboDesayunosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboDesayunosActionPerformed
@@ -692,7 +770,7 @@ public class VReservasCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_comboClientesItemStateChanged
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
+        dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void comboClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboClientesActionPerformed
@@ -715,18 +793,42 @@ public class VReservasCliente extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
-    private void btnEliminarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarTodosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnEliminarTodosActionPerformed
+    private void btnEliminarTodasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarTodasActionPerformed
+        int nReservas = tableReservas.getModel().getRowCount();
+
+        for (int i = 0; i < nReservas; i++) {
+            int idReserva = (int) tableReservas.getValueAt(i, 0);
+            String tipo = tableReservas.getValueAt(i, 3).toString();
+            int cantidad = (int) tableReservas.getValueAt(i, 4);
+            Control.reservas.eliminar(idReserva);
+            switch (tipo) {
+
+                case "DESAYUNO":
+                    clienteSeleccionado.setCreditoDesayuno(clienteSeleccionado.getCreditoDesayuno() + cantidad);
+                    break;
+                case "COMIDA":
+                    clienteSeleccionado.setCreditoComida(clienteSeleccionado.getCreditoComida() + cantidad);
+                    break;
+                case "CENA":
+                    clienteSeleccionado.setCreditoCena(clienteSeleccionado.getCreditoCena() + cantidad);
+                    break;
+            }
+            Control.clientes.actualizar(clienteSeleccionado);
+
+        }
+
+        estableceDatosCliente();
+        estableceMenu(diaSeleccinado);
+    }//GEN-LAST:event_btnEliminarTodasActionPerformed
 
     private void btnLunesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLunesActionPerformed
         estableceMenu(1);
-        
+
     }//GEN-LAST:event_btnLunesActionPerformed
 
     private void btnMartesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMartesActionPerformed
         estableceMenu(2);
-        
+
     }//GEN-LAST:event_btnMartesActionPerformed
 
     private void btnMiercolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMiercolesActionPerformed
@@ -736,7 +838,7 @@ public class VReservasCliente extends javax.swing.JFrame {
         estableceMenu(4);    }//GEN-LAST:event_btnJuevesActionPerformed
 
     private void btnViernesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViernesActionPerformed
-       estableceMenu(5);
+        estableceMenu(5);
     }//GEN-LAST:event_btnViernesActionPerformed
 
     private void btnSabadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSabadoActionPerformed
@@ -746,6 +848,28 @@ public class VReservasCliente extends javax.swing.JFrame {
     private void btnDomingoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDomingoActionPerformed
         estableceMenu(7);
     }//GEN-LAST:event_btnDomingoActionPerformed
+
+    private void btnEliminarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarReservaActionPerformed
+        int idReserva = (int) tableReservas.getValueAt(tableReservas.getSelectedRow(), 0);
+        String tipo = tableReservas.getValueAt(tableReservas.getSelectedRow(), 3).toString();
+        int cantidad = (int) tableReservas.getValueAt(tableReservas.getSelectedRow(), 4);
+
+        Control.reservas.eliminar(idReserva);
+        switch (tipo) {
+            case "DESAYUNO":
+                clienteSeleccionado.setCreditoDesayuno(clienteSeleccionado.getCreditoDesayuno() + cantidad);
+                break;
+            case "COMIDA":
+                clienteSeleccionado.setCreditoComida(clienteSeleccionado.getCreditoComida() + cantidad);
+                break;
+            case "CENA":
+                clienteSeleccionado.setCreditoCena(clienteSeleccionado.getCreditoCena() + cantidad);
+                break;
+        }
+        Control.clientes.actualizar(clienteSeleccionado);
+        estableceDatosCliente();
+        estableceMenu(diaSeleccinado);
+    }//GEN-LAST:event_btnEliminarReservaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -851,13 +975,14 @@ public class VReservasCliente extends javax.swing.JFrame {
             modelo[x][4] = reserva.getCantidad();
             x++;
         }
+        tableReservas.setDefaultEditor(Object.class, null);
         tableReservas.setModel(new DefaultTableModel(modelo, columnas));
         tableReservas.setCellSelectionEnabled(false);
         tableReservas.setRowSelectionAllowed(true);
-
         tableReservas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tableReservas.setSelectionBackground(Color.lightGray);
-        
+        btnEliminarReserva.setEnabled(false);
+        btnEliminarTodas.setEnabled(reservasCliente.size() > 0);
     }
 
     private void estableceMenu(int diaSeleccionado) {
@@ -937,6 +1062,8 @@ public class VReservasCliente extends javax.swing.JFrame {
     }
 
     public boolean reservar() {
+
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MMMMM/yyyy", new Locale("es", "MX"));
         Cliente copia = clienteSeleccionado;
         Platillo platillo;
         int desayunosCantidad = (Integer) spinnerDesayunos.getValue(),
@@ -944,11 +1071,9 @@ public class VReservasCliente extends javax.swing.JFrame {
                 cenasCantidad = (Integer) spinnerCenas.getValue();
         Calendar fechaReserva = Calendar.getInstance();
         fechaReserva.setTime(fechaLunes.getTime());
-        System.out.println("Fecha reserva antes: "+fechaReserva.getTime());
-       
+
         fechaReserva.add(Calendar.DAY_OF_YEAR, diaSeleccinado - 1);
-        System.out.println("Fecha reserva después: "+fechaReserva.getTime());
-// Aquí se abrirá el cuadro de confirmación.
+
 
         if (desayunosCantidad > 0) {
             platillo = (Platillo) comboDesayunos.getSelectedItem();
@@ -980,7 +1105,8 @@ public class VReservasCliente extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnDomingo;
-    private javax.swing.JButton btnEliminarTodos;
+    private javax.swing.JButton btnEliminarReserva;
+    private javax.swing.JButton btnEliminarTodas;
     private javax.swing.JButton btnJueves;
     private javax.swing.JButton btnLunes;
     private javax.swing.JButton btnMartes;
