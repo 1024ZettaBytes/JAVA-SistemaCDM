@@ -46,10 +46,13 @@ public class ConfirmarReserva extends javax.swing.JDialog {
         labelFecha.setText(fecha);
         JTableHeader thd = tablaDesayuno.getTableHeader();
         thd.setFont(new Font("Serif", Font.BOLD, 12));
+        thd.setReorderingAllowed(false);
         JTableHeader thco = tablaComida.getTableHeader();
         thco.setFont(new Font("Serif", Font.BOLD, 12));
+        thco.setReorderingAllowed(false);
         JTableHeader thce = tablaCena.getTableHeader();
         thce.setFont(new Font("Serif", Font.BOLD, 12));
+        thce.setReorderingAllowed(false);
         if (arregloDesayunos != null) {
             DefaultTableModel model = (DefaultTableModel) tablaDesayuno.getModel();
             model.addRow(arregloDesayunos);
@@ -67,7 +70,9 @@ public class ConfirmarReserva extends javax.swing.JDialog {
             model.addRow(arregloCenas);
             tablaCena.setEnabled(true);
         }
-
+        tablaDesayuno.setEnabled(false);
+        tablaComida.setEnabled(false);
+        tablaCena.setEnabled(false);
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -138,13 +143,14 @@ public class ConfirmarReserva extends javax.swing.JDialog {
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel5.setText("Platillos");
 
-        tablaDesayuno.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        jPanel3.setPreferredSize(new java.awt.Dimension(12, 59));
+
         tablaDesayuno.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "DESAYUNO", "CANTIDAD"
+                "DESAYUNO", "CANT"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -157,12 +163,18 @@ public class ConfirmarReserva extends javax.swing.JDialog {
         });
         tablaDesayuno.setEnabled(false);
         jScrollPane1.setViewportView(tablaDesayuno);
+        if (tablaDesayuno.getColumnModel().getColumnCount() > 0) {
+            tablaDesayuno.getColumnModel().getColumn(0).setResizable(false);
+            tablaDesayuno.getColumnModel().getColumn(0).setPreferredWidth(140);
+            tablaDesayuno.getColumnModel().getColumn(1).setResizable(false);
+            tablaDesayuno.getColumnModel().getColumn(1).setPreferredWidth(10);
+        }
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
@@ -172,7 +184,7 @@ public class ConfirmarReserva extends javax.swing.JDialog {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
         tablaComida.setModel(new javax.swing.table.DefaultTableModel(
@@ -180,7 +192,7 @@ public class ConfirmarReserva extends javax.swing.JDialog {
 
             },
             new String [] {
-                "COMIDA", "CANTIDAD"
+                "COMIDA", "CANT"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -193,6 +205,12 @@ public class ConfirmarReserva extends javax.swing.JDialog {
         });
         tablaComida.setEnabled(false);
         jScrollPane2.setViewportView(tablaComida);
+        if (tablaComida.getColumnModel().getColumnCount() > 0) {
+            tablaComida.getColumnModel().getColumn(0).setResizable(false);
+            tablaComida.getColumnModel().getColumn(0).setPreferredWidth(140);
+            tablaComida.getColumnModel().getColumn(1).setResizable(false);
+            tablaComida.getColumnModel().getColumn(1).setPreferredWidth(10);
+        }
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -216,7 +234,7 @@ public class ConfirmarReserva extends javax.swing.JDialog {
 
             },
             new String [] {
-                "CENA", "CANTIDAD"
+                "CENA", "CANT"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -229,6 +247,12 @@ public class ConfirmarReserva extends javax.swing.JDialog {
         });
         tablaCena.setEnabled(false);
         jScrollPane3.setViewportView(tablaCena);
+        if (tablaCena.getColumnModel().getColumnCount() > 0) {
+            tablaCena.getColumnModel().getColumn(0).setResizable(false);
+            tablaCena.getColumnModel().getColumn(0).setPreferredWidth(140);
+            tablaCena.getColumnModel().getColumn(1).setResizable(false);
+            tablaCena.getColumnModel().getColumn(1).setPreferredWidth(10);
+        }
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -250,7 +274,7 @@ public class ConfirmarReserva extends javax.swing.JDialog {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()

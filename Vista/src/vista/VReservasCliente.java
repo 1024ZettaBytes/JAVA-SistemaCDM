@@ -48,11 +48,12 @@ public class VReservasCliente extends javax.swing.JFrame {
     private int diaSeleccinado;
     private Calendar fechaLunes;
     private int diaSemanaActual;
+    private JButton[] arregloBotones = new JButton[8];
 
     public VReservasCliente() {
 
         initComponents();
-setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
         // Establece el nombre del usuario
         this.labelNombreEmpleado.setText(Control.usuarioActivo.getNombre());
         // Obtiene los clientes que tienen credito
@@ -91,25 +92,40 @@ setLocationRelativeTo(null);
             fechaBoton.setTime(fechaLunes.getTime());
             /////// Botones del menú
             btnLunes.setText("<html><center><b>LUNES</b><br>" + formatoFecha.format(fechaBoton.getTime()) + "</center></html>");
+            btnLunes.setBackground(Color.GRAY);
             fechaBoton.add(Calendar.DAY_OF_YEAR, 1);
             btnMartes.setText("<html><center><b>MARTES</b><br>" + formatoFecha.format(fechaBoton.getTime()) + "</center></html>");
+            btnMartes.setBackground(Color.GRAY);
             fechaBoton.add(Calendar.DAY_OF_YEAR, 1);
             btnMiercoles.setText("<html><center><b>MIÉRCOLES</b><br>" + formatoFecha.format(fechaBoton.getTime()) + "</center></html>");
+            btnMiercoles.setBackground(Color.GRAY);
             fechaBoton.add(Calendar.DAY_OF_YEAR, 1);
             btnJueves.setText("<html><center><b>JUEVES</b><br>" + formatoFecha.format(fechaBoton.getTime()) + "</center></html>");
+            btnJueves.setBackground(Color.GRAY);
             fechaBoton.add(Calendar.DAY_OF_YEAR, 1);
             btnViernes.setText("<html><center><b>VIERNES</b><br>" + formatoFecha.format(fechaBoton.getTime()) + "</center></html>");
+            btnViernes.setBackground(Color.GRAY);
             fechaBoton.add(Calendar.DAY_OF_YEAR, 1);
             btnSabado.setText("<html><center><b>SABADO</b><br>" + formatoFecha.format(fechaBoton.getTime()) + "</center></html>");
+            btnSabado.setBackground(Color.GRAY);
             fechaBoton.add(Calendar.DAY_OF_YEAR, 1);
             btnDomingo.setText("<html><center><b>DOMINGO</b><br>" + formatoFecha.format(fechaBoton.getTime()) + "</center></html>");
-            // Arreglo de botones para facilitar su modificación
-            JButton[] arregloBotones = {new JButton(), btnLunes, btnMartes, btnMiercoles, btnJueves, btnViernes, btnSabado, btnDomingo};
+            btnDomingo.setBackground(Color.GRAY);
+// Arreglo de botones para facilitar su modificación
+            arregloBotones[1] = btnLunes;
+            arregloBotones[2] = btnMartes;
+            arregloBotones[3] = btnMiercoles;
+            arregloBotones[4] = btnJueves;
+            arregloBotones[5] = btnViernes;
+            arregloBotones[6] = btnSabado;
+            arregloBotones[7] = btnDomingo;
             for (int i = 1; i < diaSemanaActual; i++) {
                 // Todos lo botones menores al dia actual se deshabilitan pues es son días que ya pasaron.
                 arregloBotones[i].setEnabled(false);
             }
+
             estableceMenu(diaSemanaActual);
+            arregloBotones[diaSeleccinado].setBackground(Color.green);
             // Se agrega el evento a la tabla al seleccionar una reserva
             tableReservas.addMouseListener(new java.awt.event.MouseAdapter() {
 
@@ -118,9 +134,15 @@ setLocationRelativeTo(null);
                     int row = tableReservas.rowAtPoint(evt.getPoint());
                     int col = tableReservas.columnAtPoint(evt.getPoint());
                     if (row >= 0 && col >= 0) {
+                        Calendar fechaReserva = Calendar.getInstance();
+                        fechaReserva.setTime(Control.reservas.consultarPorId((Integer) tableReservas.getValueAt(tableReservas.getSelectedRow(), 0)).getFecha());
+                        Calendar fechaActual = Calendar.getInstance();
+                        if (Control.usuarioActivo.isTipoAdmin()) {
+                            btnEliminarReserva.setEnabled(fechaActual.get(Calendar.DAY_OF_YEAR) + 1 <= fechaReserva.get(Calendar.DAY_OF_YEAR));
+                        } else {
+                            btnEliminarReserva.setEnabled(true);
+                        }
 
-                        // Se habilita el botón de elimincaicón individual
-                        btnEliminarReserva.setEnabled(true);
                     } else {
                         btnEliminarReserva.setEnabled(false);
                     }
@@ -215,7 +237,6 @@ setLocationRelativeTo(null);
         btnVolver.setBorderPainted(false);
         btnVolver.setContentAreaFilled(false);
         btnVolver.setFocusable(false);
-        btnVolver.setOpaque(false);
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVolverActionPerformed(evt);
@@ -705,8 +726,8 @@ setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
-SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MMMMM/yyyy", new Locale("es", "MX"));
-        
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MMMMM/yyyy", new Locale("es", "MX"));
+
         Platillo platillo;
         int desayunosCantidad = (Integer) spinnerDesayunos.getValue(),
                 comidasCantidad = (Integer) spinnerComidas.getValue(),
@@ -715,17 +736,17 @@ SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MMMMM/yyyy", new Locale
         fechaReserva.setTime(fechaLunes.getTime());
 
         fechaReserva.add(Calendar.DAY_OF_YEAR, diaSeleccinado - 1);
-Object[] desayuno = null;
-Object[] comida = null;
-Object[] cena = null;
+        Object[] desayuno = null;
+        Object[] comida = null;
+        Object[] cena = null;
 // Aquí se abrirá el cuadro de confirmación.
-      
+
         if (desayunosCantidad > 0) {
             platillo = (Platillo) comboDesayunos.getSelectedItem();
             desayuno = new Object[2];
             desayuno[0] = platillo.getNombre();
             desayuno[1] = desayunosCantidad;
-            
+
         }
         if (comidasCantidad > 0) {
             platillo = (Platillo) comboComidas.getSelectedItem();
@@ -738,17 +759,20 @@ Object[] cena = null;
             cena = new Object[2];
             cena[0] = platillo.getNombre();
             cena[1] = cenasCantidad;
-                   }
-      
+        }
+
         ConfirmarReserva dialog = new ConfirmarReserva(this, true, clienteSeleccionado.getNombre(), formatoFecha.format(fechaReserva.getTime()), desayuno, comida, cena);
         dialog.setVisible(true);
-        if(dialog.getReturn()==1){
-        if (reservar()) {
-            estableceDatosCliente();
-            estableceMenu(diaSemanaActual);
-        } else {
-            JOptionPane.showMessageDialog(this, "Error: no se pudieron generar las reservas.");
-        }
+        if (dialog.getReturn() == 1) {
+            if (reservar()) {
+                estableceDatosCliente();
+                arregloBotones[diaSeleccinado].setBackground(Color.gray);
+                estableceMenu(diaSemanaActual);
+                arregloBotones[diaSeleccinado].setBackground(Color.green);
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Error: no se pudieron generar las reservas.");
+            }
         }
     }//GEN-LAST:event_btnReservarActionPerformed
 
@@ -794,60 +818,62 @@ Object[] cena = null;
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnEliminarTodasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarTodasActionPerformed
+        boolean noDisponible = false;
+        boolean eliminado = false;
         int nReservas = tableReservas.getModel().getRowCount();
 
         for (int i = 0; i < nReservas; i++) {
             int idReserva = (int) tableReservas.getValueAt(i, 0);
             String tipo = tableReservas.getValueAt(i, 3).toString();
             int cantidad = (int) tableReservas.getValueAt(i, 4);
-            Control.reservas.eliminar(idReserva);
-            switch (tipo) {
+            Calendar fechaReserva = Calendar.getInstance();
+            fechaReserva.setTime(Control.reservas.consultarPorId(idReserva).getFecha());
+            Calendar fechaActual = Calendar.getInstance();
+            if (!Control.usuarioActivo.isTipoAdmin() && fechaActual.get(Calendar.DAY_OF_YEAR) + 1 > fechaReserva.get(Calendar.DAY_OF_YEAR) ) {
+                noDisponible =true;
+                
+            } else {
+                Control.reservas.eliminar(idReserva);
+                switch (tipo) {
 
-                case "DESAYUNO":
-                    clienteSeleccionado.setCreditoDesayuno(clienteSeleccionado.getCreditoDesayuno() + cantidad);
-                    break;
-                case "COMIDA":
-                    clienteSeleccionado.setCreditoComida(clienteSeleccionado.getCreditoComida() + cantidad);
-                    break;
-                case "CENA":
-                    clienteSeleccionado.setCreditoCena(clienteSeleccionado.getCreditoCena() + cantidad);
-                    break;
+                    case "DESAYUNO":
+                        clienteSeleccionado.setCreditoDesayuno(clienteSeleccionado.getCreditoDesayuno() + cantidad);
+                        break;
+                    case "COMIDA":
+                        clienteSeleccionado.setCreditoComida(clienteSeleccionado.getCreditoComida() + cantidad);
+                        break;
+                    case "CENA":
+                        clienteSeleccionado.setCreditoCena(clienteSeleccionado.getCreditoCena() + cantidad);
+                        break;
+                }
+                Control.clientes.actualizar(clienteSeleccionado);
+                eliminado = true;
             }
-            Control.clientes.actualizar(clienteSeleccionado);
 
         }
-
+if(eliminado){
         estableceDatosCliente();
         estableceMenu(diaSeleccinado);
+}
+if(noDisponible){
+    JOptionPane.showMessageDialog(this, "Una o más reservas no se pudieron eliminar pues se necesita por lo menos un día de antelación.","Atención", JOptionPane.INFORMATION_MESSAGE);
+}
     }//GEN-LAST:event_btnEliminarTodasActionPerformed
 
     private void btnLunesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLunesActionPerformed
+        arregloBotones[diaSeleccinado].setBackground(Color.gray);
         estableceMenu(1);
+        arregloBotones[1].setBackground(Color.green);
+
 
     }//GEN-LAST:event_btnLunesActionPerformed
 
     private void btnMartesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMartesActionPerformed
+        arregloBotones[diaSeleccinado].setBackground(Color.gray);
         estableceMenu(2);
+        arregloBotones[2].setBackground(Color.green);
 
     }//GEN-LAST:event_btnMartesActionPerformed
-
-    private void btnMiercolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMiercolesActionPerformed
-        estableceMenu(3);    }//GEN-LAST:event_btnMiercolesActionPerformed
-
-    private void btnJuevesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJuevesActionPerformed
-        estableceMenu(4);    }//GEN-LAST:event_btnJuevesActionPerformed
-
-    private void btnViernesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViernesActionPerformed
-        estableceMenu(5);
-    }//GEN-LAST:event_btnViernesActionPerformed
-
-    private void btnSabadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSabadoActionPerformed
-        estableceMenu(6);
-    }//GEN-LAST:event_btnSabadoActionPerformed
-
-    private void btnDomingoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDomingoActionPerformed
-        estableceMenu(7);
-    }//GEN-LAST:event_btnDomingoActionPerformed
 
     private void btnEliminarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarReservaActionPerformed
         int idReserva = (int) tableReservas.getValueAt(tableReservas.getSelectedRow(), 0);
@@ -870,6 +896,33 @@ Object[] cena = null;
         estableceDatosCliente();
         estableceMenu(diaSeleccinado);
     }//GEN-LAST:event_btnEliminarReservaActionPerformed
+
+    private void btnMiercolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMiercolesActionPerformed
+        arregloBotones[diaSeleccinado].setBackground(Color.gray);
+        estableceMenu(3);
+        arregloBotones[3].setBackground(Color.green);
+    }//GEN-LAST:event_btnMiercolesActionPerformed
+
+    private void btnJuevesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJuevesActionPerformed
+        arregloBotones[diaSeleccinado].setBackground(Color.gray);
+        estableceMenu(4);
+        arregloBotones[4].setBackground(Color.green);    }//GEN-LAST:event_btnJuevesActionPerformed
+
+    private void btnViernesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViernesActionPerformed
+        arregloBotones[diaSeleccinado].setBackground(Color.gray);
+        estableceMenu(5);
+        arregloBotones[5].setBackground(Color.green);    }//GEN-LAST:event_btnViernesActionPerformed
+
+    private void btnSabadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSabadoActionPerformed
+        arregloBotones[diaSeleccinado].setBackground(Color.gray);
+        estableceMenu(6);
+        arregloBotones[6].setBackground(Color.green);
+    }//GEN-LAST:event_btnSabadoActionPerformed
+
+    private void btnDomingoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDomingoActionPerformed
+        arregloBotones[diaSeleccinado].setBackground(Color.gray);
+        estableceMenu(7);
+        arregloBotones[7].setBackground(Color.green);    }//GEN-LAST:event_btnDomingoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -966,10 +1019,14 @@ Object[] cena = null;
             modelo[x][0] = reserva.getIdReserva();
             modelo[x][1] = formatoFecha.format(reserva.getFecha());
             modelo[x][2] = reserva.getPlatillo();
-            if (reserva.getTipo() == 2) {
-                tipoReserva = "COMIDA";
+            if (reserva.getTipo() == 1) {
+                tipoReserva = "DESAYUNO";
             } else {
-                tipoReserva = "CENA";
+                if (reserva.getTipo() == 2) {
+                    tipoReserva = "COMIDA";
+                } else {
+                    tipoReserva = "CENA";
+                }
             }
             modelo[x][3] = tipoReserva;
             modelo[x][4] = reserva.getCantidad();
@@ -1073,7 +1130,6 @@ Object[] cena = null;
         fechaReserva.setTime(fechaLunes.getTime());
 
         fechaReserva.add(Calendar.DAY_OF_YEAR, diaSeleccinado - 1);
-
 
         if (desayunosCantidad > 0) {
             platillo = (Platillo) comboDesayunos.getSelectedItem();

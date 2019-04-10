@@ -92,7 +92,7 @@ public class Inicio extends javax.swing.JFrame {
         try {
             IControl c = new Control();
             System.out.println(Control.usuarios.consultarLista());
-            if (Control.login("Magui", "cocinamagui")) {
+            if (Control.login("Cajero 1", "1234")) {
                 VReservasCliente vReservas = new VReservasCliente();
                
                 
