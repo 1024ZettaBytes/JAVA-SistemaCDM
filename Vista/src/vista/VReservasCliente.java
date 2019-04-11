@@ -137,7 +137,7 @@ public class VReservasCliente extends javax.swing.JFrame {
                         Calendar fechaReserva = Calendar.getInstance();
                         fechaReserva.setTime(Control.reservas.consultarPorId((Integer) tableReservas.getValueAt(tableReservas.getSelectedRow(), 0)).getFecha());
                         Calendar fechaActual = Calendar.getInstance();
-                        if (Control.usuarioActivo.isTipoAdmin()) {
+                        if (!Control.usuarioActivo.isTipoAdmin()) {
                             btnEliminarReserva.setEnabled(fechaActual.get(Calendar.DAY_OF_YEAR) + 1 <= fechaReserva.get(Calendar.DAY_OF_YEAR));
                         } else {
                             btnEliminarReserva.setEnabled(true);
