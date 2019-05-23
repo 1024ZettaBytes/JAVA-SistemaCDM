@@ -14,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -200,7 +202,7 @@ public class ConexionBD implements IConexion {
 
     @Override
     public boolean insertarPlatilloMenu(int idPlatillo, int diaSemana, int cantidad, String categoria) {
-        String sSQL = "INSERT INTO platillosmenu (Platillos_idPlatillo, diaSemana, cantidad, categoria) VALUES (" + idPlatillo + ", " + diaSemana + ", " + cantidad + ", '" + categoria + "')";
+        String sSQL = "INSERT INTO platillosmenu (Platillos_idPlatillo, diaSemana, cantidad, reservados, categoria) VALUES (" + idPlatillo + ", " + diaSemana + ", " + cantidad + ", 0, '" + categoria + "')";
         try {
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
@@ -213,8 +215,8 @@ public class ConexionBD implements IConexion {
     }
 
     @Override
-    public boolean actualizarPlatilloMenu(int idPlatilloMenu, int idPlatillo, int diaSemana, int cantidad, String categoria) {
-        String sSQL = "UPDATE platillosmenu SET Platillos_idPlatillo = " + idPlatillo + ", diaSemana = " + diaSemana + ", cantidad = " + cantidad + ", categoria = '" + categoria + "' WHERE idPlatilloMenu = " + idPlatilloMenu;
+    public boolean actualizarPlatilloMenu(int idPlatilloMenu, int idPlatillo, int diaSemana, int cantidad, int reservados, String categoria) {
+        String sSQL = "UPDATE platillosmenu SET Platillos_idPlatillo = " + idPlatillo + ", diaSemana = " + diaSemana + ", cantidad = " + cantidad + ", reservados = "+reservados+", categoria = '" + categoria + "' WHERE idPlatilloMenu = " + idPlatilloMenu;
         try {
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
@@ -249,7 +251,7 @@ public class ConexionBD implements IConexion {
             PreparedStatement pstm = conn.prepareStatement(sSQL);
             ResultSet rs = pstm.executeQuery(sSQL);
             while (rs.next()) {
-                Object[] platilloMenu = {rs.getInt("idPlatilloMenu"), rs.getInt("Platillos_idPlatillo"), rs.getInt("diaSemana"), rs.getInt("cantidad"), rs.getString("categoria")};
+                Object[] platilloMenu = {rs.getInt("idPlatilloMenu"), rs.getInt("Platillos_idPlatillo"), rs.getInt("diaSemana"), rs.getInt("cantidad"),rs.getInt("reservados"), rs.getString("categoria")};
                 platillosMenu.add(platilloMenu);
             }
             pstm.close();
@@ -387,8 +389,10 @@ public class ConexionBD implements IConexion {
 
     @Override
     public boolean insertarVenta(Timestamp fechaHora, int idUsuario) {
-
-        String sSQL = "INSERT INTO ventas (fechaHora, Usuarios_idUsuario) VALUES (" + fechaHora + ", " + idUsuario + ")";
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(fechaHora.getTime());
+        DateFormat f = new SimpleDateFormat("yyy-MM-dd hh:mm:ss");
+        String sSQL = "INSERT INTO ventas (fechaHora, Usuarios_idUsuario) VALUES ( '" + f.format(c.getTime()) + "', " + idUsuario + ")";
         try {
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
@@ -396,6 +400,7 @@ public class ConexionBD implements IConexion {
             pstm.close();
             return true;
         } catch (SQLException ex) {
+            ex.printStackTrace();
             return false;
         }
     }
@@ -450,8 +455,8 @@ public class ConexionBD implements IConexion {
     }
 
     @Override
-    public boolean insertarVentaPlatillo(int folioVentaGeneral, String nombreCliente, int idPlatillo, float costo) {
-        String sSQL = "INSERT INTO ventasPlatillos (Ventas_Folio, nombreCliente, Platillos_idPlatillo, costo) VALUES (" + folioVentaGeneral + ",'" + nombreCliente + "', " + idPlatillo + ", " + costo + ")";
+    public boolean insertarVentaPlatillo(int folioVentaGeneral, String nombreCliente, int idPlatillo, float costo, int cantidad) {
+        String sSQL = "INSERT INTO ventasPlatillos (Ventas_Folio, nombreCliente, Platillos_idPlatillo, costo, cantidad) VALUES (" + folioVentaGeneral + ",'" + nombreCliente + "', " + idPlatillo + ", " + costo + ", " + cantidad + ")";
         try {
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
@@ -464,9 +469,9 @@ public class ConexionBD implements IConexion {
     }
 
     @Override
-    public boolean actualizarVentaPlatillo(int idVentaPLatillo, int folioVentaGeneral, String nombreCliente, int idPlatillo, float costo) {
-        String sSQL = "UPDATE ventas SET Ventas_folio = " + folioVentaGeneral + ", nombreCliente = '" + nombreCliente + "', Platillos_idPlatillos = " + idPlatillo + ", costo = " + costo
-                + " WHERE idVentaPlatillo = " + idVentaPLatillo;
+    public boolean actualizarVentaPlatillo(int idVentaPlatillo, int folioVentaGeneral, String nombreCliente, int idPlatillo, float costo, int cantidad) {
+        String sSQL = "UPDATE ventas SET Ventas_folio = " + folioVentaGeneral + ", nombreCliente = '" + nombreCliente + "', Platillos_idPlatillos = " + idPlatillo + ", costo = " + costo + ", cantidad = " + cantidad
+                + " WHERE idVentaPlatillo = " + idVentaPlatillo;
         try {
             // PreparedStatement
             PreparedStatement pstm = conn.prepareStatement(sSQL);
@@ -501,7 +506,7 @@ public class ConexionBD implements IConexion {
             PreparedStatement pstm = conn.prepareStatement(sSQL);
             ResultSet rs = pstm.executeQuery(sSQL);
             while (rs.next()) {
-                Object[] ventaPlatillo = {rs.getInt("idVentaPLatillo"), rs.getInt("Ventas_folio"), rs.getString("nombreCliente"), rs.getInt("Platillos_idPlatillo"), rs.getFloat("costo")};
+                Object[] ventaPlatillo = {rs.getInt("idVentaPLatillo"), rs.getInt("Ventas_folio"), rs.getString("nombreCliente"), rs.getInt("Platillos_idPlatillo"), rs.getFloat("costo"), rs.getInt("cantidad")};
                 ventasPlatillos.add(ventaPlatillo);
 
             }
@@ -514,7 +519,7 @@ public class ConexionBD implements IConexion {
 
     @Override
     public boolean insertarVentaCredito(int folioVentaGeneral, int idCliente, int cantidadDesayunos, int cantidadComidas, int cantidadCenas, float monto) {
-        String sSQL = "INSERT INTO ventasCredito (Ventas_Folio, Clientes_idCliente, cantidadDesayunos, cantidadComidas, cantidadCenas, monto) VALUES (" + folioVentaGeneral + "," + idCliente + ", " + cantidadDesayunos + ", " + cantidadComidas + ", " + cantidadCenas + ")";
+        String sSQL = "INSERT INTO ventasCredito (Ventas_Folio, Clientes_idCliente, cantidadDesayunos, cantidadComidas, cantidadCenas, monto) VALUES (" + folioVentaGeneral + "," + idCliente + ", " + cantidadDesayunos + ", " + cantidadComidas + ", " + cantidadCenas +",  "+monto+ ")";
         try {
             // PreparedStatementa
             PreparedStatement pstm = conn.prepareStatement(sSQL);
@@ -565,7 +570,7 @@ public class ConexionBD implements IConexion {
             PreparedStatement pstm = conn.prepareStatement(sSQL);
             ResultSet rs = pstm.executeQuery(sSQL);
             while (rs.next()) {
-                Object[] ventaCredito = {rs.getInt("idVentaCredito"), rs.getInt("Ventas_folio"), rs.getInt("idCliente"), rs.getInt("Platillos_idPlatillo"), rs.getInt("cantidadDesayunos"), rs.getInt("cantidadComidas"), rs.getInt("cantidadCenas"), rs.getFloat("monto")};
+                Object[] ventaCredito = {rs.getInt("idVentaCredito"), rs.getInt("Ventas_folio"), rs.getInt("Clientes_idCliente"),rs.getInt("cantidadDesayunos"), rs.getInt("cantidadComidas"), rs.getInt("cantidadCenas"), rs.getFloat("monto")};
                 ventasCredito.add(ventaCredito);
                 
             }

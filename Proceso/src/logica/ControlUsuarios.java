@@ -27,6 +27,7 @@ public class ControlUsuarios {
         if (this.conexion.conectar()) {
             ArrayList<Object[]> arreglosUsuarios = conexion.consultarUsuarios();
             for (Object[] arregloUsuario : arreglosUsuarios) {
+                System.out.println();
                 Usuario u = new Usuario((Integer)arregloUsuario[0], (String)arregloUsuario[1],(String)arregloUsuario[2],(Boolean)arregloUsuario[3]);
                 listaUsuarios.add(u);
             }

@@ -11,9 +11,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import negocio.Cliente;
+import negocio.Platillo;
 import negocio.ReservaPlatillo;
 
 /**
@@ -51,7 +53,7 @@ public class ControlReservas {
     }
 
     public boolean agregar(ReservaPlatillo nuevaReserva) {
-if (!conexion.hayConexion()) {
+        if (!conexion.hayConexion()) {
             if (conexion.conectar() == false) {
                 return false;
             }
@@ -66,7 +68,7 @@ if (!conexion.hayConexion()) {
     }
 
     public boolean actualizar(ReservaPlatillo reserva) {
-if (!conexion.hayConexion()) {
+        if (!conexion.hayConexion()) {
             if (conexion.conectar() == false) {
                 return false;
             }
@@ -104,27 +106,75 @@ if (!conexion.hayConexion()) {
         });
         return lista;
     }
-public ArrayList<ReservaPlatillo> consultarPorFecha(Date fecha) {
-    ArrayList<ReservaPlatillo> lista = new ArrayList();
-        listaReservasPlatillos.stream().filter((reservaPlatillo) -> (reservaPlatillo.getFecha().equals(fecha))).forEachOrdered((reservaPlatillo) -> {
-            lista.add(reservaPlatillo);
-        });
+
+    public ArrayList<ReservaPlatillo> consultarPorFecha(Date fecha) {
+        ArrayList<ReservaPlatillo> lista = new ArrayList();
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(fecha);
+        Calendar c2 = Calendar.getInstance();
+        for (ReservaPlatillo reserva : listaReservasPlatillos) {
+            c2.setTime(reserva.getFecha());
+            if (c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR)
+                    && c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH)
+                    && c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR)) {
+                lista.add(reserva);
+            }
+
+        }
         return lista;
-}
-public ArrayList<ReservaPlatillo> consultarReservasClienteVigente(Cliente cliente, Date fecha){
-    ArrayList<ReservaPlatillo> lista = new ArrayList<>();
-    Calendar fechaRecibida = Calendar.getInstance();
-    fechaRecibida.setTime(fecha);
-    
-    Calendar fechaReserva = Calendar.getInstance();
-    for (ReservaPlatillo reserva : listaReservasPlatillos) {
-        fechaReserva.setTime(reserva.getFecha());
-        if(reserva.getCliente().equals(cliente) && fechaReserva.get(Calendar.DAY_OF_YEAR)>=fechaRecibida.get(Calendar.DAY_OF_YEAR))
-           
-            lista.add(reserva);
     }
-    return lista;
-}
+
+    public ArrayList<ReservaPlatillo> consultarPorFechaPlatillo(Date fecha, Platillo platillo) {
+        ArrayList<ReservaPlatillo> lista = new ArrayList();
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(fecha);
+        Calendar c2 = Calendar.getInstance();
+        for (ReservaPlatillo reserva : listaReservasPlatillos) {
+            c2.setTime(reserva.getFecha());
+            if (c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR)
+                    && c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH)
+                    && c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR)
+                    && reserva.getPlatillo().equals(platillo)) {
+                lista.add(reserva);
+            }
+
+        }
+        return lista;
+    }
+    public ArrayList<ReservaPlatillo> consultarPorFechaPlatilloTipo(Date fecha, Platillo platillo, int tipo) {
+        ArrayList<ReservaPlatillo> lista = new ArrayList();
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(fecha);
+        Calendar c2 = Calendar.getInstance();
+        for (ReservaPlatillo reserva : listaReservasPlatillos) {
+            c2.setTime(reserva.getFecha());
+            if (c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR)
+                    && c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH)
+                    && c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR)
+                    && reserva.getPlatillo().equals(platillo)
+                    && reserva.getTipo()==tipo) {
+                lista.add(reserva);
+            }
+
+        }
+        return lista;
+    }
+
+    public ArrayList<ReservaPlatillo> consultarReservasClienteVigente(Cliente cliente, Date fecha) {
+        ArrayList<ReservaPlatillo> lista = new ArrayList<>();
+        Calendar fechaRecibida = Calendar.getInstance();
+        fechaRecibida.setTime(fecha);
+
+        Calendar fechaReserva = Calendar.getInstance();
+        for (ReservaPlatillo reserva : listaReservasPlatillos) {
+            fechaReserva.setTime(reserva.getFecha());
+            if (reserva.getCliente().equals(cliente) && fechaReserva.get(Calendar.DAY_OF_YEAR) >= fechaRecibida.get(Calendar.DAY_OF_YEAR)) {
+                lista.add(reserva);
+            }
+        }
+        return lista;
+    }
+
     public ArrayList<ReservaPlatillo> consultarLista() {
         return listaReservasPlatillos;
     }

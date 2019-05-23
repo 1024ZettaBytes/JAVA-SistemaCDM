@@ -24,7 +24,13 @@ public class Cliente {
         this.creditoComida = creditoComida;
         this.creditoCena = creditoCena;
     }
-    
+    public Cliente(Cliente c){
+        this.idCliente = c.getIdCliente();
+        this.nombre = c.getNombre();
+        this.creditoDesayuno = c.getCreditoDesayuno();
+        this.creditoComida = c.getCreditoComida();
+        this.creditoCena = c.getCreditoCena();
+    }
     public int getIdCliente() {
         return idCliente;
     }

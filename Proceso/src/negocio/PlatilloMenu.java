@@ -10,6 +10,7 @@ public class PlatilloMenu {
     private Platillo platillo;
     private int diaSemana;
     private int cantidad;
+    private int reservados;
     private String categoria;
 
     public PlatilloMenu() {
@@ -17,14 +18,16 @@ public class PlatilloMenu {
         this.platillo = null;
         this.diaSemana = -1;
         this.cantidad = -1;
+        this.reservados = -1;
         this.categoria = null;
     }
 
-    public PlatilloMenu(int idPlatilloMenu, Platillo platillo, int diaSemana, int cantidad, String categoria) {
+    public PlatilloMenu(int idPlatilloMenu, Platillo platillo, int diaSemana, int cantidad, int reservados, String categoria) {
         this.idPlatilloMenu = idPlatilloMenu;
         this.platillo = platillo;
         this.diaSemana = diaSemana;
         this.cantidad = cantidad;
+        this.reservados = reservados;
         this.categoria = categoria;
     }
 
@@ -38,6 +41,14 @@ public class PlatilloMenu {
 
     public Platillo getPlatillo() {
         return platillo;
+    }
+
+    public int getReservados() {
+        return reservados;
+    }
+
+    public void setReservados(int reservados) {
+        this.reservados = reservados;
     }
 
     public void setPlatillo(Platillo platillo) {
@@ -96,7 +107,7 @@ public class PlatilloMenu {
 
     @Override
     public String toString() {
-        return "PlatilloMenu{" + "platillo=" + platillo + ", diaSemana=" + diaSemana + ", cantidad=" + cantidad + '}';
+        return platillo.getNombre();
     }
     
     

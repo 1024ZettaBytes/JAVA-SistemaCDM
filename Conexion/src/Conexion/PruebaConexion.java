@@ -10,6 +10,8 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -21,12 +23,12 @@ import java.util.GregorianCalendar;
 public class PruebaConexion {
 
     public static void main(String[] args) throws ParseException {
-        String pattern = "yyyy-MM-dd";
-SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-
-Date date = simpleDateFormat.parse("2019-03-27");
-        System.out.println(date);
-        GregorianCalendar g= new GregorianCalendar();
-        System.out.println(g.get(0));
-    }
+        IConexion c = new ConexionBD();
+        c.conectar();
+        ArrayList<Object[]> ven= c.consultarVentasCredito();
+        for (Object[] objects : ven) {
+            System.out.println(Arrays.toString(objects));
+        }
+        
+}
 }

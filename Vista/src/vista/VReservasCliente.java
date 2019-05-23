@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.TrayIcon;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,6 +49,9 @@ public class VReservasCliente extends javax.swing.JFrame {
     private int diaSeleccinado;
     private Calendar fechaLunes;
     private int diaSemanaActual;
+    private int dSelec;
+    ArrayList<PlatilloMenu> menuEstablecido;
+    ArrayList<ReservaPlatillo> reservasCliente;
     private JButton[] arregloBotones = new JButton[8];
 
     public VReservasCliente() {
@@ -700,7 +704,7 @@ public class VReservasCliente extends javax.swing.JFrame {
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -786,7 +790,10 @@ public class VReservasCliente extends javax.swing.JFrame {
             // Establece los datos del cliente seleccionado
             estableceDatosCliente();
             // Establece los datos del menu de acuerdo a los creditos del cliente
+            arregloBotones[diaSeleccinado].setBackground(Color.gray);
             estableceMenu(diaSemanaActual);
+            arregloBotones[diaSeleccinado].setBackground(Color.green);
+            
 
         }
 
@@ -829,10 +836,36 @@ public class VReservasCliente extends javax.swing.JFrame {
             Calendar fechaReserva = Calendar.getInstance();
             fechaReserva.setTime(Control.reservas.consultarPorId(idReserva).getFecha());
             Calendar fechaActual = Calendar.getInstance();
-            if (!Control.usuarioActivo.isTipoAdmin() && fechaActual.get(Calendar.DAY_OF_YEAR) + 1 > fechaReserva.get(Calendar.DAY_OF_YEAR) ) {
-                noDisponible =true;
-                
+            if (!Control.usuarioActivo.isTipoAdmin() && fechaActual.get(Calendar.DAY_OF_YEAR) + 1 > fechaReserva.get(Calendar.DAY_OF_YEAR)) {
+                noDisponible = true;
+
             } else {
+                String platillo = tableReservas.getValueAt(i, 2).toString();
+                ReservaPlatillo rp = new ReservaPlatillo();
+                rp = reservasCliente.get(i);
+              
+                int dSemana;
+                //Se obtiene el día de la semana en base a Calendar(Domingo = 1, Lunes = 2, etc.)
+                dSemana = fechaReserva.get(Calendar.DAY_OF_WEEK);
+                // Si el día de la semana es domingo
+                if (dSemana == 1) {
+                    // Se establece el dia real (Domingo = 7)
+                    dSemana = 7;
+                } // Si es Lunes u otro
+                else {
+                    // Se establece el dia real
+                    dSemana--;
+                }
+                Control.reservas.eliminar(idReserva);
+                PlatilloMenu pm = null;
+                for (PlatilloMenu platilloMenu : Control.menu.consultarMenu()) {
+                    if (platilloMenu.getPlatillo().getNombre().equals(platillo) && platilloMenu.getDiaSemana() == dSemana && platilloMenu.getCategoria().equals(tipo)) {
+                        pm = platilloMenu;
+                        break;
+                    }
+                }
+                pm.setReservados(pm.getReservados() - cantidad);
+                Control.menu.actualizar(pm);
                 Control.reservas.eliminar(idReserva);
                 switch (tipo) {
 
@@ -851,13 +884,13 @@ public class VReservasCliente extends javax.swing.JFrame {
             }
 
         }
-if(eliminado){
-        estableceDatosCliente();
-        estableceMenu(diaSeleccinado);
-}
-if(noDisponible){
-    JOptionPane.showMessageDialog(this, "Una o más reservas no se pudieron eliminar pues se necesita por lo menos un día de antelación.","Atención", JOptionPane.INFORMATION_MESSAGE);
-}
+        if (eliminado) {
+            estableceDatosCliente();
+            estableceMenu(diaSeleccinado);
+        }
+        if (noDisponible) {
+            JOptionPane.showMessageDialog(this, "Una o más reservas no se pudieron eliminar pues se necesita por lo menos un día de antelación.", "Atención", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_btnEliminarTodasActionPerformed
 
     private void btnLunesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLunesActionPerformed
@@ -879,8 +912,33 @@ if(noDisponible){
         int idReserva = (int) tableReservas.getValueAt(tableReservas.getSelectedRow(), 0);
         String tipo = tableReservas.getValueAt(tableReservas.getSelectedRow(), 3).toString();
         int cantidad = (int) tableReservas.getValueAt(tableReservas.getSelectedRow(), 4);
-
+        String platillo = tableReservas.getValueAt(tableReservas.getSelectedRow(), 2).toString();
+        ReservaPlatillo rp = new ReservaPlatillo();
+        rp = reservasCliente.get(tableReservas.getSelectedRow());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(rp.getFecha());
+        int dSemana;
+        //Se obtiene el día de la semana en base a Calendar(Domingo = 1, Lunes = 2, etc.)
+        dSemana = calendar.get(Calendar.DAY_OF_WEEK);
+        // Si el día de la semana es domingo
+        if (dSemana == 1) {
+            // Se establece el dia real (Domingo = 7)
+            dSemana = 7;
+        } // Si es Lunes u otro
+        else {
+            // Se establece el dia real
+            dSemana--;
+        }
         Control.reservas.eliminar(idReserva);
+        PlatilloMenu pm = null;
+        for (PlatilloMenu platilloMenu : Control.menu.consultarMenu()) {
+            if (platilloMenu.getPlatillo().getNombre().equals(platillo) && platilloMenu.getDiaSemana() == dSemana && platilloMenu.getCategoria().equals(tipo)) {
+                pm = platilloMenu;
+                break;
+            }
+        }
+        pm.setReservados(pm.getReservados() - cantidad);
+        Control.menu.actualizar(pm);
         switch (tipo) {
             case "DESAYUNO":
                 clienteSeleccionado.setCreditoDesayuno(clienteSeleccionado.getCreditoDesayuno() + cantidad);
@@ -1008,7 +1066,7 @@ if(noDisponible){
             spinnerCenas.setEnabled(false);
             spinnerCenas.setModel(new SpinnerNumberModel(0, 0, creditoCena, 1));
         }
-        ArrayList<ReservaPlatillo> reservasCliente = Control.reservas.consultarReservasClienteVigente(clienteSeleccionado, Calendar.getInstance().getTime());
+        reservasCliente = Control.reservas.consultarReservasClienteVigente(clienteSeleccionado, Calendar.getInstance().getTime());
         Object[] columnas = {"No.", "Fecha", "Platillo", "Tipo", "Cantidad"};
         Object[][] modelo = new Object[reservasCliente.size()][5];
         int x = 0;
@@ -1047,7 +1105,9 @@ if(noDisponible){
         ArrayList<Platillo> platillosDesayunos = new ArrayList<>();
         ArrayList<Platillo> platillosComidas = new ArrayList<>();
         ArrayList<Platillo> platillosCenas = new ArrayList<>();
-        for (PlatilloMenu platilloMenu : Control.menu.consultarMenuDia(diaSeleccionado)) {
+        dSelec = diaSeleccionado;
+        menuEstablecido = Control.menu.consultarMenuDia(diaSeleccionado);
+        for (PlatilloMenu platilloMenu : menuEstablecido) {
             switch (platilloMenu.getCategoria()) {
                 case "DESAYUNO":
                     platillosDesayunos.add(platilloMenu.getPlatillo());
@@ -1133,23 +1193,57 @@ if(noDisponible){
 
         if (desayunosCantidad > 0) {
             platillo = (Platillo) comboDesayunos.getSelectedItem();
-            if (!Control.reservas.agregar(new ReservaPlatillo(0, clienteSeleccionado, platillo, desayunosCantidad, fechaReserva.getTime(), 1))) {
+            ReservaPlatillo reservaPlatillo =new ReservaPlatillo(0, clienteSeleccionado, platillo, desayunosCantidad, fechaReserva.getTime(), 1);
+            if (!Control.reservas.agregar(reservaPlatillo)) {
                 return false;
             }
+            reservasCliente.add(reservaPlatillo);
+            PlatilloMenu pm = null;
+            for (PlatilloMenu platilloMenu : menuEstablecido) {
+                if (platilloMenu.getPlatillo().equals(platillo) && platilloMenu.getDiaSemana() == dSelec && platilloMenu.getCategoria().equals("DESAYUNO")) {
+                    pm = platilloMenu;
+                    break;
+                }
+            }
+            pm.setReservados(pm.getReservados() + desayunosCantidad);
+            Control.menu.actualizar(pm);
             copia.setCreditoDesayuno(copia.getCreditoDesayuno() - desayunosCantidad);
         }
         if (comidasCantidad > 0) {
             platillo = (Platillo) comboComidas.getSelectedItem();
-            if (!Control.reservas.agregar(new ReservaPlatillo(0, clienteSeleccionado, platillo, comidasCantidad, fechaReserva.getTime(), 2))) {
+            ReservaPlatillo reservaPlatillo = new ReservaPlatillo(0, clienteSeleccionado, platillo, comidasCantidad, fechaReserva.getTime(), 2);
+            
+            if (!Control.reservas.agregar(reservaPlatillo)) {
                 return false;
             }
+            reservasCliente.add(reservaPlatillo);
+            PlatilloMenu pm = null;
+            for (PlatilloMenu platilloMenu : menuEstablecido) {
+                if (platilloMenu.getPlatillo().equals(platillo) && platilloMenu.getDiaSemana() == dSelec && platilloMenu.getCategoria().equals("COMIDA")) {
+                    pm = platilloMenu;
+                    break;
+                }
+            }
+            pm.setReservados(pm.getReservados() + comidasCantidad);
+            Control.menu.actualizar(pm);
             copia.setCreditoComida(copia.getCreditoComida() - comidasCantidad);
         }
         if (cenasCantidad > 0) {
             platillo = (Platillo) comboCenas.getSelectedItem();
-            if (!Control.reservas.agregar(new ReservaPlatillo(0, clienteSeleccionado, platillo, cenasCantidad, fechaReserva.getTime(), 3))) {
+             ReservaPlatillo reservaPlatillo =new ReservaPlatillo(0, clienteSeleccionado, platillo, cenasCantidad, fechaReserva.getTime(), 3);
+            if (!Control.reservas.agregar(reservaPlatillo)) {
                 return false;
             }
+            reservasCliente.add(reservaPlatillo);
+            PlatilloMenu pm = null;
+            for (PlatilloMenu platilloMenu : menuEstablecido) {
+                if (platilloMenu.getPlatillo().equals(platillo) && platilloMenu.getDiaSemana() == dSelec && platilloMenu.getCategoria().equals("CENA")) {
+                    pm = platilloMenu;
+                    break;
+                }
+            }
+            pm.setReservados(pm.getReservados() + cenasCantidad);
+            Control.menu.actualizar(pm);
             copia.setCreditoCena(copia.getCreditoCena() - cenasCantidad);
         }
         if (!Control.clientes.actualizar(clienteSeleccionado)) {

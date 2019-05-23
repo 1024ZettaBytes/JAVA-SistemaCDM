@@ -7,6 +7,7 @@ package logica;
 
 import Interfaces.IConexion;
 import java.util.ArrayList;
+import negocio.Platillo;
 import negocio.PlatilloMenu;
 
 /**
@@ -25,7 +26,7 @@ public class ControlMenu {
         if (this.conexion.conectar()) {
             ArrayList<Object[]> arreglosPlatillosMenu = conexion.consultarPlatillosMenu();
             for (Object[] arregloPlatilloMenu : arreglosPlatillosMenu) {
-                PlatilloMenu pm = new PlatilloMenu((Integer) arregloPlatilloMenu[0], Control.platillos.consultarPorId((Integer) arregloPlatilloMenu[1]), (Integer) arregloPlatilloMenu[2], (Integer) arregloPlatilloMenu[3], (String) arregloPlatilloMenu[4]);
+                PlatilloMenu pm = new PlatilloMenu((Integer) arregloPlatilloMenu[0], Control.platillos.consultarPorId((Integer) arregloPlatilloMenu[1]), (Integer) arregloPlatilloMenu[2], (Integer) arregloPlatilloMenu[3], (Integer) arregloPlatilloMenu[4], (String) arregloPlatilloMenu[5]);
                 listaPlatillosMenu.add(pm);
             }
 
@@ -33,7 +34,7 @@ public class ControlMenu {
     }
 
     public boolean agregar(PlatilloMenu nuevoPlatilloMenu) {
-if (!conexion.hayConexion()) {
+        if (!conexion.hayConexion()) {
             if (conexion.conectar() == false) {
                 return false;
             }
@@ -49,13 +50,13 @@ if (!conexion.hayConexion()) {
     }
 
     public boolean actualizar(PlatilloMenu platilloMenu) {
-if (!conexion.hayConexion()) {
+        if (!conexion.hayConexion()) {
             if (conexion.conectar() == false) {
                 return false;
             }
         }
         int index = listaPlatillosMenu.indexOf(platilloMenu);
-        if (index >= 0 && conexion.actualizarPlatilloMenu(platilloMenu.getIdPlatilloMenu(), platilloMenu.getPlatillo().getIdPlatillo(), platilloMenu.getDiaSemana(), platilloMenu.getCantidad(), platilloMenu.getCategoria())) {
+        if (index >= 0 && conexion.actualizarPlatilloMenu(platilloMenu.getIdPlatilloMenu(), platilloMenu.getPlatillo().getIdPlatillo(), platilloMenu.getDiaSemana(), platilloMenu.getCantidad(), platilloMenu.getReservados(), platilloMenu.getCategoria())) {
             listaPlatillosMenu.set(index, platilloMenu);
             return true;
         }
@@ -68,7 +69,7 @@ if (!conexion.hayConexion()) {
                 return false;
             }
         }
-        PlatilloMenu pm = new PlatilloMenu(idPlatilloMenu, null, 0, 0, null);
+        PlatilloMenu pm = new PlatilloMenu(idPlatilloMenu, null, 0, 0, 0, null);
         return conexion.eliminarPlatilloMenu(idPlatilloMenu) && listaPlatillosMenu.remove(pm);
     }
 
@@ -94,6 +95,15 @@ if (!conexion.hayConexion()) {
             menuDiaCategoria.add(platilloMenu);
         });
         return menuDiaCategoria;
+    }
+
+    public Platillo consultarSopaDia(int dia) {
+        for (PlatilloMenu platilloMenu : listaPlatillosMenu) {
+            if (platilloMenu.getCategoria().equals("SOPA") && platilloMenu.getDiaSemana() == dia) {
+                return platilloMenu.getPlatillo();
+            }
+        }
+        return null;
     }
 
     public ArrayList<PlatilloMenu> consultarMenu() {

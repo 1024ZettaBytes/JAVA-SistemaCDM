@@ -12,6 +12,7 @@ public class VentaPlatillo{
    private Venta ventaGeneral;
    private String nombreCliente;
    private Platillo platillo;
+   private int cantidad;
    private float costo;
     public VentaPlatillo(){
         this.idVentaPlatillo = -1;
@@ -21,11 +22,12 @@ public class VentaPlatillo{
         this.costo = -1;
     }
 
-    public VentaPlatillo(int idVentaPlatillo, Venta ventaGeneral, String nombreCliente, Platillo platillo, float costo) {
+    public VentaPlatillo(int idVentaPlatillo, Venta ventaGeneral, String nombreCliente, Platillo platillo, int cantidad, float costo) {
         this.idVentaPlatillo = idVentaPlatillo;
         this.ventaGeneral = ventaGeneral;
         this.nombreCliente = nombreCliente;
         this.platillo = platillo;
+        this.cantidad = cantidad;
         this.costo = costo;
     }
     
@@ -52,6 +54,14 @@ public class VentaPlatillo{
 
     public void setVentaGeneral(Venta ventaGeneral) {
         this.ventaGeneral = ventaGeneral;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 
     public Platillo getPlatillo() {

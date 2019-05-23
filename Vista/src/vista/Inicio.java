@@ -32,17 +32,15 @@ public class Inicio extends javax.swing.JFrame {
      * Creates new form Inicio
      */
     public Inicio() {
-        
-         try {
-             
-            
-			UIManager.setLookAndFeel(new WindowsLookAndFeel());
-                        
-		}
-		catch (UnsupportedLookAndFeelException e) {
-			e.printStackTrace ();
-		}
-         
+
+        try {
+
+            UIManager.setLookAndFeel(new WindowsLookAndFeel());
+
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -60,7 +58,7 @@ public class Inicio extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Reservas");
+        jButton1.setText("VENDER");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -72,32 +70,32 @@ public class Inicio extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(143, 143, 143)
+                .addGap(154, 154, 154)
                 .addComponent(jButton1)
-                .addContainerGap(173, Short.MAX_VALUE))
+                .addContainerGap(170, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(187, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(124, 124, 124)
                 .addComponent(jButton1)
-                .addGap(81, 81, 81))
+                .addContainerGap(144, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       
+
         try {
             IControl c = new Control();
-            //boolean login = Control.login("Magui", "cocinamagui");
-           boolean login = Control.login("Cajero 1", "1234");
+            boolean login = Control.login("Magui", "cocinamagui");
+            //boolean login = Control.login("Cajero 1", "1234");
             if (login) {
-                VReservasCliente vReservas = new VReservasCliente();
-               
+                MenuSemanal menu = new MenuSemanal(this, true);
+                menu.setVisible(true);
+
                 
-                dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Error: Usuario y/o contraseña incorrectos.");
             }

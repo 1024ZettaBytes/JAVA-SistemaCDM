@@ -29,7 +29,8 @@ public class Control implements IControl {
     public static ControlProductos productos;
     public static ControlMenu menu;
     public static ControlReservas reservas;
-    
+    public static ControlVentasPlatillos ventasPlatillos;
+    public static ControlVentasCredito ventasCredito;
  
 
   
@@ -48,6 +49,8 @@ public class Control implements IControl {
         productos = new ControlProductos(conexion);
         menu = new ControlMenu(conexion);
         reservas = new ControlReservas(conexion);
+        ventasPlatillos = new ControlVentasPlatillos(conexion);
+        ventasCredito = new ControlVentasCredito(conexion);
         // Se agregan los restantes
         }
         else throw new ExceptionInInitializerError();

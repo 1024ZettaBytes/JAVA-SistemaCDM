@@ -7,9 +7,15 @@ package logica;
 
 import Interfaces.IConexion;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import negocio.Usuario;
 import negocio.Venta;
+import negocio.VentaPlatillo;
 
 /**
  *
@@ -26,7 +32,16 @@ public class ControlVentas {
         if (this.conexion.conectar()) {
             ArrayList<Object[]> arreglosVentas = conexion.consultarVentas();
             for (Object[] arregloVenta : arreglosVentas) {
-                Venta v = new Venta((Integer) arregloVenta[0], (Timestamp)arregloVenta[1], Control.usuarios.consultarPorId((Integer)arregloVenta[1]));
+                String pattern = "yyyy-MM-dd hh:mm:ss";
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+                Date fecha = null;
+                try {
+                    fecha = simpleDateFormat.parse((String) arregloVenta[1]);
+      
+                } catch (ParseException ex) {
+                    Logger.getLogger(ControlReservas.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Venta v = new Venta((Integer) arregloVenta[0], new Timestamp(fecha.getTime()), Control.usuarios.consultarPorId((Integer)arregloVenta[2]));
                 listaVentas.add(v);
             }
             
@@ -75,7 +90,19 @@ if (!conexion.hayConexion()) {
     }
 
     public ArrayList<Venta> consultarLista() {
-
         return listaVentas;
     }
+    public Venta consultarVentaPorId(int idVenta) {
+        for (Venta listaVenta : listaVentas) {
+            if(listaVenta.getFolioVenta() ==idVenta ){
+                return listaVenta;
+            }
+        }
+        return null;
+        
+    }
+    public Venta consultarUltimaVenta(){
+       return listaVentas.get(listaVentas.size()-1);
+    }
 }
+

@@ -32,8 +32,7 @@ public class ControlClientes {
                 Cliente c = new Cliente((Integer) arregloCliente[0], (String) arregloCliente[1], (Integer) arregloCliente[2], (Integer) arregloCliente[3], (Integer) arregloCliente[4]);
                 listaClientes.add(c);
             }
-            
-            
+
         }
     }
 
@@ -44,9 +43,9 @@ public class ControlClientes {
             }
         }
         if (conexion.insertarCliente(nuevoCliente.getNombre(), nuevoCliente.getCreditoDesayuno(), nuevoCliente.getCreditoComida(), nuevoCliente.getCreditoCena())) {
-           
-            clienteSiguiente = conexion.obtenUltimoID()+1;
-             nuevoCliente.setIdCliente(clienteSiguiente-1);
+
+            clienteSiguiente = conexion.obtenUltimoID() + 1;
+            nuevoCliente.setIdCliente(clienteSiguiente - 1);
             return !listaClientes.contains(nuevoCliente) && listaClientes.add(nuevoCliente);
         } else {
             return false;
@@ -54,7 +53,7 @@ public class ControlClientes {
     }
 
     public boolean actualizar(Cliente cliente) {
-if (!conexion.hayConexion()) {
+        if (!conexion.hayConexion()) {
             if (conexion.conectar() == false) {
                 return false;
             }
@@ -76,51 +75,111 @@ if (!conexion.hayConexion()) {
         Cliente c = new Cliente(idCliente, "", 0, 0, 0);
         return conexion.eliminarCliente(idCliente) && listaClientes.remove(c);
     }
-public Cliente consultarPorId(int id){
-    Cliente c = new Cliente(id, null, 0, 0, 0);
-    if(listaClientes.contains(c)){
-        return listaClientes.get(listaClientes.indexOf(c));
+
+    public Cliente consultarPorId(int id) {
+        Cliente c = new Cliente(id, null, 0, 0, 0);
+        if (listaClientes.contains(c)) {
+            return listaClientes.get(listaClientes.indexOf(c));
+        }
+        return null;
     }
-    return null;
-}
-public ArrayList<Cliente> clientesConCredito() {
-ArrayList<Cliente> lista = new ArrayList<>();
-    for (Cliente cliente : listaClientes) {
-        if(cliente.getCreditoDesayuno()+cliente.getCreditoComida()+cliente.getCreditoCena() >0)
-            lista.add(cliente);
-    }
+
+    public ArrayList<Cliente> clientesConCredito() {
+        ArrayList<Cliente> lista = new ArrayList<>();
+        for (Cliente cliente : listaClientes) {
+            if (cliente.getCreditoDesayuno() + cliente.getCreditoComida() + cliente.getCreditoCena() > 0) {
+                lista.add(cliente);
+            }
+        }
         return lista;
     }
-public ArrayList<Cliente> clientesParaModificar() {
-    int indexMayor = 0;
-    boolean agregarEntre=true;
-ArrayList<Cliente> clientesModificables = new ArrayList<>();
-    for (Cliente cliente : listaClientes) {
-        
-        if(cliente.getCreditoDesayuno()+cliente.getCreditoComida()+cliente.getCreditoCena() >0 || Control.reservas.consultarReservasClienteVigente(cliente, Calendar.getInstance().getTime()).size()>0){
-            
-            agregarEntre = clientesModificables.size()>0;
-            if(agregarEntre)
-            for (Cliente clienteModificable : clientesModificables) {
-                if(cliente.getNombre().compareTo(clienteModificable.getNombre())<=0){
-                    indexMayor = clientesModificables.indexOf(clienteModificable);
+
+    public ArrayList<Cliente> clientesConCreditoCategoria(String categoria, int minimo) {
+        ArrayList<Cliente> lista = new ArrayList<>();
+
+        for (Cliente cliente : listaClientes) {
+            int nCreditos = 0;
+            switch (categoria) {
+                case "DESAYUNO":
+                    nCreditos = cliente.getCreditoDesayuno();
                     break;
+                case "COMIDA":
+                    nCreditos = cliente.getCreditoComida();
+                    break;
+                case "CENA":
+                    nCreditos = cliente.getCreditoCena();
+                    break;
+            }
+            if (nCreditos > minimo) {
+                lista.add(cliente);
+            }
+        }
+        return lista;
+    }
+
+    public ArrayList<Cliente> clientesParaModificar() {
+        int indexMayor = 0;
+        boolean agregarEntre = true;
+        ArrayList<Cliente> clientesModificables = new ArrayList<>();
+        for (Cliente cliente : listaClientes) {
+
+            if (cliente.getCreditoDesayuno() + cliente.getCreditoComida() + cliente.getCreditoCena() > 0 || Control.reservas.consultarReservasClienteVigente(cliente, Calendar.getInstance().getTime()).size() > 0) {
+
+                agregarEntre = clientesModificables.size() > 0;
+                if (agregarEntre) {
+                    for (Cliente clienteModificable : clientesModificables) {
+                        if (cliente.getNombre().compareTo(clienteModificable.getNombre()) <= 0) {
+                            indexMayor = clientesModificables.indexOf(clienteModificable);
+                            break;
+                        } else {
+                            if (clientesModificables.indexOf(clienteModificable) == clientesModificables.size() - 1) {
+                                agregarEntre = false;
+                            }
+                        }
+                    }
                 }
-                else{
-                    if(clientesModificables.indexOf(clienteModificable)==clientesModificables.size()-1)
-                        agregarEntre = false;
+                if (agregarEntre) {
+                    clientesModificables.add(indexMayor, cliente);
+                } else {
+                    clientesModificables.add(cliente);
                 }
             }
-            if(agregarEntre)
-                clientesModificables.add(indexMayor, cliente);
-            else
-                clientesModificables.add(cliente);
         }
+        return clientesModificables;
     }
-    return clientesModificables;
-}
+
     public ArrayList<Cliente> consultarLista() {
 
         return listaClientes;
+    }
+
+    public ArrayList<Cliente> consultarListaOrdenada() {
+
+        int indexMayor = 0;
+        boolean agregarEntre = true;
+        ArrayList<Cliente> clientesModificables = new ArrayList<>();
+        for (Cliente cliente : listaClientes) {
+
+            agregarEntre = clientesModificables.size() > 0;
+            if (agregarEntre) {
+                for (Cliente clienteModificable : clientesModificables) {
+                    if (cliente.getNombre().compareTo(clienteModificable.getNombre()) <= 0) {
+                        indexMayor = clientesModificables.indexOf(clienteModificable);
+                        break;
+                    } else {
+                        if (clientesModificables.indexOf(clienteModificable) == clientesModificables.size() - 1) {
+                            agregarEntre = false;
+                        }
+                    }
+                }
+            }
+            if (agregarEntre) {
+                clientesModificables.add(indexMayor, cliente);
+            } else {
+                clientesModificables.add(cliente);
+            }
+
+        }
+        return clientesModificables;
     }
 }

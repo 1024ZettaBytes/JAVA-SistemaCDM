@@ -28,7 +28,7 @@ public interface IConexion {
     public ArrayList<Object[]> consultarPlatillos();
     
     public boolean insertarPlatilloMenu(int idPlatillo, int diaSemana, int cantidad, String categoría);
-    public boolean actualizarPlatilloMenu(int idPlatilloMenu, int idPlatillo, int diaSemana, int cantidad, String categoría);
+    public boolean actualizarPlatilloMenu(int idPlatilloMenu, int idPlatillo, int diaSemana, int cantidad, int reservados, String categoría);
     public boolean eliminarPlatilloMenu(int idPlatilloMenu);
     public ArrayList<Object[]> consultarPlatillosMenu();
     
@@ -47,8 +47,8 @@ public interface IConexion {
     public boolean eliminarVenta(int folioVenta);
     public ArrayList<Object[]> consultarVentas();
     
-    public boolean insertarVentaPlatillo(int folioVentaGeneral, String nombreCliente, int idPlatillo, float costo);
-    public boolean actualizarVentaPlatillo(int idVentaPlatillo, int folioVentaGeneral, String nombreCliente, int idPlatillo, float costo);
+    public boolean insertarVentaPlatillo(int folioVentaGeneral, String nombreCliente, int idPlatillo, float costo, int cantidad);
+    public boolean actualizarVentaPlatillo(int idVentaPlatillo, int folioVentaGeneral, String nombreCliente, int idPlatillo, float costo, int cantidad);
     public boolean eliminarVentaPlatillo(int idVentaPlatillo);
     public ArrayList<Object[]> consultarVentasPlatillos();
     
