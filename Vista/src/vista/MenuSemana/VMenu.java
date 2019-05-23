@@ -301,9 +301,19 @@ public class VMenu extends javax.swing.JDialog {
         spinnerCantDesayunos.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         spinnerCantDesayunos.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         spinnerCantDesayunos.setEnabled(false);
+        spinnerCantDesayunos.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spinnerCantDesayunosStateChanged(evt);
+            }
+        });
 
         btnGuardarDesayuno.setText("GUARDAR");
         btnGuardarDesayuno.setEnabled(false);
+        btnGuardarDesayuno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarDesayunoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -423,9 +433,19 @@ public class VMenu extends javax.swing.JDialog {
         spinnerCantComidas.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         spinnerCantComidas.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         spinnerCantComidas.setEnabled(false);
+        spinnerCantComidas.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spinnerCantComidasStateChanged(evt);
+            }
+        });
 
         btnGuardarComida.setText("GUARDAR");
         btnGuardarComida.setEnabled(false);
+        btnGuardarComida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarComidaActionPerformed(evt);
+            }
+        });
 
         jLabel13.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
         jLabel13.setText("Sopa del día:");
@@ -452,40 +472,38 @@ public class VMenu extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnGuardarComida, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(76, 76, 76)
-                                .addComponent(jLabel9)
-                                .addGap(18, 18, 18)
-                                .addComponent(spinnerCantComidas, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel13)
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
                                 .addComponent(campoSopa, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnElegirSopa)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(76, 76, 76)
+                        .addComponent(jLabel9)
+                        .addGap(18, 18, 18)
+                        .addComponent(spinnerCantComidas, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnGuardarComida, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(130, 130, 130)
-                        .addComponent(jLabel8))
+                        .addComponent(btnBorrarTodasComidas, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(btnBorrarTodasComidas, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(btnBorrarComida)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnAgregarComida, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(btnBorrarComida)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAgregarComida, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(133, 133, 133)
+                .addComponent(jLabel8)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -506,14 +524,14 @@ public class VMenu extends javax.swing.JDialog {
                     .addComponent(btnAgregarComida, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(2, 2, 2)
                 .addComponent(btnBorrarTodasComidas, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41)
+                .addGap(55, 55, 55)
                 .addComponent(jLabel8)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
+                    .addComponent(btnGuardarComida, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(spinnerCantComidas, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnGuardarComida, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(51, Short.MAX_VALUE))
+                    .addComponent(jLabel9))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         jPanel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -577,9 +595,19 @@ public class VMenu extends javax.swing.JDialog {
         spinnerCantCenas.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         spinnerCantCenas.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         spinnerCantCenas.setEnabled(false);
+        spinnerCantCenas.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spinnerCantCenasStateChanged(evt);
+            }
+        });
 
         btnGuardarCena.setText("GUARDAR");
         btnGuardarCena.setEnabled(false);
+        btnGuardarCena.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarCenaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -935,7 +963,7 @@ public class VMenu extends javax.swing.JDialog {
             ElegirSopa vsopas = new ElegirSopa(parent, true, lSopas);
             vsopas.setVisible(true);
             if (vsopas.seleccionada != null) {
-                System.out.println("Se seleccionó");
+
                 if (sopaDelDia != null) {
                     sopaDelDia.setPlatillo(vsopas.seleccionada);
                     if (Control.menu.actualizar(sopaDelDia)) {
@@ -957,6 +985,57 @@ public class VMenu extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(parent, "NO existen sopas registradas en la lista de platillos.", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnElegirSopaActionPerformed
+
+    private void spinnerCantDesayunosStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spinnerCantDesayunosStateChanged
+        if(spinnerCantDesayunos.isEnabled()){
+        PlatilloMenu seleccionado = listaDesayunos.get(tablaDesayunos.getSelectedRow());
+        btnGuardarDesayuno.setEnabled((int) spinnerCantDesayunos.getValue() != seleccionado.getCantidad());
+        }
+    }//GEN-LAST:event_spinnerCantDesayunosStateChanged
+
+    private void spinnerCantComidasStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spinnerCantComidasStateChanged
+         if(spinnerCantComidas.isEnabled()){
+        PlatilloMenu seleccionado = listaComidas.get(tablaComidas.getSelectedRow());
+        btnGuardarComida.setEnabled((int) spinnerCantComidas.getValue() != seleccionado.getCantidad());
+         }
+    }//GEN-LAST:event_spinnerCantComidasStateChanged
+
+    private void spinnerCantCenasStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spinnerCantCenasStateChanged
+         if(spinnerCantCenas.isEnabled()){
+        PlatilloMenu seleccionado = listaCenas.get(tablaCenas.getSelectedRow());
+        btnGuardarCena.setEnabled((int) spinnerCantCenas.getValue() != seleccionado.getCantidad());
+         }
+    }//GEN-LAST:event_spinnerCantCenasStateChanged
+
+    private void btnGuardarDesayunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarDesayunoActionPerformed
+        PlatilloMenu seleccionado = listaDesayunos.get(tablaDesayunos.getSelectedRow());
+        seleccionado.setCantidad((int) spinnerCantDesayunos.getValue());
+        if (Control.menu.actualizar(seleccionado)) {
+            reestablecedesayunos();
+        } else {
+            JOptionPane.showMessageDialog(parent, "Ocurrió un error al actualizar el platillo. Intente nuevamente.", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_btnGuardarDesayunoActionPerformed
+
+    private void btnGuardarComidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarComidaActionPerformed
+        PlatilloMenu seleccionado = listaComidas.get(tablaComidas.getSelectedRow());
+        seleccionado.setCantidad((int) spinnerCantComidas.getValue());
+        if (Control.menu.actualizar(seleccionado)) {
+            reestableceComidas();
+        } else {
+            JOptionPane.showMessageDialog(parent, "Ocurrió un error al actualizar el platillo. Intente nuevamente.", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnGuardarComidaActionPerformed
+
+    private void btnGuardarCenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCenaActionPerformed
+        PlatilloMenu seleccionado = listaCenas.get(tablaCenas.getSelectedRow());
+        seleccionado.setCantidad((int) spinnerCantCenas.getValue());
+        if (Control.menu.actualizar(seleccionado)) {
+            reestableceCenas();
+        } else {
+            JOptionPane.showMessageDialog(parent, "Ocurrió un error al actualizar el platillo. Intente nuevamente.", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }    }//GEN-LAST:event_btnGuardarCenaActionPerformed
 
     private void establecerMenu(int dia) {
         if (dia != diaSeleccionado || diaSeleccionado == 1) {
@@ -989,8 +1068,8 @@ public class VMenu extends javax.swing.JDialog {
         tablaDesayunos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablaDesayunos.setSelectionBackground(Color.lightGray);
         btnBorrarDesayuno.setEnabled(false);
-        spinnerCantDesayunos.setValue(0);
         spinnerCantDesayunos.setEnabled(false);
+        spinnerCantDesayunos.setValue(0);
         btnGuardarDesayuno.setEnabled(false);
 
         btnBorrarTodosDesayunos.setEnabled(listaDesayunos.size() > 0);
@@ -1016,8 +1095,8 @@ public class VMenu extends javax.swing.JDialog {
         tablaComidas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablaComidas.setSelectionBackground(Color.lightGray);
         btnBorrarComida.setEnabled(false);
-        spinnerCantComidas.setValue(0);
         spinnerCantComidas.setEnabled(false);
+        spinnerCantComidas.setValue(0);
         btnGuardarComida.setEnabled(false);
         btnBorrarTodasComidas.setEnabled(listaComidas.size() > 0);
         ArrayList<PlatilloMenu> lSopa = Control.menu.consultarMenuDiaCategoria(diaSeleccionado, "SOPA");
@@ -1025,7 +1104,7 @@ public class VMenu extends javax.swing.JDialog {
             campoSopa.setText(lSopa.get(0).getPlatillo().getNombre());
             sopaDelDia = lSopa.get(0);
         } else {
-            sopaDelDia=null;
+            sopaDelDia = null;
             campoSopa.setText("");
         }
 
@@ -1051,8 +1130,8 @@ public class VMenu extends javax.swing.JDialog {
         tablaCenas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablaCenas.setSelectionBackground(Color.lightGray);
         btnBorrarCena.setEnabled(false);
-        spinnerCantCenas.setValue(0);
         spinnerCantCenas.setEnabled(false);
+        spinnerCantCenas.setValue(0);
         btnGuardarCena.setEnabled(false);
         btnBorrarTodasCenas.setEnabled(listaCenas.size() > 0);
 
@@ -1072,7 +1151,7 @@ public class VMenu extends javax.swing.JDialog {
 
                     spinnerCantDesayunos.setEnabled(true);
                     spinnerCantDesayunos.setValue(pl.getCantidad());
-                    btnGuardarDesayuno.setEnabled(true);
+
                 } else {
                     btnBorrarDesayuno.setEnabled(false);
                     spinnerCantDesayunos.setEnabled(false);
@@ -1095,7 +1174,7 @@ public class VMenu extends javax.swing.JDialog {
 
                     spinnerCantComidas.setEnabled(true);
                     spinnerCantComidas.setValue(pl.getCantidad());
-                    btnGuardarComida.setEnabled(true);
+
                 } else {
                     btnBorrarComida.setEnabled(false);
                     spinnerCantComidas.setEnabled(false);
@@ -1117,7 +1196,7 @@ public class VMenu extends javax.swing.JDialog {
                     btnBorrarCena.setEnabled(true);
                     spinnerCantCenas.setEnabled(true);
                     spinnerCantCenas.setValue(pl.getCantidad());
-                    btnGuardarCena.setEnabled(true);
+
                 } else {
                     btnBorrarCena.setEnabled(false);
                     btnGuardarCena.setEnabled(false);
