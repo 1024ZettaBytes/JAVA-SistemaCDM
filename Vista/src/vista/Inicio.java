@@ -5,8 +5,11 @@
  */
 package vista;
 
+import vista.MenuSemana.VMenu;
 import Interfaces.IControl;
 import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -33,6 +36,8 @@ public class Inicio extends javax.swing.JFrame {
      */
     public Inicio() {
 
+        
+        initComponents();
         try {
 
             UIManager.setLookAndFeel(new WindowsLookAndFeel());
@@ -41,8 +46,8 @@ public class Inicio extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-        initComponents();
         setLocationRelativeTo(null);
+        this.setExtendedState(MAXIMIZED_BOTH);
     }
 
     /**
@@ -89,10 +94,28 @@ public class Inicio extends javax.swing.JFrame {
 
         try {
             IControl c = new Control();
-            boolean login = Control.login("Magui", "cocinamagui");
-            //boolean login = Control.login("Cajero 1", "1234");
+           // boolean login = Control.login("Magui", "cocinamagui");
+            boolean login = Control.login("Cajero 1", "1234");
             if (login) {
-                MenuSemanal menu = new MenuSemanal(this, true);
+                VMenu menu = new VMenu(this, true);
+                menu.addComponentListener(new ComponentListener() {
+                    @Override
+                    public void componentResized(ComponentEvent e) {
+                    }
+
+                    @Override
+                    public void componentMoved(ComponentEvent e) {
+                        menu.setLocation(0, 0);
+                    }
+
+                    @Override
+                    public void componentShown(ComponentEvent e) {
+                    }
+
+                    @Override
+                    public void componentHidden(ComponentEvent e) {
+                    }
+                });
                 menu.setVisible(true);
 
                 

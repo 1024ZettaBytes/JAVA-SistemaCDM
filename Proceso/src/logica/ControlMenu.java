@@ -110,4 +110,7 @@ public class ControlMenu {
 
         return listaPlatillosMenu;
     }
+    public PlatilloMenu consultarUltimo(){
+        return listaPlatillosMenu.get(listaPlatillosMenu.size()-1);
+    }
 }

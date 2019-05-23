@@ -85,4 +85,42 @@ public class ControlPlatillos {
 
         return listaPlatillos;
     }
+    public ArrayList<Platillo> consultarListaOrdenada() {
+
+        int indexMayor = 0;
+        boolean agregarEntre = true;
+        ArrayList<Platillo> platillos = new ArrayList<>();
+        for (Platillo platillo : listaPlatillos) {
+            agregarEntre = platillos.size() > 0;
+            if (agregarEntre) {
+                for (Platillo p : platillos) {
+                    if (platillo.getNombre().compareTo(p.getNombre()) <= 0) {
+                        indexMayor = platillos.indexOf(p);
+                        break;
+                    } else {
+                        if (platillos.indexOf(p) == platillos.size() - 1) {
+                            agregarEntre = false;
+                        }
+                    }
+                }
+            }
+            if (agregarEntre) {
+                platillos.add(indexMayor, platillo);
+            } else {
+                platillos.add(platillo);
+            }
+
+        }
+        return platillos;
+    }
+    public ArrayList<Platillo> consultarSopas() {
+        ArrayList<Platillo> sopas = new ArrayList<>();
+         for(Platillo platillo:listaPlatillos){
+             if(platillo.getNombre().length()>7){
+             if(platillo.getNombre().substring(0, 7).toLowerCase().equals("sopa de"))
+                 sopas.add(platillo);
+             }
+         }
+         return sopas;
+    }
 }
