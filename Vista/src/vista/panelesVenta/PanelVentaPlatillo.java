@@ -27,9 +27,9 @@ import negocio.PlatilloMenu;
 import negocio.ReservaPlatillo;
 import negocio.Venta;
 import negocio.VentaPlatillo;
-import vista.ConfirmacionVenta;
-import vista.SeleccionCliente;
-import vista.Seleccionreserva;
+import vista.Vender.ConfirmacionVenta;
+import vista.Vender.SeleccionCliente;
+import vista.Vender.Seleccionreserva;
 
 /**
  *
@@ -41,6 +41,7 @@ int cMax =1;
     private String categoría;
     private Platillo sopaDelDia;
     private float total;
+    private boolean ultimoDisponible = false;
     //////////////        MENU
     // Lista original del menu, solo se modifica cuando se genera la venta
     private ArrayList<PlatilloMenu> listaMenu;
@@ -145,15 +146,17 @@ int cMax =1;
             } else {
                 checkBoxSopa.setEnabled(false);
             }
+            
         }//Si no
         else {
+            
             // Se guarda un solo valor indicando el resultado de la búsqueda
             arregloPlatillos = new Object[1];
             arregloPlatillos[0] = "-------SIN PLATILLOS DISPONIBLES------";
             modeloLista = new DefaultComboBoxModel(arregloPlatillos);
             comboPlatillos.setModel(modeloLista);
             // Se desactivan todos los componentes
-            desactivarComponentes(this);
+            //desactivarComponentes(this);
         }
     }
 
@@ -298,6 +301,7 @@ int cMax =1;
             }
             c.setEnabled(false);
         }
+       
     }
 
     /**
@@ -742,6 +746,7 @@ int cMax =1;
         txtNombreCliente.setEnabled(true);
         // Actualiza el menú con la lista temporal
         establecerMenu(listamenuCopia);
+        
     }//GEN-LAST:event_btnAgregarPlatilloActionPerformed
 
     private void comboPlatillosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboPlatillosActionPerformed

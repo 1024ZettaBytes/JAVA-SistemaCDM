@@ -24,6 +24,8 @@ import org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel;
 import org.pushingpixels.substance.api.skin.SubstanceCremeCoffeeLookAndFeel;
 import org.pushingpixels.substance.api.skin.SubstanceNebulaBrickWallLookAndFeel;
 import org.pushingpixels.substance.api.skin.SubstanceRavenLookAndFeel;
+import vista.Reservar.Reservas;
+import vista.Vender.RealizarVenta;
 
 /**
  *
@@ -34,9 +36,10 @@ public class Inicio extends javax.swing.JFrame {
     /**
      * Creates new form Inicio
      */
+    private boolean login = false;
+
     public Inicio() {
 
-        
         initComponents();
         try {
 
@@ -48,6 +51,15 @@ public class Inicio extends javax.swing.JFrame {
 
         setLocationRelativeTo(null);
         this.setExtendedState(MAXIMIZED_BOTH);
+        try {
+            IControl c = new Control();
+            // boolean login = Control.login("Magui", "cocinamagui");
+
+            login = Control.login("Cajero 1", "1234");
+        } catch (ExceptionInInitializerError e) {
+            JOptionPane.showMessageDialog(this, "Error: NO se pudo establecer una conexión con la base de datos. Intente de nuevo");
+        }
+
     }
 
     /**
@@ -59,76 +71,162 @@ public class Inicio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        btnMenu = new javax.swing.JButton();
+        btnVender = new javax.swing.JButton();
+        btnReservas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("VENDER");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnMenu.setText("MENÚ");
+        btnMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnMenuActionPerformed(evt);
             }
         });
+
+        btnVender.setText("VENDER");
+        btnVender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVenderActionPerformed(evt);
+            }
+        });
+
+        btnReservas.setText("RESERVAS");
+        btnReservas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReservasActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnVender)
+                        .addGap(62, 62, 62)
+                        .addComponent(btnMenu))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(btnReservas)))
+                .addContainerGap(171, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnVender)
+                    .addComponent(btnMenu))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnReservas)
+                .addContainerGap(32, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(154, 154, 154)
-                .addComponent(jButton1)
-                .addContainerGap(170, Short.MAX_VALUE))
+                .addContainerGap(162, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(190, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(124, 124, 124)
-                .addComponent(jButton1)
-                .addContainerGap(144, Short.MAX_VALUE))
+                .addGap(174, 174, 174)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(105, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
 
-        try {
-            IControl c = new Control();
-           // boolean login = Control.login("Magui", "cocinamagui");
-            boolean login = Control.login("Cajero 1", "1234");
-            if (login) {
-                VMenu menu = new VMenu(this, true);
-                menu.addComponentListener(new ComponentListener() {
-                    @Override
-                    public void componentResized(ComponentEvent e) {
-                    }
-
-                    @Override
-                    public void componentMoved(ComponentEvent e) {
-                        menu.setLocation(0, 0);
-                    }
-
-                    @Override
-                    public void componentShown(ComponentEvent e) {
-                    }
-
-                    @Override
-                    public void componentHidden(ComponentEvent e) {
-                    }
-                });
-                menu.setVisible(true);
-
-                
-            } else {
-                JOptionPane.showMessageDialog(this, "Error: Usuario y/o contraseña incorrectos.");
+        VMenu menu = new VMenu(this, true);
+        menu.addComponentListener(new ComponentListener() {
+            @Override
+            public void componentResized(ComponentEvent e) {
             }
 
-        } catch (ExceptionInInitializerError e) {
-            JOptionPane.showMessageDialog(this, "Error: NO se pudo establecer una conexión con la base de datos. Intente de nuevo");
-        }
+            @Override
+            public void componentMoved(ComponentEvent e) {
+                menu.setLocation(0, 0);
+            }
+
+            @Override
+            public void componentShown(ComponentEvent e) {
+            }
+
+            @Override
+            public void componentHidden(ComponentEvent e) {
+            }
+        });
+        menu.setVisible(true);
 
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnMenuActionPerformed
+
+    private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
+
+        RealizarVenta rv = new RealizarVenta(this, true);
+        rv.addComponentListener(new ComponentListener() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+            }
+
+            @Override
+            public void componentMoved(ComponentEvent e) {
+                rv.setLocation(0, 0);
+            }
+
+            @Override
+            public void componentShown(ComponentEvent e) {
+            }
+
+            @Override
+            public void componentHidden(ComponentEvent e) {
+            }
+        });
+        rv.setVisible(true);
+
+
+    }//GEN-LAST:event_btnVenderActionPerformed
+
+    private void btnReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservasActionPerformed
+        if(Control.clientes.clientesParaModificar().size()>0){
+        Reservas r = new Reservas(this, true);
+        r.addComponentListener(new ComponentListener() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+            }
+
+            @Override
+            public void componentMoved(ComponentEvent e) {
+                r.setLocation(0, 0);
+            }
+
+            @Override
+            public void componentShown(ComponentEvent e) {
+            }
+
+            @Override
+            public void componentHidden(ComponentEvent e) {
+            }
+        });
+        
+        r.setVisible(true);
+    }
+        else
+            JOptionPane.showMessageDialog(this, "No se encontraron clientes con crédito o reservas vigentes.", "Información", JOptionPane.INFORMATION_MESSAGE);
+
+    }//GEN-LAST:event_btnReservasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -166,6 +264,9 @@ public class Inicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnMenu;
+    private javax.swing.JButton btnReservas;
+    private javax.swing.JButton btnVender;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `cdm`.`platillos` (
   PRIMARY KEY (`idPlatillo`),
   UNIQUE INDEX `idPlatillo_UNIQUE` (`idPlatillo` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 49
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -84,6 +84,7 @@ CREATE TABLE IF NOT EXISTS `cdm`.`platillosmenu` (
   `Platillos_idPlatillo` INT(11) NOT NULL,
   `diaSemana` INT(11) NULL DEFAULT NULL,
   `cantidad` INT(11) NULL DEFAULT NULL,
+  `reservados` INT(10) UNSIGNED NULL DEFAULT NULL,
   `categoria` VARCHAR(15) NULL DEFAULT NULL,
   PRIMARY KEY (`idPlatilloMenu`),
   UNIQUE INDEX `idPlatilloMenu_UNIQUE` (`idPlatilloMenu` ASC) VISIBLE,
@@ -161,6 +162,7 @@ CREATE TABLE IF NOT EXISTS `cdm`.`usuarios` (
   PRIMARY KEY (`idUsuario`),
   UNIQUE INDEX `idUsuario_UNIQUE` (`idUsuario` ASC) VISIBLE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -215,6 +217,7 @@ CREATE TABLE IF NOT EXISTS `cdm`.`ventasplatillos` (
   `nombreCliente` VARCHAR(45) NOT NULL,
   `Platillos_idPlatillo` INT(11) NOT NULL,
   `costo` FLOAT UNSIGNED NOT NULL,
+  `cantidad` INT(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`idVentaPlatillo`),
   UNIQUE INDEX `idVentaPlatillo_UNIQUE` (`idVentaPlatillo` ASC) VISIBLE,
   INDEX `fk_Ventas_has_Platillos_Platillos1_idx` (`Platillos_idPlatillo` ASC) VISIBLE,

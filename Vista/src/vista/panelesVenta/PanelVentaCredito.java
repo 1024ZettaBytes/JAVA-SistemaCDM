@@ -18,7 +18,7 @@ import logica.Control;
 import negocio.Cliente;
 import negocio.Venta;
 import negocio.VentaCredito;
-import vista.ConfirmacionVenta;
+import vista.Vender.ConfirmacionVenta;
 
 /**
  *
@@ -359,6 +359,8 @@ private void establecerClientes() {
             desactivarCampos(panelCampos, false);
             checkBoxNuevoCli.setEnabled(false);
             checkBoxNuevoCli.setSelected(true);
+            txtNombreCliente.setEnabled(true);
+            campoNombreCliente.setEnabled(true);
         }
 
     }
@@ -409,6 +411,10 @@ private void establecerClientes() {
                      listaClientes = Control.clientes.consultarListaOrdenada();
                      establecerClientes();
                      reestableceCamposVenta();
+                     checkBoxNuevoCli.setSelected(false);
+                     checkBoxNuevoCli.setEnabled(true);
+                     campoNombreCliente.setText("");
+                     campoNombreCliente.setEnabled(false);
                 } else {
                     JOptionPane.showMessageDialog(parent, "No se pudo generar la venta", "Imposible", JOptionPane.ERROR_MESSAGE);
                 }

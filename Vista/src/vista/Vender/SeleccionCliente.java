@@ -3,60 +3,61 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package vista;
+package vista.Vender;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
-import logica.Control;
-import negocio.Platillo;
-import negocio.PlatilloMenu;
-import negocio.ReservaPlatillo;
+import negocio.Cliente;
 
 /**
  *
  * @author ed000
  */
-public class Seleccionreserva extends javax.swing.JDialog {
+public class SeleccionCliente extends javax.swing.JDialog {
 
     /**
-     * Creates new form Seleccionreserva
+     * Creates new form SeleccionCliente
      */
-    private ArrayList<ReservaPlatillo> listaReservasDia;
-    public ReservaPlatillo reservaSeleccionada;
-    public Seleccionreserva(java.awt.Frame parent, boolean modal, ArrayList<ReservaPlatillo> listaReservasDia ) {
+    public Cliente clienteSeleccionado;
+    private ArrayList<Cliente> listaClientes;
+    public SeleccionCliente(java.awt.Frame parent, boolean modal,String categoria, ArrayList<Cliente> listaClientes) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        this.listaReservasDia = listaReservasDia;
-        /// Crea los modelos para establecer en la tabla de menu y en el combobox
-        Object[] columnas = {"Cliente", "Platillo", "Cantidad"};
-        Object[][] modelo = new Object[listaReservasDia.size()][3];
+        this.listaClientes = listaClientes;
+        jLabel2.setText("Clientes con créditos de "+categoria.toLowerCase()+"s");
+        /// Crea el modelo para la tabla
+        Object[] columnas = {"Cliente", "Creditos"};
+        Object[][] modelo = new Object[listaClientes.size()][3];
         int x = 0;
-        for (ReservaPlatillo reserva : listaReservasDia) {
-            String cliente = reserva.getCliente().getNombre();
-            String platillo = reserva.getPlatillo().getNombre();
-            int cantidad = reserva.getCantidad();
-            modelo[x][0] = cliente;
-            modelo[x][1] = platillo;
-            modelo[x][2] = cantidad;
+        for (Cliente cliente : listaClientes) {
+            String nCliente = cliente.getNombre();
+            int cantidad=0;
+            switch(categoria){
+                case "DESAYUNO": cantidad = cliente.getCreditoDesayuno();
+                break;
+                case "COMIDA": cantidad = cliente.getCreditoComida();
+                break;
+                case "CENA": cantidad = cliente.getCreditoCena();
+                break;
+            }
+            modelo[x][0] = nCliente;
+            modelo[x][1] = cantidad;
             x++;
         }
         // Se establece el modelo en la tabla con los datos
-        tablaReservasDia.setDefaultEditor(Object.class, null);
-        tablaReservasDia.setModel(new DefaultTableModel(modelo, columnas));
-        tablaReservasDia.setCellSelectionEnabled(false);
-        tablaReservasDia.setRowSelectionAllowed(true);
-         // Se agrega el evento a la tabla al seleccionar una reserva
-            tablaReservasDia.addMouseListener(new java.awt.event.MouseAdapter() {
+        tablaCreditos.setDefaultEditor(Object.class, null);
+        tablaCreditos.setModel(new DefaultTableModel(modelo, columnas));
+        tablaCreditos.setCellSelectionEnabled(false);
+        tablaCreditos.setRowSelectionAllowed(true);
+         // Se agrega el evento a la tabla al seleccionar un cliente
+            tablaCreditos.addMouseListener(new java.awt.event.MouseAdapter() {
 
                 @Override
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    int row = tablaReservasDia.rowAtPoint(evt.getPoint());
-                    int col = tablaReservasDia.columnAtPoint(evt.getPoint());
+                    int row = tablaCreditos.rowAtPoint(evt.getPoint());
+                    int col = tablaCreditos.columnAtPoint(evt.getPoint());
                     btnAceptar.setEnabled(row >= 0 && col >= 0);
-
                 }
             });
     }
@@ -70,41 +71,48 @@ public class Seleccionreserva extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tablaReservasDia = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        btnAceptar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaCreditos = new javax.swing.JTable();
         btnCancelar = new javax.swing.JButton();
+        btnAceptar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Seleccione reserva");
 
-        tablaReservasDia.setModel(new javax.swing.table.DefaultTableModel(
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel1.setText("Seleccione el cliente");
+
+        tablaCreditos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "Cliente", "Platillo", "Cantidad"
+                "Cliente", "Créditos"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        tablaReservasDia.setColumnSelectionAllowed(true);
-        tablaReservasDia.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(tablaReservasDia);
-        tablaReservasDia.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tablaCreditos.setColumnSelectionAllowed(true);
+        tablaCreditos.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tablaCreditos);
+        tablaCreditos.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("Seleccione la reserva del cliente");
+        btnCancelar.setText("CANCELAR");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.setEnabled(false);
@@ -114,12 +122,8 @@ public class Seleccionreserva extends javax.swing.JDialog {
             }
         });
 
-        btnCancelar.setText("CANCELAR");
-        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
-            }
-        });
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setText("Clientes con crédito");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -138,14 +142,20 @@ public class Seleccionreserva extends javax.swing.JDialog {
                         .addGap(90, 90, 90))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(88, 88, 88))))
+                        .addGap(122, 122, 122))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(99, 99, 99)
+                .addComponent(jLabel2)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(33, Short.MAX_VALUE)
+                .addContainerGap(16, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -157,26 +167,23 @@ public class Seleccionreserva extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-      int index = tablaReservasDia.getSelectedRow();
-      reservaSeleccionada = listaReservasDia.get(index);
-      dispose();
-    }//GEN-LAST:event_btnAceptarActionPerformed
-
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        int index = tablaCreditos.getSelectedRow();
+        clienteSeleccionado = listaClientes.get(index);
+        dispose();
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tablaReservasDia;
+    private javax.swing.JTable tablaCreditos;
     // End of variables declaration//GEN-END:variables
 }
