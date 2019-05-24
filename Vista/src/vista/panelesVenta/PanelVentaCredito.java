@@ -82,6 +82,7 @@ public class PanelVentaCredito extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("1. Seleccione el cliente");
 
+        comboClientes.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         comboClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-------SIN CLIENTES  DISPONIBLES------" }));
         comboClientes.setEnabled(false);
         comboClientes.addActionListener(new java.awt.event.ActionListener() {
@@ -90,6 +91,7 @@ public class PanelVentaCredito extends javax.swing.JPanel {
             }
         });
 
+        checkBoxNuevoCli.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         checkBoxNuevoCli.setText("Cliente nuevo");
         checkBoxNuevoCli.setEnabled(false);
         checkBoxNuevoCli.addActionListener(new java.awt.event.ActionListener() {
@@ -98,6 +100,7 @@ public class PanelVentaCredito extends javax.swing.JPanel {
             }
         });
 
+        campoNombreCliente.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         campoNombreCliente.setEnabled(false);
         campoNombreCliente.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -105,6 +108,7 @@ public class PanelVentaCredito extends javax.swing.JPanel {
             }
         });
 
+        txtNombreCliente.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         txtNombreCliente.setText("Nombre del cliente:");
         txtNombreCliente.setEnabled(false);
 
@@ -119,11 +123,12 @@ public class PanelVentaCredito extends javax.swing.JPanel {
                     .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(125, 125, 125)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtNombreCliente)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtNombreCliente)
+                        .addGap(12, 12, 12)
+                        .addComponent(campoNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(checkBoxNuevoCli))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(campoNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(323, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -135,7 +140,7 @@ public class PanelVentaCredito extends javax.swing.JPanel {
                 .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(campoNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtNombreCliente))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
@@ -143,14 +148,19 @@ public class PanelVentaCredito extends javax.swing.JPanel {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setText("2. Indique los créditos a vender");
 
+        jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel4.setText("DESAYUNOS");
 
+        jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel5.setText("COMIDAS");
 
+        jLabel6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel6.setText("CENAS");
 
+        jLabel7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel7.setText("Cantidad");
 
+        txtCantCena.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         txtCantCena.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         txtCantCena.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -158,6 +168,7 @@ public class PanelVentaCredito extends javax.swing.JPanel {
             }
         });
 
+        txtCostoDesayuno.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         txtCostoDesayuno.setModel(new javax.swing.SpinnerNumberModel(0.0f, 0.0f, null, 1.0f));
         txtCostoDesayuno.setEnabled(false);
         txtCostoDesayuno.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -166,6 +177,7 @@ public class PanelVentaCredito extends javax.swing.JPanel {
             }
         });
 
+        txtCantComida.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         txtCantComida.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         txtCantComida.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -173,6 +185,7 @@ public class PanelVentaCredito extends javax.swing.JPanel {
             }
         });
 
+        txtCantDesayuno.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         txtCantDesayuno.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         txtCantDesayuno.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -180,6 +193,7 @@ public class PanelVentaCredito extends javax.swing.JPanel {
             }
         });
 
+        txtCostoComida.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         txtCostoComida.setModel(new javax.swing.SpinnerNumberModel(0.0f, 0.0f, null, 1.0f));
         txtCostoComida.setEnabled(false);
         txtCostoComida.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -188,6 +202,7 @@ public class PanelVentaCredito extends javax.swing.JPanel {
             }
         });
 
+        txtCostoCena.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         txtCostoCena.setModel(new javax.swing.SpinnerNumberModel(0.0f, 0.0f, null, 1.0f));
         txtCostoCena.setEnabled(false);
         txtCostoCena.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -202,12 +217,16 @@ public class PanelVentaCredito extends javax.swing.JPanel {
 
         jLabel10.setText("$");
 
+        jLabel11.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel11.setText("Costo");
 
+        jLabel12.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel12.setText("TOTAL:  $");
 
+        txtTotal.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         txtTotal.setText("0.00");
 
+        checkBoxImprimirNota.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         checkBoxImprimirNota.setText("Imprimir nota");
         checkBoxImprimirNota.setEnabled(false);
         checkBoxImprimirNota.addActionListener(new java.awt.event.ActionListener() {
@@ -216,6 +235,7 @@ public class PanelVentaCredito extends javax.swing.JPanel {
             }
         });
 
+        btnRealizarVenta.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         btnRealizarVenta.setText("REALIZAR VENTA");
         btnRealizarVenta.setEnabled(false);
         btnRealizarVenta.addActionListener(new java.awt.event.ActionListener() {
@@ -276,8 +296,8 @@ public class PanelVentaCredito extends javax.swing.JPanel {
                         .addComponent(checkBoxImprimirNota))
                     .addGroup(panelCamposLayout.createSequentialGroup()
                         .addGap(462, 462, 462)
-                        .addComponent(btnRealizarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnRealizarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(473, Short.MAX_VALUE))
         );
         panelCamposLayout.setVerticalGroup(
             panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -314,7 +334,7 @@ public class PanelVentaCredito extends javax.swing.JPanel {
                 .addComponent(checkBoxImprimirNota)
                 .addGap(18, 18, 18)
                 .addComponent(btnRealizarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

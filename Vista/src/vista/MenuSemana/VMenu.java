@@ -72,6 +72,7 @@ public class VMenu extends javax.swing.JDialog {
         btnViernes = new javax.swing.JButton();
         btnSabado = new javax.swing.JButton();
         btnDomingo = new javax.swing.JButton();
+        btnVolver = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -198,12 +199,25 @@ public class VMenu extends javax.swing.JDialog {
             }
         });
 
+        btnVolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/768px-Back_Arrow.svg.png"))); // NOI18N
+        btnVolver.setBorder(null);
+        btnVolver.setBorderPainted(false);
+        btnVolver.setContentAreaFilled(false);
+        btnVolver.setFocusable(false);
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(566, 566, 566)
+                .addContainerGap()
+                .addComponent(btnVolver)
+                .addGap(500, 500, 500)
                 .addComponent(jLabel5)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
@@ -226,7 +240,9 @@ public class VMenu extends javax.swing.JDialog {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnVolver))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnLunes, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
@@ -1037,6 +1053,10 @@ public class VMenu extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(parent, "Ocurrió un error al actualizar el platillo. Intente nuevamente.", "ERROR", JOptionPane.ERROR_MESSAGE);
         }    }//GEN-LAST:event_btnGuardarCenaActionPerformed
 
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnVolverActionPerformed
+
     private void establecerMenu(int dia) {
         if (dia != diaSeleccionado || diaSeleccionado == 1) {
             arregloBotones[diaSeleccionado].setBackground(Color.gray);
@@ -1228,6 +1248,7 @@ public class VMenu extends javax.swing.JDialog {
     private javax.swing.JButton btnNuevoDesayuno;
     private javax.swing.JButton btnSabado;
     private javax.swing.JButton btnViernes;
+    private javax.swing.JButton btnVolver;
     private javax.swing.JTextField campoSopa;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
